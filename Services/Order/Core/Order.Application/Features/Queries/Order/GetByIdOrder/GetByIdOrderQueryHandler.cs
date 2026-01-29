@@ -20,7 +20,7 @@ namespace Order.Application.Features.Queries.Order.GetByIdOrder
         {
             var order = await _orderingRepository.GetByIdAsync(request.OrderId);
 
-            if(order == null)
+            if (order == null)
             {
                 throw new Exception("Sipariş bulunamadı");
             }
@@ -31,7 +31,7 @@ namespace Order.Application.Features.Queries.Order.GetByIdOrder
                 OrderDate = order.OrderDate,
                 TotalPrice = order.TotalPrice,
                 UserId = order.UserId,
-                OrderDetails = order.OrderDetails.Select(d=> new OrderDetailDto
+                OrderDetails = order.OrderDetails.Select(d => new OrderDetailDto
                 {
                     OrderDetailId = d.OrderDetailId,
                     ProductAmount = d.ProductAmount,

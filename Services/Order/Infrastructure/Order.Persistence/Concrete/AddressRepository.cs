@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Order.Domain;
 using Microsoft.EntityFrameworkCore;
 using Order.Application.Interfaces;
 using Order.Persistence.Context;
@@ -25,24 +25,20 @@ namespace Order.Persistence.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        //Delete Address
+        public async Task DeleteAsync(Address address)
         {
-            var address = await _context.Addresses.FindAsync(id);
-            
-            if(address is null)
-            {
-                return;
-            }
-
             _context.Addresses.Remove(address);
             await _context.SaveChangesAsync();
         }
 
+        //Get all address
         public async Task<List<Address>> GetAllAsync()
         {
             return await _context.Addresses.ToListAsync();
         }
 
+        //Get by id address
         public async Task<Address> GetByIdAsync(int id)
         {
             return await _context.Addresses.FindAsync(id);

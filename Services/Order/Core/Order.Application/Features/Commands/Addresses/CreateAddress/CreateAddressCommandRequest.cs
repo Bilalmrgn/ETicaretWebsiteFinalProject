@@ -1,18 +1,18 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Order.Domain
+namespace Order.Application.Features.Commands.Addresses.CreateAddress
 {
-    public class Address
+    public class CreateAddressCommandRequest : IRequest<CreateAddressCommandResponse>
     {
         public int AddressId { get; set; }
         public string UserId { get; set; }
         public string District { get; set; }//ilçe
         public string City { get; set; }
         public string AddressDetail { get; set; }
-
     }
 }

@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Order.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +13,6 @@ namespace Order.Application.Interfaces
         Task<Address> GetByIdAsync(int id);
         Task CreateAsync(Address address);
         Task UpdateAsync(Address address);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(Address address);
     }
 }

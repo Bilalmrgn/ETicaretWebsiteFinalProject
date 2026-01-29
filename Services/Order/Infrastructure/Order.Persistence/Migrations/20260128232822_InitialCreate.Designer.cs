@@ -12,7 +12,7 @@ using Order.Persistence.Context;
 namespace Order.Persistence.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20260126232807_InitialCreate")]
+    [Migration("20260128232822_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace Order.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Domain.Address", b =>
+            modelBuilder.Entity("Order.Domain.Address", b =>
                 {
                     b.Property<int>("AddressId")
                         .ValueGeneratedOnAdd()
@@ -53,7 +53,7 @@ namespace Order.Persistence.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("Domain.OrderDetail", b =>
+            modelBuilder.Entity("Order.Domain.OrderDetail", b =>
                 {
                     b.Property<int>("OrderDetailId")
                         .ValueGeneratedOnAdd()
@@ -71,8 +71,9 @@ namespace Order.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductName")
-                        .HasColumnType("int");
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
@@ -87,7 +88,7 @@ namespace Order.Persistence.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("Domain.Ordering", b =>
+            modelBuilder.Entity("Order.Domain.Ordering", b =>
                 {
                     b.Property<int>("OrderingId")
                         .ValueGeneratedOnAdd()
@@ -110,9 +111,9 @@ namespace Order.Persistence.Migrations
                     b.ToTable("Orderings");
                 });
 
-            modelBuilder.Entity("Domain.OrderDetail", b =>
+            modelBuilder.Entity("Order.Domain.OrderDetail", b =>
                 {
-                    b.HasOne("Domain.Ordering", "Ordering")
+                    b.HasOne("Order.Domain.Ordering", "Ordering")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderingId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -121,7 +122,7 @@ namespace Order.Persistence.Migrations
                     b.Navigation("Ordering");
                 });
 
-            modelBuilder.Entity("Domain.Ordering", b =>
+            modelBuilder.Entity("Order.Domain.Ordering", b =>
                 {
                     b.Navigation("OrderDetails");
                 });

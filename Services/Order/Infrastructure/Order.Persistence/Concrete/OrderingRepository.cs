@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Order.Domain;
 using Microsoft.EntityFrameworkCore;
 using Order.Application.Interfaces;
 using Order.Persistence.Context;
@@ -25,11 +25,11 @@ namespace Order.Persistence.Concrete
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(Ordering ordering)
         {
-            var order = await _context.Orderings.FindAsync(id);
+            var order = await _context.Orderings.FindAsync(ordering.OrderingId);
 
-            if (order != null)
+            if (order == null)
             {
                 return;
             }
@@ -41,12 +41,12 @@ namespace Order.Persistence.Concrete
 
         public async Task<List<Ordering>> GetAllAsync()
         {
-            return await _context.Orderings.ToListAsync();
+            return await _context.Orderings.Include(x => x.OrderDetails).ToListAsync();//bunu bu şekilde yaptık çünkü siparişin yanında detaylarını da göstereceğim
         }
 
         public async Task<Ordering> GetByIdAsync(int id)
         {
-            return await _context.Orderings.FindAsync(id);
+            return await _context.Orderings.Include(x => x.OrderDetails).FirstOrDefaultAsync(x => x.OrderingId == id);
         }
 
         public async Task UpdateAsync(Ordering ordering)
