@@ -9,7 +9,6 @@ namespace Order.Application.Features.Commands.Addresses.CreateAddress
 {
     public class CreateAddressCommandRequest : IRequest<CreateAddressCommandResponse>
     {
-        public int AddressId { get; set; }
         public string UserId { get; set; }
         public string District { get; set; }//ilçe
         public string City { get; set; }
