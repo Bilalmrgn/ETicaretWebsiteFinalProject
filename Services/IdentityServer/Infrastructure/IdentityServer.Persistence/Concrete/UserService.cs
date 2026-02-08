@@ -1,4 +1,5 @@
 ﻿using IdentityServer.Application.Dtos;
+using IdentityServer.Application.Exceptions;
 using IdentityServer.Application.Interfaces;
 using IdentityServer.Domain;
 using Microsoft.AspNetCore.Identity;
@@ -17,9 +18,27 @@ namespace IdentityServer.Persistence.Concrete
         {
             _userManager = userManager;
         }
-        public Task<UserResponse> ChangePasswordAsync(ChangePasswordDto changePasswordDto)
+        public async Task<UserResponse> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto)
         {
-            throw new NotImplementedException();
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new Exception("Kullanıcı bulunamadı.(Persistence/Concrete/UserService/ChangePasswordAsync)");
+            }
+
+            IdentityResult result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description).ToList();
+
+                throw new IdentityOperationException(errors);
+            }
+            return new UserResponse
+            {
+                Message = "Şifre başarıyla değiştirildi."
+            };
         }
 
         public async Task<UserResponse> DeleteAccountAsync(string userId)
@@ -58,6 +77,10 @@ namespace IdentityServer.Persistence.Concrete
 
         public async Task<UserResponse> RegisterAsync(RegisterDto registerDto)
         {
+
+            if (registerDto.Password != registerDto.ConfirmPassword)
+                throw new Exception("Şifreler eşleşmiyor");
+
             IdentityResult result = await _userManager.CreateAsync(new()
             {
                 Name = registerDto.Name,
@@ -67,6 +90,8 @@ namespace IdentityServer.Persistence.Concrete
                 City = registerDto.City,
                 PhoneNumber = registerDto.PhoneNumber
             }, registerDto.Password);
+
+
 
             UserResponse response = new() { Succeeded = result.Succeeded };
 
@@ -86,9 +111,24 @@ namespace IdentityServer.Persistence.Concrete
 
         }
 
-        public Task<UserResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+        public async Task<ResetPasswordTokenResult> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
-            throw new NotImplementedException();
+            //1.kullanıcı email e göre bulunur
+            var hasUser = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+
+            if (hasUser == null)
+            {
+                throw new Exception("Bu email e sahip kullanıcı bulunamamıştır.(/Persistence/Concrete/Userservice/ResetPasswordAsync)");
+            }
+
+            // 2. bu emaile ait kullanıcı için token üretilir
+            string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(hasUser);
+
+            return new ResetPasswordTokenResult
+            {
+                UserId = hasUser.Id,
+                Token = passwordResetToken,
+            };
         }
     }
 }

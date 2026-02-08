@@ -1,5 +1,6 @@
 ﻿using IdentityServer.Application.Interfaces;
 using IdentityServer.Domain;
+using IdentityServer.Infrastructure.EmailService;
 using IdentityServer.Persistence.Concrete;
 using IdentityServer.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
@@ -31,9 +32,16 @@ namespace IdentityServer.Persistence.ServiceRegistration
 
             }).AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders(); ;
 
+            //reset password ile ilgili işlemler
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(3);//e posta linki 3 saat geçerli olacak
+            });
+
 
             //IoC
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEmailService, EmailService>();
             return services;
         }
     }

@@ -11,8 +11,9 @@ namespace IdentityServer.Application.Interfaces
     {
         Task<UserResponse> RegisterAsync(RegisterDto registerDto);
         Task<UserResponse> LoginAsync(LoginDto loginDto);
-        Task<UserResponse> ChangePasswordAsync(ChangePasswordDto changePasswordDto);
-        Task<UserResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
+        Task<UserResponse> ChangePasswordAsync(string userId, ChangePasswordDto changePasswordDto);
+        Task<ResetPasswordTokenResult> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
         Task<UserResponse> DeleteAccountAsync(string userId);
+        //Task SendResetPasswordLinkAsync(string email);
     }
 }

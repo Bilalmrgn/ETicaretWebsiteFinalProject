@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\IdentityServer.Application\IdentityServer.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\IdentityServer.Infrastructure\IdentityServer.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\IdentityServer.Persistence\IdentityServer.Persistence.csproj" />
   </ItemGroup>
 
