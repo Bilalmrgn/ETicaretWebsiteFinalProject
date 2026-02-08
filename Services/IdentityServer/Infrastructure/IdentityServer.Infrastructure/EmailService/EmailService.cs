@@ -39,7 +39,7 @@ namespace IdentityServer.Infrastructure.EmailService
                 Subject = "Şifre Sıfırlama",
                 Body = $@"
                 <h4>Şifrenizi yenilemek için aşağıdaki linke tıklayın</h4>
-                <p><a href='{resetEmailLink}'>Şifreyi Yenile</a></p>",
+                <p><a href='{resetEmailLink}'>Şifreyi Yenilse</a></p>",
                 IsBodyHtml = true
             };
 

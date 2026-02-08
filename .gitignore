@@ -15,4 +15,4 @@ obj/
 
 # App settings
 appsettings.json
-appsettings.*.json
+appsettings.Development.jsons
