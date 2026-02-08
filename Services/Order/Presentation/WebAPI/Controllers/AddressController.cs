@@ -23,11 +23,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAddresses(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetAllAddresses(GetAllAdressQueryRequest request,CancellationToken cancellationToken)
         {
-            var query = new GetAllAdressQueryRequest();
-
-            var response = await _mediator.Send(query, cancellationToken);
+            var response = await _mediator.Send(request, cancellationToken);
 
             return Ok(response);
         }
