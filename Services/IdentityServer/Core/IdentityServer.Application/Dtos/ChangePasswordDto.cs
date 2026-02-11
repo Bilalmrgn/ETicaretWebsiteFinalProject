@@ -12,5 +12,7 @@ namespace IdentityServer.Application.Dtos
         public string NewPassword { get; set; }
         public string confirmNewPassword { get; set; }
 
+
+
     }
 }

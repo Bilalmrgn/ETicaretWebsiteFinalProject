@@ -1,24 +1,27 @@
 ﻿using IdentityServer.Application.Dtos;
 using IdentityServer.Application.Interfaces;
 using IdentityServer.Infrastructure.EmailService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static Duende.IdentityServer.IdentityServerConstants;
 
 namespace IdentityServer.WebAPI.Controllers
 {
-
+    
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
-        public UserController(IUserService userService,IEmailService emailService)
+        public UserController(IUserService userService, IEmailService emailService)
         {
             _userService = userService;
             _emailService = emailService;
         }
         //Create User
+        [Authorize(LocalApi.PolicyName)]
         [HttpPost]
         public async Task<IActionResult> CreateUser(RegisterDto dto)
         {
@@ -28,6 +31,7 @@ namespace IdentityServer.WebAPI.Controllers
         }
 
         //Delete User
+        [Authorize(LocalApi.PolicyName)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
@@ -35,7 +39,7 @@ namespace IdentityServer.WebAPI.Controllers
 
             return Ok(result);
         }
-
+        [Authorize(LocalApi.PolicyName)]
         [HttpPost("change-password")]//url de change password yazar
         public async Task<IActionResult> ChangePassword(string userId, ChangePasswordDto dto)
         {
@@ -59,6 +63,14 @@ namespace IdentityServer.WebAPI.Controllers
             await _emailService.SendResetPasswordEmail(resetLink, dto.Email);
 
             return Ok();
+        }
+        [Authorize(LocalApi.PolicyName)]
+        [HttpPut]
+        public async Task<IActionResult> UpdateProfile(string userId, UpdateUserProfileDto dto)
+        {
+            var result = await _userService.UpdateUserProfile(userId, dto);
+
+            return Ok(result);
         }
     }
 }

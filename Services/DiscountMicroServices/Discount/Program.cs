@@ -1,7 +1,19 @@
 using Discount.Context;
 using Discount.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//mikroservisi koruma altýna almak
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.Authority = builder.Configuration["IdentityServerUrl"];
+    options.Audience = "discount_microservice";//IdentityServer mikroservisimdeki config dosyasýndki discount api resource dosya
+    options.RequireHttpsMetadata = false;
+
+});
+
+
 
 // Add services to the container.
 builder.Services.AddScoped<IDiscountService, DiscountService>();
@@ -24,6 +36,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

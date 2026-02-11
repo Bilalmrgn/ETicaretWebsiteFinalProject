@@ -1,4 +1,5 @@
 using IdentityServer.Persistence.ServiceRegistration;
+using IdentityServer.WebAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,17 @@ builder.Services.AddSwaggerGen();
 //persistence service registration
 builder.Services.AddDatabase(builder.Configuration);
 
+//IdentityServer,Controller
+builder.Services
+    .AddIdentityServer()
+    .AddInMemoryApiResources(Config.ApiSResources)
+    .AddInMemoryApiScopes(Config.ApiScopes)
+    .AddInMemoryIdentityResources(Config.IdentityResources)
+    .AddInMemoryClients(Config.Clients)
+    .AddDeveloperSigningCredential();
+
+//mikroservis koruma altýna alýnmasý
+builder.Services.AddLocalApiAuthentication();
 
 
 var app = builder.Build();
@@ -25,6 +37,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
+app.UseIdentityServer();//token i almamý saðlayan kýsým
+
+app.UseAuthentication();//mikroservisin koruma altýna alýnmasý
+app.UseAuthorization();
 
 app.UseAuthorization();
 

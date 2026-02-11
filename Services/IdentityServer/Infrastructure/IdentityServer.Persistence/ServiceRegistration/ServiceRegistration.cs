@@ -19,6 +19,8 @@ namespace IdentityServer.Persistence.ServiceRegistration
     {
         public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
+
+
             services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DbConnection")));
 
             services.AddIdentity<AppUser, AppUserRole>(options =>
@@ -30,7 +32,7 @@ namespace IdentityServer.Persistence.ServiceRegistration
                 options.Password.RequiredLength = 8;            // minimum uzunluk
                 options.Password.RequiredUniqueChars = 1;       // farklı karakter sayısı
 
-            }).AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders(); ;
+            }).AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
 
             //reset password ile ilgili işlemler
             services.Configure<DataProtectionTokenProviderOptions>(options =>

@@ -5,17 +5,31 @@ using Catolog.Services.ProductDetailServices;
 using Catolog.Services.ProductImagesServices;
 using Catolog.Services.ProductServices;
 using Catolog.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//mikroservisin kormua altına alınması
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    //bu aralıkta 3 tane parametre geçilir.
+    //1. parametre
+    options.Authority = builder.Configuration["IdentityServerUrl"];//appsettings deki IdentityServerUrl kısmı
+    options.RequireHttpsMetadata = false;
+    //3.parametre
+    options.Audience = "catalog_microservice";//burada katolog mikroservisini ayağa kaldırdığım için identity deki config dosyamın resource kısmındaki yeri okur. yani catalog_microservice
+});
+
+
+
 // Servislerin DI kaydı: Controller içinde kullanabilmek için
 builder.Services.AddScoped<ICategoryServices, CategoryServices>();//uygulamada ICategoryService istendiğinde arka planda categoryservice servisim kullanılsın
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductDetailServices, ProductDetailServices>();
-builder.Services.AddScoped<IProductImageService,ProductImagesService>();
+builder.Services.AddScoped<IProductImageService, ProductImagesService>();
 
 //automapper konfigürasyonu
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -60,6 +74,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();//mikroservisi koruma altına almak için
 app.UseAuthorization();
 
 app.MapControllers();

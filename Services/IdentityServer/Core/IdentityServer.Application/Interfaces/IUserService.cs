@@ -15,5 +15,6 @@ namespace IdentityServer.Application.Interfaces
         Task<ResetPasswordTokenResult> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
         Task<UserResponse> DeleteAccountAsync(string userId);
         //Task SendResetPasswordLinkAsync(string email);
+        Task<UserResponse> UpdateUserProfile(string userId, UpdateUserProfileDto updateUserProfileDto);
     }
 }

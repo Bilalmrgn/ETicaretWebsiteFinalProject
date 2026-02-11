@@ -130,5 +130,33 @@ namespace IdentityServer.Persistence.Concrete
                 Token = passwordResetToken,
             };
         }
+
+        public async Task<UserResponse> UpdateUserProfile(string userId, UpdateUserProfileDto updateUserProfileDto)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                throw new Exception("Kullanıcı bulunamadı.(/Identity/Persistence/Concrete/UserService/UpdateUserProfile)");
+
+
+            // 🔹 SADECE alanları güncelle
+            user.UserName = updateUserProfileDto.UserName;
+            user.Email = updateUserProfileDto.Email;
+            user.PhoneNumber = updateUserProfileDto.PhoneNumber;
+            user.Name = updateUserProfileDto.Name;
+            user.Surname = updateUserProfileDto.Surname;
+            user.City = updateUserProfileDto.City;
+
+            
+            var result = await _userManager.UpdateAsync(user);
+
+            return new UserResponse
+            {
+                Succeeded = result.Succeeded,
+                Message = result.Succeeded
+                    ? "Kullanıcı başarıyla güncellendi"
+                    : string.Join("\n", result.Errors.Select(e => e.Description))
+            };
+        }
     }
 }
