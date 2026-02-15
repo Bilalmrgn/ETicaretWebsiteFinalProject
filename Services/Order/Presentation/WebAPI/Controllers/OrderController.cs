@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Order.Application.Features.Commands.Addresses.DeleteAddress;
@@ -11,6 +12,7 @@ using Order.Application.Features.Queries.Order.GetByIdOrder;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]//mikroservisi koruma altına alma
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase

@@ -15,6 +15,7 @@ namespace IdentityServer.WebAPI
     public static class Config
     {
         //bu sınıfın amacı: benim catolog mikroservisim var ve bu mikroserviste ful ve sadece okuma izinleri yapacağım
+        //ApiResource --> Hangi API'ler korunuyor
         public static IEnumerable<ApiResource> ApiSResources => new ApiResource[]
         {
             new ApiResource("catalog_microservice")//benim resourceCatolog isminde bir mikroservisim var ve bu mikroservisimi korumaya alacağım
@@ -27,10 +28,22 @@ namespace IdentityServer.WebAPI
             },
             new ApiResource("order_microservice")
             {
-                Scopes = {"order.full"}
+                Scopes = {"order.full","order.getAllOrder"}
             },
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
+            /*
+             new ApiResource("catalog_microservice")
+             {
+                    Scopes = { "catalog.full", "catalog.read" }
+             }
 
+            catolog_mivroservice api si şu scope lar ile korunuyor.
+
+
+                ApiScope  →  Scope tanımı
+                ApiResource → Scope hangi API’ye ait
+                Client → Scope’u kim alabilir
+             */
 
         };
 
@@ -48,6 +61,7 @@ namespace IdentityServer.WebAPI
             new ApiScope("catalog.read","Katolog işlemlerinde okuma yetkisi"),
             new ApiScope("discount.full","discount' a tam yetki"),
             new ApiScope("order.full","Order' a tam yetki"),
+            new ApiScope("order.getAllOrder","Order'ı getirme işlemi"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -70,7 +84,7 @@ namespace IdentityServer.WebAPI
                 ClientName = "ECommerce manager user",
                 AllowedGrantTypes= GrantTypes.ClientCredentials,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.full"}
+                AllowedScopes = {"catalog.full", "order.getAllOrder" }
 
             },
 

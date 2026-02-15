@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Order.Application.DependencyInjection;
 using Order.Persistence.DependencyInjection;
 
@@ -13,7 +14,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//persistence i baðla
+//Order mikroservisi koruma altýna alma
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.Authority = builder.Configuration["IdentityServerUrl"];
+    options.Audience = "order_microservice";//IdentityServer mikroservisimdeki config dosyasýndki discount api resource dosya
+    options.RequireHttpsMetadata = false;
+
+});
 
 
 var app = builder.Build();
@@ -27,6 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

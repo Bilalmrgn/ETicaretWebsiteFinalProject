@@ -16,7 +16,7 @@ builder.Services.AddDatabase(builder.Configuration);
 
 //IdentityServer,Controller
 builder.Services
-    .AddIdentityServer()
+    .AddIdentityServer()//Token almamýzý saðlayan kýsým connect/token endpoint inden token üretir
     .AddInMemoryApiResources(Config.ApiSResources)
     .AddInMemoryApiScopes(Config.ApiScopes)
     .AddInMemoryIdentityResources(Config.IdentityResources)
