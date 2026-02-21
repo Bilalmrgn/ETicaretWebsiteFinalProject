@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cargo.Domain
 {
-    public class CargoCompany : BaseEntity
+    public class BaseEntity
     {
-        public string CargoCompanyName { get; set; }
+        public string Id { get; set; }
     }
 }

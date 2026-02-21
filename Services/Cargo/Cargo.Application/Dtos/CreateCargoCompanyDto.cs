@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargo.Domain
+namespace Cargo.Application.Dtos
 {
-    public class CargoCompany : BaseEntity
+    public class CreateCargoCompanyDto
     {
         public string CargoCompanyName { get; set; }
     }

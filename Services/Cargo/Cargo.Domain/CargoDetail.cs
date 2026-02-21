@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Cargo.Domain
 {
-    public class CargoDetail
+    public class CargoDetail : BaseEntity
     {
-        public int CargoDetailId { get; set; }
         public string SenderCustomer { get; set; }//gönderen müşteri (kim gönderdi)
         public CargoCustomer CargoCustomer { get; set; }//gönderen müşterinin bilgilerini almak için
         public string RecieverCustomer { get; set; }//Alan müşteri

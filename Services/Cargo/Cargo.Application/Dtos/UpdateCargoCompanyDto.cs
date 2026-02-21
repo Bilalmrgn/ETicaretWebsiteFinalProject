@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargo.Domain
+namespace Cargo.Application.Dtos
 {
-    public class CargoCompany : BaseEntity
+    public class UpdateCargoCompanyDto
     {
+        public string Id { get; set; }
         public string CargoCompanyName { get; set; }
     }
 }

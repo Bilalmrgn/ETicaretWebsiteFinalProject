@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Cargo.Domain
 {
     //kargo operasyonları için
-    public class CargoOperation
+    public class CargoOperation : BaseEntity
     {
-        public int CargoOperationId { get; set; }
+        
         public string Barcode { get; set; }
         public string Description { get; set; }
         public DateTime OperationDate { get; set; }

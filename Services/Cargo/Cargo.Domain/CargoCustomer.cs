@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Cargo.Domain
 {
-    public class CargoCustomer
+    public class CargoCustomer : BaseEntity
     {
-        public int CargoCustomerId { get; set; }
+
         public string Name { get; set; }
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }
