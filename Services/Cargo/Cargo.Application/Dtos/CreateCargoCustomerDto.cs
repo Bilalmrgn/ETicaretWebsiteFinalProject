@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer.Concrete
+namespace Cargo.Application.Dtos
 {
-    public class CargoCustomer
+    public class CreateCargoCustomerDto
     {
-        public int CargoCustomerId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }

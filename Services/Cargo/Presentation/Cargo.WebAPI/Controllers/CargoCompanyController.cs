@@ -46,13 +46,15 @@ namespace Cargo.WebAPI.Controllers
             };
 
             await _writeRepository.AddAsync(cargoCompany);
+            
+            await _writeRepository.SaveChangeAsync();
 
             return Ok("kargo şirketi başarıyla oluşturuldu");
         }
 
         //update cargo company
         [HttpPut]
-        public IActionResult UpdateCargoCompany(UpdateCargoCompanyDto dto)
+        public async Task<IActionResult> UpdateCargoCompany(UpdateCargoCompanyDto dto)
         {
             CargoCompany cargoCompany = new CargoCompany()
             {
@@ -61,6 +63,8 @@ namespace Cargo.WebAPI.Controllers
             };
 
             _writeRepository.Update(cargoCompany);
+            
+            await _writeRepository.SaveChangeAsync();
 
             return Ok("Kargo şirketi başarıyla güncellendi");
         }
