@@ -1,4 +1,5 @@
-﻿using Cargo.Persistence.Context;
+﻿using Cargo.Application;
+using Cargo.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,23 @@ namespace Cargo.Persistence
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<CargoAppDbcontext>(options => options.UseSqlServer(configuration.GetConnectionString("DbConnection")));
+
+            //IoC conteiner
+            //CargoOpration
+            services.AddScoped<ICargoOperationReadRepository, CargoOperationReadRepository>();
+            services.AddScoped<ICargoOperationWriteRepository, CargoOperationWriteRepository>();
+
+            //CargoCompany
+            services.AddScoped<ICargoCompanyReadRepository, CargoCompanyReadRepository>();
+            services.AddScoped<ICargoCompanyWriteRepository, CargoCompanyWriteRepository>();
+
+            //CargoCustomer
+            services.AddScoped<ICargoCustomerReadRepository, CargoCustomerReadRepository>();
+            services.AddScoped<ICargoCustomerWriteRepository, CargoCustomerWriteRepository>();
+
+            //CargoDetail
+            services.AddScoped<ICargoDetailReadRepository, CargoDetailReadRepository>();
+            services.AddScoped<ICargoDetailWriteRepository, CargoDetailWriteRepository>();
 
             return services;
         }

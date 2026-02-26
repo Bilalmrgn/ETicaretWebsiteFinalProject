@@ -1,5 +1,3 @@
-using Cargo.Persistence;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,18 +6,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-//service registration u buraya ekleme
-builder.Services.AddPersistence(builder.Configuration);
-
-//cargo mikroservisini koruma altýna alma
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.Authority = builder.Configuration["IdentityServerUrl"];
-    options.Audience = "cargo_microservice";
-    options.RequireHttpsMetadata = false;
-    
-});
 
 
 
@@ -34,7 +20,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

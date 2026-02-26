@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cargo.Persistence.Migrations
 {
-    public partial class init : Migration
+    public partial class mig1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,21 +13,19 @@ namespace Cargo.Persistence.Migrations
                 name: "CargoCompanies",
                 columns: table => new
                 {
-                    CargoCompanyId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CargoCompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CargoCompanies", x => x.CargoCompanyId);
+                    table.PrimaryKey("PK_CargoCompanies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CargoCustomers",
                 columns: table => new
                 {
-                    CargoCustomerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -37,50 +35,41 @@ namespace Cargo.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CargoCustomers", x => x.CargoCustomerId);
+                    table.PrimaryKey("PK_CargoCustomers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CargoOperations",
                 columns: table => new
                 {
-                    CargoOperationId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Barcode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OperationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CargoOperations", x => x.CargoOperationId);
+                    table.PrimaryKey("PK_CargoOperations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "CargoDetails",
                 columns: table => new
                 {
-                    CargoDetailId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SenderCustomer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CargoCustomerId = table.Column<int>(type: "int", nullable: false),
                     RecieverCustomer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BarcodNumber = table.Column<int>(type: "int", nullable: false),
-                    CargoCompanyId = table.Column<int>(type: "int", nullable: false)
+                    CargoCompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CargoDetails", x => x.CargoDetailId);
+                    table.PrimaryKey("PK_CargoDetails", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CargoDetails_CargoCompanies_CargoCompanyId",
                         column: x => x.CargoCompanyId,
                         principalTable: "CargoCompanies",
-                        principalColumn: "CargoCompanyId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CargoDetails_CargoCustomers_CargoCustomerId",
-                        column: x => x.CargoCustomerId,
-                        principalTable: "CargoCustomers",
-                        principalColumn: "CargoCustomerId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -88,15 +77,13 @@ namespace Cargo.Persistence.Migrations
                 name: "IX_CargoDetails_CargoCompanyId",
                 table: "CargoDetails",
                 column: "CargoCompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CargoDetails_CargoCustomerId",
-                table: "CargoDetails",
-                column: "CargoCustomerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "CargoCustomers");
+
             migrationBuilder.DropTable(
                 name: "CargoDetails");
 
@@ -105,9 +92,6 @@ namespace Cargo.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "CargoCompanies");
-
-            migrationBuilder.DropTable(
-                name: "CargoCustomers");
         }
     }
 }

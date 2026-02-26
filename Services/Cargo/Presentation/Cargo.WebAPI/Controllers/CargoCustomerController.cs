@@ -1,11 +1,15 @@
 ﻿using Cargo.Application;
 using Cargo.Application.Dtos;
 using Cargo.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cargo.WebAPI.Controllers
 {
-    public class CargoCustomerController : Controller
+    [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CargoCustomerController : ControllerBase
     {
         private readonly ICargoCustomerReadRepository _readRepository;
         private readonly ICargoCustomerWriteRepository _writeRepository;
@@ -23,7 +27,7 @@ namespace Cargo.WebAPI.Controllers
             return Ok(values);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<IActionResult> CargoCustomerGetById(string id)
         {
             var value = _readRepository.GetByIdAsync(id);
@@ -36,6 +40,7 @@ namespace Cargo.WebAPI.Controllers
         {
             var cargoCustomer = new CargoCustomer
             {
+                Id = Guid.NewGuid(),
                 Name = dto.Name,
                 Surname = dto.Surname,
                 PhoneNumber = dto.PhoneNumber,
@@ -52,9 +57,40 @@ namespace Cargo.WebAPI.Controllers
             return Ok("cargo customer is created");
         }
 
-        public IActionResult Index()
+        [HttpPut]
+        public async Task<IActionResult> CargoCustomerUpdate(UpdateCargoCustomer dto)
         {
-            return View();
+            var cargoCustomer = new CargoCustomer
+            {
+                Id = Guid.Parse(dto.Id),
+                Name = dto.Name,
+                Surname = dto.Surname,
+                PhoneNumber = dto.PhoneNumber,
+                City = dto.City,
+                District = dto.District,
+                Address = dto.Address,
+            };
+
+            _writeRepository.Update(cargoCustomer);
+            await _writeRepository.SaveChangeAsync();
+
+            return Ok("Cargo Customer başarıyla güncellendi");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var value = await _readRepository.GetByIdAsync(id);
+
+            if (value == null)
+            {
+                throw new Exception("Cargo Customer Bulunamadi");
+            }
+
+            await _writeRepository.RemoveAsync(id);
+            await _writeRepository.SaveChangeAsync();
+
+            return Ok("cargo operation başarıyla silindi");
         }
     }
 }

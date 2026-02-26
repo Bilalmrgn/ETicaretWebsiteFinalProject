@@ -23,6 +23,6 @@ namespace Cargo.Persistence.Repositories
         public IQueryable<T> GetAll() => Table;
 
         //GetById
-        public Task<T> GetByIdAsync(string id) => Table.FirstOrDefaultAsync(data => data.Id == id);
+        public Task<T> GetByIdAsync(string id) => Table.FirstOrDefaultAsync(data => data.Id == Guid.Parse(id));
     }
 }

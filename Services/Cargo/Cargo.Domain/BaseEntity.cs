@@ -8,6 +8,6 @@ namespace Cargo.Domain
 {
     public class BaseEntity
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
     }
 }

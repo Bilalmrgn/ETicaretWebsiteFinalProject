@@ -1,11 +1,13 @@
 ﻿using Cargo.Application;
 using Cargo.Application.Dtos;
 using Cargo.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cargo.WebAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CargoCompanyController : ControllerBase
@@ -42,6 +44,7 @@ namespace Cargo.WebAPI.Controllers
         {
             CargoCompany cargoCompany = new CargoCompany()
             {
+                Id = Guid.NewGuid(),
                 CargoCompanyName = dto.CargoCompanyName,
             };
 
@@ -58,7 +61,7 @@ namespace Cargo.WebAPI.Controllers
         {
             CargoCompany cargoCompany = new CargoCompany()
             {
-                Id = dto.Id,
+                Id = Guid.Parse(dto.Id),
                 CargoCompanyName = dto.CargoCompanyName,
             };
 
@@ -67,6 +70,22 @@ namespace Cargo.WebAPI.Controllers
             await _writeRepository.SaveChangeAsync();
 
             return Ok("Kargo şirketi başarıyla güncellendi");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var value = await _readRepository.GetByIdAsync(id);
+
+            if (value == null)
+            {
+                throw new Exception("Cargo Company Bulunamadi");
+            }
+
+            await _writeRepository.RemoveAsync(id);
+            await _writeRepository.SaveChangeAsync();
+
+            return Ok("cargo company başarıyla silindi");
         }
     }
 }

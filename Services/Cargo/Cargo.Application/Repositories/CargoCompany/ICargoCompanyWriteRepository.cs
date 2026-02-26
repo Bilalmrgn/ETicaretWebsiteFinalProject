@@ -10,6 +10,5 @@ namespace Cargo.Application
 {
     public interface ICargoCompanyWriteRepository : IWriteRepository<CargoCompany>
     {
-
     }
 }

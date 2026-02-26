@@ -24,28 +24,24 @@ namespace Cargo.Persistence.Migrations
 
             modelBuilder.Entity("Cargo.Domain.CargoCompany", b =>
                 {
-                    b.Property<int>("CargoCompanyId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CargoCompanyId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CargoCompanyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CargoCompanyId");
+                    b.HasKey("Id");
 
                     b.ToTable("CargoCompanies");
                 });
 
             modelBuilder.Entity("Cargo.Domain.CargoCustomer", b =>
                 {
-                    b.Property<int>("CargoCustomerId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CargoCustomerId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -71,27 +67,22 @@ namespace Cargo.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CargoCustomerId");
+                    b.HasKey("Id");
 
                     b.ToTable("CargoCustomers");
                 });
 
             modelBuilder.Entity("Cargo.Domain.CargoDetail", b =>
                 {
-                    b.Property<int>("CargoDetailId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CargoDetailId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("BarcodNumber")
                         .HasColumnType("int");
 
-                    b.Property<int>("CargoCompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CargoCustomerId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("CargoCompanyId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RecieverCustomer")
                         .IsRequired()
@@ -101,22 +92,18 @@ namespace Cargo.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CargoDetailId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CargoCompanyId");
-
-                    b.HasIndex("CargoCustomerId");
 
                     b.ToTable("CargoDetails");
                 });
 
             modelBuilder.Entity("Cargo.Domain.CargoOperation", b =>
                 {
-                    b.Property<int>("CargoOperationId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CargoOperationId"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Barcode")
                         .IsRequired()
@@ -129,7 +116,7 @@ namespace Cargo.Persistence.Migrations
                     b.Property<DateTime>("OperationDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("CargoOperationId");
+                    b.HasKey("Id");
 
                     b.ToTable("CargoOperations");
                 });
@@ -142,15 +129,7 @@ namespace Cargo.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cargo.Domain.CargoCustomer", "CargoCustomer")
-                        .WithMany()
-                        .HasForeignKey("CargoCustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("CargoCompany");
-
-                    b.Navigation("CargoCustomer");
                 });
 #pragma warning restore 612, 618
         }

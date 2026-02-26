@@ -36,7 +36,7 @@ namespace Cargo.Persistence.Repositories
 
         public async Task<bool> RemoveAsync(string id)
         {
-            T model = await Table.FirstOrDefaultAsync(x => x.Id == id);
+            T model = await Table.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
 
             return Remove(model);
         }

@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargo.Domain
+namespace Cargo.Application.Dtos
 {
-    //kargo operasyonları için
-    public class CargoOperation : BaseEntity
+    public class UpdateCargoOperationDto
     {
+        public string CargoOperationId { get; set; }
         public string Barcode { get; set; }
         public string Description { get; set; }
         public DateTime OperationDate { get; set; }
-
     }
 }

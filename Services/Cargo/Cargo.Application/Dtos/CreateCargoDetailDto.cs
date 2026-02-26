@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Cargo.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cargo.Domain
+namespace Cargo.Application.Dtos
 {
-    public class CargoDetail : BaseEntity
+    public class CreateCargoDetailDto
     {
         public string SenderCustomer { get; set; }//gönderen müşteri (kim gönderdi)
         public string RecieverCustomer { get; set; }//Alan müşteri
         public int BarcodNumber { get; set; }
-        public Guid CargoCompanyId { get; set; }
-        public CargoCompany CargoCompany { get; set; }//compay bilgileri 
+        public string CargoCompanyId { get; set; }   
     }
 }
