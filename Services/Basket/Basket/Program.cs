@@ -7,6 +7,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var redisHost = builder.Configuration["RedisHost"];
+
+
+//distributed cache Redis configuration
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisHost;
+});
+
+
 
 
 var app = builder.Build();
