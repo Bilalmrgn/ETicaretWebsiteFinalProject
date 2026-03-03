@@ -7,13 +7,9 @@ namespace Basket.Service.Concrete
     {
         //connection to redis
         private readonly IDistributedCache _cache;
-
-        private readonly IRedisService _redisService;
-        public RedisService(IDistributedCache cache, IRedisService redisService)
+        public RedisService(IDistributedCache cache)
         {
             _cache = cache;
-            _redisService = redisService;
-
         }
 
         public async Task<string?> GetAsync(string key)

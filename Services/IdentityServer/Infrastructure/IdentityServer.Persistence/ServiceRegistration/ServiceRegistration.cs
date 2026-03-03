@@ -1,4 +1,5 @@
-﻿using IdentityServer.Application.Interfaces;
+﻿using Duende.IdentityServer.Validation;
+using IdentityServer.Application.Interfaces;
 using IdentityServer.Domain;
 using IdentityServer.Infrastructure.EmailService;
 using IdentityServer.Persistence.Concrete;
@@ -44,6 +45,7 @@ namespace IdentityServer.Persistence.ServiceRegistration
             //IoC
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddTransient<IResourceOwnerPasswordValidator, CustomResourceOwnerPasswordValidator>();
             return services;
         }
     }

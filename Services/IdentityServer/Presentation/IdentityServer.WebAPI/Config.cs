@@ -33,6 +33,11 @@ namespace IdentityServer.WebAPI
                 Scopes = {"order.full","order.getAllOrder"}
             },
 
+            new ApiResource("basket_microservice")
+            {
+                Scopes = { "basket.full"}
+            },
+
             new ApiResource("cargo_microservice")//benim catalog_cargo isminde bir mikroservisim var ve bu mikroservisimi korumaya alacağım
             {
                 Scopes = {"cargo.full","cargo.read"},//yani bu catolog servisimde tam yetki alabilir, sadece okuma yetkisi alabilir
@@ -71,6 +76,7 @@ namespace IdentityServer.WebAPI
             new ApiScope("order.getAllOrder","Order'ı getirme işlemi"),
             new ApiScope("cargo.full","kargo işlemlerine tam yetki"),
             new ApiScope("cargo.read","kargo işlemlerine okuma yetkisi"),
+            new ApiScope("basket.full","basket işlemlerine full işlem yetkisi"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -91,7 +97,7 @@ namespace IdentityServer.WebAPI
             {
                 ClientId = "ECommerceManagerId",
                 ClientName = "ECommerce manager user",
-                AllowedGrantTypes= GrantTypes.ClientCredentials,
+                AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
                 AllowedScopes = {"catalog.full", "order.getAllOrder", }
 
@@ -102,9 +108,9 @@ namespace IdentityServer.WebAPI
             {
                 ClientId = "ECommerceAdminId",
                 ClientName = "ECommerce admin user",
-                AllowedGrantTypes= GrantTypes.ClientCredentials,
+                AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.full", "order.full" , "discount.full","cargo.full" ,IdentityServerConstants.LocalApi.ScopeName,
+                AllowedScopes = {"catalog.full", "order.full" , "discount.full","cargo.full","basket.full" ,IdentityServerConstants.LocalApi.ScopeName,
                 IdentityServerConstants.LocalApi.ScopeName,
                 IdentityServerConstants.StandardScopes.Email,
                 IdentityServerConstants.StandardScopes.OpenId,

@@ -1,3 +1,4 @@
+using IdentityServer.Domain;
 using IdentityServer.Persistence.ServiceRegistration;
 using IdentityServer.WebAPI;
 
