@@ -3,6 +3,7 @@ using IdentityServer.Application.Exceptions;
 using IdentityServer.Application.Interfaces;
 using IdentityServer.Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,27 @@ namespace IdentityServer.Persistence.Concrete
 
             return response;
 
+        }
+
+        //GetAllUser
+        public async Task<List<UserListDto>> GetAllAsync()
+        {
+            var users = await _userManager.Users.Select(x => new UserListDto
+            {
+                Name = x.Name,
+                Surname = x.Surname,
+                Email = x.Email,
+                UserName = x.UserName,
+                PhoneNumber = x.PhoneNumber,
+                City = x.City
+            }).ToListAsync();
+
+            if(users == null)
+            {
+                throw new Exception("Kullanıcılar Listelenemedi. (Identity/Persistence/UserService/GetAllAsync)");
+            }
+
+            return users;
         }
 
         public Task<UserResponse> LoginAsync(LoginDto loginDto)
@@ -147,7 +169,7 @@ namespace IdentityServer.Persistence.Concrete
             user.Surname = updateUserProfileDto.Surname;
             user.City = updateUserProfileDto.City;
 
-            
+
             var result = await _userManager.UpdateAsync(user);
 
             return new UserResponse

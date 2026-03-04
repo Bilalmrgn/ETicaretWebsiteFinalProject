@@ -72,5 +72,14 @@ namespace IdentityServer.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        //GetAllUser
+        [HttpGet]
+        public async Task<IActionResult> GetAllUser()
+        {
+            var result = await _userService.GetAllAsync();
+
+            return Ok(result);
+        }
     }
 }

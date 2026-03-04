@@ -1,0 +1,64 @@
+﻿@model List<Frontend.DtosLayer.CategoryDto.CategoryListDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+
+
+
+<div class="col-lg-6">
+    <div class="card-style mb-30">
+        <h6 class="mb-10">Striped Table</h6>
+        <p class="text-sm mb-20">
+            For Striped Table—light padding and only horizontal dividers.
+        </p>
+
+        <div class="table-wrapper table-responsive">
+            <table class="table striped-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <h6>Category Name</h6>
+                        </th>
+                        <th>
+                            <h6>Action</h6>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <p>@item.CategoryName</p>
+                                </td>
+
+                                <td>
+                                    <div class="action">
+                                        <button class="text-danger">
+                                            <i class="lni lni-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">No Category Found</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

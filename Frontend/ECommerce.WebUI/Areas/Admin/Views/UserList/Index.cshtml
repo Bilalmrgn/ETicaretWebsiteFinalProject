@@ -1,0 +1,104 @@
+﻿@model List<Frontend.DtosLayer.UserListDto.UserListDto>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+
+
+<h1>Index</h1>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-style mb-30">
+            <h6 class="mb-10">Data Table</h6>
+            <p class="text-sm mb-20">
+                For basic styling—light padding and only horizontal
+                dividers—use the class table.
+            </p>
+            <div class="table-wrapper table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="lead-info">
+                                <h6>Ad - Soyad</h6>
+                            </th>
+                            <th>
+                                <h6>Kullanıcı Adı</h6>
+                            </th>
+                            <th class="lead-email">
+                                <h6>Email</h6>
+                            </th>
+                            <th class="lead-phone">
+                                <h6>Telefon Numarası</h6>
+                            </th>
+                            <th>
+                                <h6>Şehir</h6>
+                            </th>
+                            <th>
+                                <h6>Action</h6>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <!-- Ad - Soyad -->
+                                    <td class="min-width">
+                                        <div class="lead">
+                                            <div class="lead-text">
+                                                <p>@item.Name @item.Surname</p>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <!-- Kullanıcı Adı -->
+                                    <td class="min-width">
+                                        <p>@item.UserName</p>
+                                    </td>
+
+                                    <!-- Email -->
+                                    <td class="min-width">
+                                        <p><a href="mailto:@item.Email">@item.Email</a></p>
+                                    </td>
+
+                                    <!-- Telefon -->
+                                    <td class="min-width">
+                                        <p>@item.PhoneNumber</p>
+                                    </td>
+
+                                    <!-- Şehir -->
+                                    <td class="min-width">
+                                        <p>@item.City</p>
+                                    </td>
+
+                                    <!-- Action -->
+                                    <td>
+                                        <div class="action">
+                                            <button class="text-danger" data-id="@item.UserName">
+                                                <i class="lni lni-trash-can"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center">No users found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <!-- end table -->
+            </div>
+        </div>
+        <!-- end card -->
+    </div>
+    <!-- end col -->
+</div>

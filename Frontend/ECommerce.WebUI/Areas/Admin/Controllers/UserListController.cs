@@ -1,0 +1,34 @@
+﻿using Frontend.DtosLayer.UserListDto;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+
+namespace ECommerce.WebUI.Areas.Admin.Controllers
+{
+    //kullanıcıları admin sayfasında listelemek için yazılan bir controller dır
+    [Area("admin")]
+    public class UserListController : Controller
+    {
+        private readonly IHttpClientFactory _httpClientFactory;
+        public UserListController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var client = _httpClientFactory.CreateClient();
+
+            var response = await client.GetAsync("https://localhost:7222/api/User");
+
+            //gelen response başarılı ise
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = await response.Content.ReadAsStringAsync();
+
+                var values = JsonConvert.DeserializeObject<List<UserListDto>>(jsonData);
+
+                return View(values);
+            }
+            return View(response);
+        }
+    }
+}

@@ -19,18 +19,20 @@ namespace Catolog.Services.ProductServices
             _mapper = mapper;
         }
 
-        
+        //Create Product
         public async Task CreateProductAsync(CreateProductDTOs createProductDto)
         {
             var values = _mapper.Map<Product>(createProductDto);
             await _productCollection.InsertOneAsync(values);
         }
 
+        //Delete Product
         public async Task DeleteProductAsync(string id)
         {
             await _productCollection.DeleteOneAsync(x => x.ProductId == id);
         }
 
+        //Get All Products
         public async Task<List<ResultProductDTOs>> GetAllProductAsync()
         {
             var values = await _productCollection.Find(x=>true).ToListAsync();

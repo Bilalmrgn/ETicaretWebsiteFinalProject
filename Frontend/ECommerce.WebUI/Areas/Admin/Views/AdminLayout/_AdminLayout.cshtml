@@ -1,0 +1,50 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/AdminTemplate/assets/images/favicon.svg" type="image/x-icon" />
+    <title>ECommerce - Admin</title>
+
+    <!-- ========== All CSS files linkup ========= -->
+    <link rel="stylesheet" href="/AdminTemplate/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/AdminTemplate/assets/css/lineicons.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/AdminTemplate/assets/css/materialdesignicons.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/AdminTemplate/assets/css/fullcalendar.css" />
+    <link rel="stylesheet" href="/AdminTemplate/assets/css/fullcalendar.css" />
+    <link rel="stylesheet" href="/AdminTemplate/assets/css/main.css" />
+
+
+
+</head>
+<body>
+
+    @await Component.InvokeAsync("AdminSidebarComponentPartial")
+
+
+
+    <main class="main-wrapper">
+        @await Component.InvokeAsync("AdminHeaderComponentPartial")
+        @RenderBody()
+    </main>
+    <script src="~/AdminTemplate/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="~/AdminTemplate/assets/js/Chart.min.js"></script>
+    <script src="~/AdminTemplate/assets/js/dynamic-pie-chart.js"></script>
+    <script src="~/AdminTemplate/assets/js/moment.min.js"></script>
+    <script src="~/AdminTemplate/assets/js/fullcalendar.js"></script>
+    <script src="~/AdminTemplate/assets/js/jvectormap.min.js"></script>
+    <script src="~/AdminTemplate/assets/js/world-merc.js"></script>
+    <script src="~/AdminTemplate/assets/js/polyfill.js"></script>
+    <script src="~/AdminTemplate/assets/js/main.js"></script>
+</body>
+
+
+
+</html>
+
