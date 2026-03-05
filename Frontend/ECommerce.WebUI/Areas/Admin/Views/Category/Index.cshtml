@@ -4,13 +4,30 @@
     Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
 }
 
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+</style>
+
 <h1>Index</h1>
-
-
 
 <div class="col-lg-6">
     <div class="card-style mb-30">
-        <h6 class="mb-10">Striped Table</h6>
+        <div class="d-flex justify-content-between align-items-center mb-10">
+
+            <h6 class="mb-10">Kategoriler</h6>
+
+            <a asp-area="Admin"
+               asp-controller="Category"
+               asp-action="CreateCategory"
+               class="btn btn-primary">
+                + Kategori Ekle
+            </a>
+
+        </div>
+
         <p class="text-sm mb-20">
             For Striped Table—light padding and only horizontal dividers.
         </p>
@@ -23,7 +40,13 @@
                             <h6>Category Name</h6>
                         </th>
                         <th>
-                            <h6>Action</h6>
+                            <h6>Kategoriye Ait Ürünler</h6>
+                        </th>
+                        <th>
+                            <h6>Sil</h6>
+                        </th>
+                        <th>
+                            <h6>Güncelle</h6>
                         </th>
                     </tr>
                 </thead>
@@ -40,19 +63,40 @@
                                 </td>
 
                                 <td>
+                                    <button type="button" class="btn btn-warning">Warning</button>
+                                </td>
+
+                                <td>
                                     <div class="action">
-                                        <button class="text-danger">
-                                            <i class="lni lni-trash-can"></i>
+                                        <form asp-area="Admin"
+                                              asp-controller="Category"
+                                              asp-action="DeleteCategory"
+                                              asp-route-id="@item.CategoryId"
+                                              method="post">
+
+                                            <button class="text-danger" style="border:none;background:none;">
+                                                <i class="lni lni-trash-can"></i> Sil
+                                            </button>
+
+                                        </form>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="action">
+                                        <button class="text-primary">
+                                            <i class="lni lni-pencil">Güncelle</i>
                                         </button>
                                     </div>
                                 </td>
+
                             </tr>
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="2">No Category Found</td>
+                            <td colspan="4">No Category Found</td>
                         </tr>
                     }
 
@@ -62,3 +106,22 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const deleteForms = document.querySelectorAll("form[action*='DeleteCategory']");
+
+        deleteForms.forEach(function (form) {
+            form.addEventListener("submit", function (e) {
+
+                const confirmDelete = confirm("Bu kategoriyi silmek istediğinize emin misiniz?");
+
+                if (!confirmDelete) {
+                    e.preventDefault(); // kullanıcı iptal ederse form gönderilmez
+                }
+
+            });
+        });
+
+    });
+</script>

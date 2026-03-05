@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Catolog.Controllers
 {
-    
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -40,7 +40,7 @@ namespace Catolog.Controllers
             return Ok("Kategori başarıyla eklendi");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(string id)
         {
             await _categoryServices.DeleteCategoryAsync(id);

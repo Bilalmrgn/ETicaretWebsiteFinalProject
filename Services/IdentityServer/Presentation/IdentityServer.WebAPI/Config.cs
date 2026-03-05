@@ -89,7 +89,8 @@ namespace IdentityServer.WebAPI
                 ClientName = "ECommerce visitor user",
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.read","cargo.read"},//visitor katalogları okuyabilme yetkisi verdik
+                AllowedScopes = {"catalog.read","cargo.read",IdentityServerConstants.StandardScopes.OfflineAccess},//visitor katalogları okuyabilme yetkisi verdik
+            
             },
 
             //Manager'ın sahip olacağı izinler burada verilecek
@@ -99,7 +100,8 @@ namespace IdentityServer.WebAPI
                 ClientName = "ECommerce manager user",
                 AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.full", "order.getAllOrder", }
+                AllowedScopes = {"catalog.full", "order.getAllOrder", IdentityServerConstants.StandardScopes.OfflineAccess },
+                AllowOfflineAccess = true,//refresh token
 
             },
 
@@ -110,12 +112,13 @@ namespace IdentityServer.WebAPI
                 ClientName = "ECommerce admin user",
                 AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.full", "order.full" , "discount.full","cargo.full","basket.full" ,IdentityServerConstants.LocalApi.ScopeName,
+                AllowedScopes = {"catalog.full", "order.full" , "discount.full","cargo.full","basket.full" ,IdentityServerConstants.StandardScopes.OfflineAccess,
                 IdentityServerConstants.LocalApi.ScopeName,
                 IdentityServerConstants.StandardScopes.Email,
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile},
-                AccessTokenLifetime = 600//token süresi
+                AccessTokenLifetime = 600,//token süresi
+                AllowOfflineAccess = true//token imin süresi bittiğinde bu satır sayesinde refresh token üretirim
 
             },
         };
