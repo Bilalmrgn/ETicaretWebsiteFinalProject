@@ -84,9 +84,14 @@
 
                                 <td>
                                     <div class="action">
-                                        <button class="text-primary">
-                                            <i class="lni lni-pencil">Güncelle</i>
-                                        </button>
+                                        <a asp-area="Admin"
+                                           asp-controller="Category"
+                                           asp-action="UpdateCategory"
+                                           asp-route-id="@item.CategoryId"
+                                           class="text-primary">
+
+                                            <i class="lni lni-pencil"></i> Güncelle
+                                        </a>
                                     </div>
                                 </td>
 

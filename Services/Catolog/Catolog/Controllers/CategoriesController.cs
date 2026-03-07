@@ -29,7 +29,7 @@ namespace Catolog.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(string id)
         {
-            var values = _categoryServices.GetByIdCategoryAsync(id);
+            var values = await _categoryServices.GetByIdCategoryAsync(id);
             return Ok(values);
         }
 
@@ -47,9 +47,11 @@ namespace Catolog.Controllers
             return Ok("Kategori başarıyla silindi.");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateCategory(UpdateCategoryDTOs updateCategoryDTOs)
+        [HttpPut("{categoryId}")]
+        public async Task<IActionResult> UpdateCategory(string categoryId, [FromBody] UpdateCategoryDTOs updateCategoryDTOs)
         {
+            updateCategoryDTOs.CategoryId = categoryId;
+
             await _categoryServices.UpdateCategoryAsync(updateCategoryDTOs);
             return Ok("Kategori başarıyla güncellendi.");
         }

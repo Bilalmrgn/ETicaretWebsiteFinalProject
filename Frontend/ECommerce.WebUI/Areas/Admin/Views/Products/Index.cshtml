@@ -1,98 +1,171 @@
 ﻿@model List<Frontend.DtosLayer.ProductsDto.ProductListDto>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
 }
 
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+</style>
+
 <h1>Index</h1>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="card-style mb-30">
-            <h6 class="mb-10">Data Table</h6>
-            <p class="text-sm mb-20">
-                For basic styling—light padding and only horizontal
-                dividers—use the class table.
-            </p>
-            <div class="table-wrapper table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>
-                                <h6>#</h6>
-                            </th>
-                            <th>
-                                <h6>Name</h6>
-                            </th>
-                            <th>
-                                <h6>Email</h6>
-                            </th>
-                            <th>
-                                <h6>Project</h6>
-                            </th>
-                            <th>
-                                <h6>Status</h6>
-                            </th>
-                            <th>
-                                <h6>Action</h6>
-                            </th>
-                        </tr>
-                        <!-- end table row-->
-                    </thead>
-                    <tbody>
+<div class="col-lg-6">
+    <div class="card-style mb-30">
 
-                        @if (Model != null && Model.Any())
-                        {
-                            foreach (var item in Model)
-                            {
-                                <tr>
+        <div class="d-flex justify-content-between align-items-center mb-10">
 
-                                    <td>
-                                        <div class="employee-image">
-                                            <img src="@item.ProductImageUrl" alt="" />
-                                        </div>
-                                    </td>
+            <h6 class="mb-10">Ürünler</h6>
 
-                                    <td class="min-width">
-                                        <p>@item.ProductName</p>
-                                    </td>
+            <a asp-area="Admin"
+               asp-controller="Product"
+               asp-action="CreateProduct"
+               class="btn btn-primary">
+                + Ürün Ekle
+            </a>
 
-                                    <td class="min-width">
-                                        <p>@item.ProductPrice ₺</p>
-                                    </td>
+        </div>
 
-                                    <td class="min-width">
-                                        <p>@item.ProductDescription</p>
-                                    </td>
+        <p class="text-sm mb-20">
+            For Striped Table—light padding and only horizontal dividers.
+        </p>
 
-                                    <td class="min-width">
-                                        <span class="status-btn active-btn">Active</span>
-                                    </td>
+        <div class="table-wrapper table-responsive">
 
-                                    <td>
-                                        <div class="action">
-                                            <button class="text-danger">
-                                                <i class="lni lni-trash-can"></i>
-                                            </button>
-                                        </div>
-                                    </td>
+            <table class="table striped-table">
 
-                                </tr>
-                            }
-                        }
-                        else
+                <thead>
+                    <tr>
+
+                        <th>
+                            <h6>Resim</h6>
+                        </th>
+
+                        <th>
+                            <h6>Ürün Adı</h6>
+                        </th>
+
+                        <th>
+                            <h6>Fiyat</h6>
+                        </th>
+
+                        <th>
+                            <h6>Açıklama</h6>
+                        </th>
+
+                        <th>
+                            <h6>Sil</h6>
+                        </th>
+
+                        <th>
+                            <h6>Güncelle</h6>
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
                         {
                             <tr>
-                                <td colspan="6">No Product Found</td>
+
+                                <td>
+                                    <img src="@item.ProductImageUrl" style="width:60px;height:60px;object-fit:cover;" />
+                                </td>
+
+                                <td>
+                                    <p>@item.ProductName</p>
+                                </td>
+
+                                <td>
+                                    <p>@item.ProductPrice ₺</p>
+                                </td>
+
+                                <td>
+                                    <p>@item.ProductDescription</p>
+                                </td>
+
+
+
+                                <td>
+                                    <div class="action">
+
+                                        <form asp-area="Admin"
+                                              asp-controller="Product"
+                                              asp-action="DeleteProduct"
+                                              asp-route-id="@item.ProductId"
+                                              method="post">
+
+                                            <button class="text-danger" style="border:none;background:none;">
+                                                <i class="lni lni-trash-can"></i> Sil
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="action">
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Product"
+                                           asp-action="UpdateProduct"
+                                           asp-route-id="@item.ProductId"
+                                           class="text-primary">
+
+                                            <i class="lni lni-pencil"></i> Güncelle
+
+                                        </a>
+
+                                    </div>
+                                </td>
+
                             </tr>
                         }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7">No Product Found</td>
+                        </tr>
+                    }
 
-                    </tbody>
-                </table>
-                <!-- end table -->
-            </div>
+                </tbody>
+
+            </table>
+
         </div>
-        <!-- end card -->
     </div>
-    <!-- end col -->
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const deleteForms = document.querySelectorAll("form[action*='DeleteProduct']");
+
+        deleteForms.forEach(function (form) {
+
+            form.addEventListener("submit", function (e) {
+
+                const confirmDelete = confirm("Bu ürünü silmek istediğinize emin misiniz?");
+
+                if (!confirmDelete) {
+                    e.preventDefault();
+                }
+
+            });
+
+        });
+
+    });
+</script>

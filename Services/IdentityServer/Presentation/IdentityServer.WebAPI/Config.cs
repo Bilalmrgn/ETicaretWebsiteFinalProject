@@ -117,7 +117,7 @@ namespace IdentityServer.WebAPI
                 IdentityServerConstants.StandardScopes.Email,
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile},
-                AccessTokenLifetime = 600,//token süresi
+                AccessTokenLifetime = 6020,//token süresi
                 AllowOfflineAccess = true//token imin süresi bittiğinde bu satır sayesinde refresh token üretirim
 
             },

@@ -1,15 +1,15 @@
 ﻿@model Frontend.DtosLayer.CategoryDto.UpdateCategoryDto
-
 @{
-    ViewData["Title"] = "UpdateCategory";
+    ViewData["Title"] = "CreateCategory";
     Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
 }
 
-<h3>Kategori Güncelle</h3>
 
-<form method="post">
+<form asp-area="Admin"
+      asp-controller="Category"
+      asp-action="UpdateCategory"
+      method="post">
 
-    <!-- Id gönderilmesi gerekiyor -->
     <input type="hidden" asp-for="CategoryId" />
 
     <div class="mb-3">
@@ -17,7 +17,7 @@
         <input type="text" asp-for="CategoryName" class="form-control" />
     </div>
 
-    <button class="btn btn-warning">Güncelle</button>
+    <button type="submit" class="btn btn-success">Kaydet</button>
 
     <a asp-action="Index"
        asp-controller="Category"

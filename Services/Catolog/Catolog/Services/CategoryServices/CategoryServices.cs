@@ -45,11 +45,14 @@ namespace Catolog.Services.CategoryServices
             return _mapper.Map<GetByIdCategoryDTOs>(values);
         }
 
-        public async Task UpdateCategoryAsync(UpdateCategoryDTOs updateCategoryDTOs)
+        public async Task UpdateCategoryAsync(UpdateCategoryDTOs dto)
         {
-            var values = _mapper.Map<Category>(updateCategoryDTOs);
-            await _CategoryCollection.FindOneAndReplaceAsync(x => x.CategoryId == updateCategoryDTOs.CategoryId, values);
+            var update = Builders<Category>.Update
+                .Set(x => x.CategoryName, dto.CategoryName);
 
+            await _CategoryCollection.UpdateOneAsync(
+                x => x.CategoryId == dto.CategoryId,
+                update);
         }
     }
 }
