@@ -1,5 +1,5 @@
 ﻿using Catolog.DTOs.CategoryDTOs;
-using Catolog.DTOs.FeatureSliderDtos;
+using Catolog.DTOs.FeatureSliderDto;
 
 namespace Catolog.Services.FeatureSliderService
 {

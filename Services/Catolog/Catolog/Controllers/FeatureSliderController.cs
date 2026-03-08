@@ -1,5 +1,5 @@
 ﻿using Catolog.DTOs.CategoryDTOs;
-using Catolog.DTOs.FeatureSliderDtos;
+using Catolog.DTOs.FeatureSliderDto;
 using Catolog.Services.CategoryServices;
 using Catolog.Services.FeatureSliderService;
 using Microsoft.AspNetCore.Authorization;

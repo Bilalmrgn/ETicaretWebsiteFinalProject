@@ -1,0 +1,122 @@
+﻿@model List<Frontend.DtosLayer.SliderFeatureDto.ResultFeatureSliderDto>
+@{
+    ViewData["Title"] = "Öne Çıkan Görseller";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+</style>
+
+<h1>Öne Çıkan Görseller (Slider)</h1>
+
+<div class="col-lg-6">
+    <div class="card-style mb-30">
+        <div class="d-flex justify-content-between align-items-center mb-10">
+            <h6 class="mb-10">Slider Listesi</h6>
+            <a asp-area="Admin"
+               asp-controller="AdminFeatureSlider"
+               asp-action="CreateFeatureSlider"
+               class="btn btn-primary">
+                + Yeni Slider Ekle
+            </a>
+        </div>
+
+        <p class="text-sm mb-20">
+            Ana sayfa üzerinde kayan görselleri ve başlıkları buradan yönetebilirsiniz.
+        </p>
+
+        <div class="table-wrapper table-responsive">
+            <table class="table striped-table">
+                <thead>
+                    <tr>
+                        <th><h6>Görsel</h6></th>
+                        <th><h6>Başlık</h6></th>
+                        <th><h6>Açıklama</h6></th>
+                        <th><h6>Durum</h6></th>
+                        <th><h6>Sil</h6></th>
+                        <th><h6>Güncelle</h6></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@item.ImageUrl" style="width:80px;height:50px;object-fit:cover;border-radius:4px;" />
+                                </td>
+                                <td>
+                                    <p>@item.Title</p>
+                                </td>
+                                <td>
+                                    <p>@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</p>
+                                </td>
+                                <td>
+                                    @if (item.Status)
+                                    {
+                                        <span class="badge bg-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">Pasif</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="action">
+                                        <form asp-area="Admin"
+                                              asp-controller="AdminFeatureSlider"
+                                              asp-action="DeleteFeatureSlider"
+                                              asp-route-id="@item.FeatureSliderId"
+                                              method="post">
+                                            <button class="text-danger" style="border:none;background:none;">
+                                                <i class="lni lni-trash-can"></i> Sil
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action">
+                                        <a asp-area="Admin"
+                                           asp-controller="AdminFeatureSlider"
+                                           asp-action="UpdateFeatureSlider"
+                                           asp-route-id="@item.FeatureSliderId"
+                                           class="text-primary">
+                                            <i class="lni lni-pencil"></i> Güncelle
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">Henüz bir slider içeriği bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteForms = document.querySelectorAll("form[action*='DeleteFeatureSlider']");
+        deleteForms.forEach(function (form) {
+            form.addEventListener("submit", function (e) {
+                const confirmDelete = confirm("Bu slider içeriğini silmek istediğinize emin misiniz?");
+                if (!confirmDelete) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>

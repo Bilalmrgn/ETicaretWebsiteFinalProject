@@ -1,0 +1,55 @@
+﻿@model Frontend.DtosLayer.SliderFeatureDto.CreateFeatureSliderDto
+
+@{
+    ViewData["Title"] = "Yeni Slider Ekle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card-style mb-30">
+        <h3 class="mb-25">Yeni Öne Çıkan Görsel (Slider) Ekle</h3>
+
+        <form method="post" asp-area="Admin" asp-controller="AdminFeatureSlider" asp-action="CreateFeatureSlider">
+
+            <div class="mb-3">
+                <label class="form-label">Başlık</label>
+                <input type="text" asp-for="Title" class="form-control" placeholder="Slider başlığını giriniz..." />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Görsel URL</label>
+                <input type="text" asp-for="ImageUrl" class="form-control" placeholder="Görsel linkini yapıştırınız..." />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Açıklama</label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Slider açıklamasını giriniz..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Durum</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="true">Aktif (Ana sayfada gösterilsin)</option>
+                    <option value="false">Pasif (Gizlensin)</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="lni lni-save"></i> Kaydet
+                </button>
+
+                <a asp-action="Index"
+                   asp-controller="AdminFeatureSlider"
+                   asp-area="Admin"
+                   class="btn btn-secondary">
+                    <i class="lni lni-arrow-left"></i> Vazgeç ve Geri Dön
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

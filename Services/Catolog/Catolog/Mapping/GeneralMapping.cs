@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Catolog.DTOs.CategoryDTOs;
-using Catolog.DTOs.FeatureSliderDtos;
+using Catolog.DTOs.FeatureSliderDto;
 using Catolog.DTOs.ProductDetailDTOs;
 using Catolog.DTOs.ProductDTOs;
 using Catolog.DTOs.ProductImagesDTOs;

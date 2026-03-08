@@ -1,6 +1,6 @@
-﻿namespace Catolog.DTOs.FeatureSliderDtos
+﻿namespace Catolog.DTOs.FeatureSliderDto
 {
-    public class UpdateFeatureSliderDto
+    public class GetByIdFeatureSliderDto
     {
         public string FeatureSliderId { get; set; }
         public string Title { get; set; }
