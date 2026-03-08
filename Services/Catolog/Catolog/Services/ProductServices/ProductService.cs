@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Catolog.DTOs.CategoryDTOs;
 using Catolog.DTOs.ProductDTOs;
 using Catolog.Entities;
 using Catolog.Settings;
@@ -10,12 +11,13 @@ namespace Catolog.Services.ProductServices
     {
         private readonly IMapper _mapper;
         private readonly IMongoCollection<Product> _productCollection;
-
+        private readonly IMongoCollection<Category> _categoryCollection;
         public ProductService(IMapper mapper, IDatabaseSettings _databaseSettings)
         {
             var client = new MongoClient(_databaseSettings.ConnectionString);
             var database = client.GetDatabase(_databaseSettings.DatabaseName);
             _productCollection = database.GetCollection<Product>(_databaseSettings.ProductCollectionName);
+            _categoryCollection = database.GetCollection<Category>(_databaseSettings.CategoryCollectionName);
             _mapper = mapper;
         }
 
@@ -35,8 +37,16 @@ namespace Catolog.Services.ProductServices
         //Get All Products
         public async Task<List<ResultProductDTOs>> GetAllProductAsync()
         {
-            var values = await _productCollection.Find(x=>true).ToListAsync();
-            return _mapper.Map<List<ResultProductDTOs>>(values);
+            var result = await _productCollection.Aggregate()
+                .Lookup<Product, Category, ProductWithCategory>(
+                    _categoryCollection,
+                    p => p.CategoryId,    
+                    c => c.CategoryId,    
+                    x => x.Categories 
+                )
+                .ToListAsync();
+            
+            return _mapper.Map<List<ResultProductDTOs>>(result);
         }
 
         public async Task<GetByIdProductDTOs> GetByIdProductAsync(string id)
@@ -47,11 +57,20 @@ namespace Catolog.Services.ProductServices
 
         public async Task UpdateProductAsync(UpdateProductDTOs updateProductDTOs)
         {
-            var values = _mapper.Map<Product>(updateProductDTOs);
-            await _productCollection.FindOneAndReplaceAsync(x=>x.ProductId == updateProductDTOs.ProductId, values);
-            
+            var update = Builders<Product>.Update
+                .Set(x => x.ProductName, updateProductDTOs.ProductName)
+                .Set(x => x.ProductPrice, updateProductDTOs.ProductPrice)
+                .Set(x => x.ProductImageUrl, updateProductDTOs.ProductImageUrl)
+                .Set(x => x.ProductDescription, updateProductDTOs.ProductDescription)
+                .Set(x => x.CategoryId, updateProductDTOs.CategoryId);
+
+            await _productCollection.UpdateOneAsync(
+                x => x.ProductId == updateProductDTOs.ProductId,
+                update
+            );
         }
 
-        
+
+
     }
 }

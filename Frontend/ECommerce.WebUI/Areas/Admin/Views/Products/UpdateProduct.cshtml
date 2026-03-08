@@ -1,0 +1,67 @@
+﻿@model Frontend.DtosLayer.ProductsDto.UpdateProductDto
+
+@{
+    ViewData["Title"] = "UpdateProduct";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h3>Ürün Güncelle</h3>
+
+<form asp-area="Admin"
+      asp-controller="Products"
+      asp-action="UpdateProduct"
+      method="post">
+
+    <input type="hidden" asp-for="ProductId" />
+
+    <div class="mb-3">
+        <label>Ürün Adı</label>
+        <input type="text" asp-for="ProductName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Ürün Fiyatı</label>
+        <input type="text" asp-for="ProductPrice" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Ürün Görsel Url</label>
+        <input type="text" asp-for="ProductImageUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Ürün Açıklaması</label>
+        <textarea asp-for="ProductDescription" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Kategori</label>
+
+        <select asp-for="CategoryId" class="form-control">
+
+            @if (ViewBag.categories != null)
+            {
+                foreach (var item in ViewBag.categories)
+                {
+                    <option value="@item.CategoryId">
+                        @item.CategoryName
+                    </option>
+                }
+            }
+
+        </select>
+
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Güncelle
+    </button>
+
+    <a asp-action="Index"
+       asp-controller="Products"
+       asp-area="Admin"
+       class="btn btn-secondary">
+        Geri
+    </a>
+
+</form>

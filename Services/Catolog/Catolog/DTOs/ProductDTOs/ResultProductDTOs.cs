@@ -1,4 +1,6 @@
-﻿namespace Catolog.DTOs.ProductDTOs
+﻿using Catolog.DTOs.CategoryDTOs;
+
+namespace Catolog.DTOs.ProductDTOs
 {
     public class ResultProductDTOs
     {
@@ -8,5 +10,7 @@
         public string ProductImageUrl { get; set; }
         public string ProductDescription { get; set; }
         public string CategoryId { get; set; }
+        public string CategoryName { get; set; }
+        public ResultCategoryDTOs Category { get; set; }
     }
 }

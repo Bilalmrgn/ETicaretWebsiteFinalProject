@@ -1,7 +1,7 @@
-﻿@model Frontend.DtosLayer.CategoryDto.UpdateCategoryDto
+﻿@model Frontend.DtosLayer.CategoryDto.CreateCategoryDto
 
 @{
-    ViewData["Title"] = "UpdateCategory";
+    ViewData["Title"] = "CreateCategory";
     Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
 }
 
@@ -9,15 +9,12 @@
 
 <form method="post">
 
-    <!-- Id gönderilmesi gerekiyor -->
-    <input type="hidden" asp-for="CategoryId" />
-
     <div class="mb-3">
         <label>Kategori Adı</label>
         <input type="text" asp-for="CategoryName" class="form-control" />
     </div>
 
-    <button class="btn btn-warning">Güncelle</button>
+    <button class="btn btn-warning">Kaydet</button>
 
     <a asp-action="Index"
        asp-controller="Category"

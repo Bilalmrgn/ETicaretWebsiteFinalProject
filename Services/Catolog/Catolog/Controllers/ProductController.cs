@@ -1,10 +1,12 @@
 ﻿using Catolog.DTOs.ProductDTOs;
 using Catolog.Services.ProductServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Catolog.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -26,7 +28,7 @@ namespace Catolog.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(string id)
         {
-            var values = _productService.GetByIdProductAsync(id);
+            var values = await _productService.GetByIdProductAsync(id);
             return Ok(values);
         }
 
@@ -37,16 +39,17 @@ namespace Catolog.Controllers
             return Ok("Ürün başarıyla eklendi");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProruct(string id)
         {
             await _productService.DeleteProductAsync(id);
             return Ok("Ürün başarıyla silindi");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateProduct(UpdateProductDTOs updateProductDTOs)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(string id, [FromBody]UpdateProductDTOs updateProductDTOs)
         {
+            updateProductDTOs.ProductId = id;
             await _productService.UpdateProductAsync(updateProductDTOs);
             return Ok("Ürün başarıyla güncellendi.");
         }

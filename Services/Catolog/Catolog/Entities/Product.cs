@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Catolog.Entities
 {
@@ -11,9 +12,13 @@ namespace Catolog.Entities
         public decimal ProductPrice { get; set; }
         public string ProductImageUrl { get; set; }
         public string ProductDescription { get; set; }
+
+
+        [BsonElement("CategoryId")] // Veritabanındaki gerçek alan adıyla eşleşmeli
+        [BsonRepresentation(BsonType.ObjectId)]
         public string CategoryId { get; set; }
 
-        [BsonIgnore]
+        [BsonIgnore] // Bu alan veritabanında yok, sadece join için
         public Category Category { get; set; }
 
     }

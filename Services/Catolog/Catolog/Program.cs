@@ -1,5 +1,6 @@
 ﻿using Catolog.Mapping;
 using Catolog.Services.CategoryServices;
+using Catolog.Services.FeatureSliderService;
 using Catolog.Services.ProductDetailDetailServices;
 using Catolog.Services.ProductDetailServices;
 using Catolog.Services.ProductImagesServices;
@@ -28,6 +29,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 // Servislerin DI kaydı: Controller içinde kullanabilmek için
 builder.Services.AddScoped<ICategoryServices, CategoryServices>();//uygulamada ICategoryService istendiğinde arka planda categoryservice servisim kullanılsın
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IFeatureSliderService, FeatureSliderService>();
 builder.Services.AddScoped<IProductDetailServices, ProductDetailServices>();
 builder.Services.AddScoped<IProductImageService, ProductImagesService>();
 

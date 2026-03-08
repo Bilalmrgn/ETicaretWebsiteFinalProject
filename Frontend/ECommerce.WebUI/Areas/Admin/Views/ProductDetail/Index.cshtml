@@ -1,4 +1,4 @@
-﻿@model List<Frontend.DtosLayer.ProductsDto.ProductListDto>
+﻿@model List<Frontend.DtosLayer.ProductsDto.ProductDetailDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,26 +14,26 @@
     }
 </style>
 
-<h1>Index</h1>
+<h1>Ürün Detayları</h1>
 
 <div class="col-lg-6">
     <div class="card-style mb-30">
 
         <div class="d-flex justify-content-between align-items-center mb-10">
 
-            <h6 class="mb-10">Ürünler</h6>
+            <h6 class="mb-10">Ürün Detayları</h6>
 
             <a asp-area="Admin"
-               asp-controller="Products"
-               asp-action="CreateProduct"
+               asp-controller="ProductDetail"
+               asp-action="CreateProductDetail"
                class="btn btn-primary">
-                + Ürün Ekle
+                + Ürün Detayı Ekle
             </a>
 
         </div>
 
         <p class="text-sm mb-20">
-            For Striped Table—light padding and only horizontal dividers.
+            Ürün detaylarının listelendiği tablo.
         </p>
 
         <div class="table-wrapper table-responsive">
@@ -42,25 +42,18 @@
 
                 <thead>
                     <tr>
-
                         <th>
-                            <h6>Resim</h6>
-                        </th>
-
-                        <th>
-                            <h6>Ürün Adı</h6>
-                        </th>
-
-                        <th>
-                            <h6>Fiyat</h6>
+                            <h6>Bilgi</h6>
                         </th>
 
                         <th>
                             <h6>Açıklama</h6>
                         </th>
+
                         <th>
-                            <h6>Kategori</h6>
+                            <h6>Ürün Id</h6>
                         </th>
+
                         <th>
                             <h6>Sil</h6>
                         </th>
@@ -68,7 +61,6 @@
                         <th>
                             <h6>Güncelle</h6>
                         </th>
-
                     </tr>
                 </thead>
 
@@ -81,37 +73,28 @@
                             <tr>
 
                                 <td>
-                                    <img src="@item.ProductImageUrl" style="width:60px;height:60px;object-fit:cover;" />
+                                    <p>@item.ProductDetailInformation</p>
                                 </td>
 
                                 <td>
-                                    <p>@item.ProductName</p>
+                                    <p>@item.ProductDetailDescription</p>
                                 </td>
 
                                 <td>
-                                    <p>@item.ProductPrice ₺</p>
+                                    <p>@item.ProductId</p>
                                 </td>
-
-                                <td>
-                                    <p>@item.ProductDescription</p>
-                                </td>
-                                <td>
-                                    <p>@item.Category.CategoryName</p>
-                                </td>
-
-
 
                                 <td>
                                     <div class="action">
 
                                         <form asp-area="Admin"
-                                              asp-controller="Products"
-                                              asp-action="DeleteProduct"
-                                              asp-route-id="@item.ProductId"
+                                              asp-controller="ProductDetail"
+                                              asp-action="DeleteProductDetail"
+                                              asp-route-id="@item.ProductDetailId"
                                               method="post">
 
                                             <button class="text-danger" style="border:none;background:none;">
-                                                 Sil
+                                                <i class="lni lni-trash-can"></i> Sil
                                             </button>
 
                                         </form>
@@ -123,13 +106,12 @@
                                     <div class="action">
 
                                         <a asp-area="Admin"
-                                           asp-controller="Products"
-                                           asp-action="UpdateProduct"
-                                           asp-route-id="@item.ProductId"
+                                           asp-controller="ProductDetail"
+                                           asp-action="UpdateProductDetail"
+                                           asp-route-id="@item.ProductDetailId"
                                            class="text-primary">
 
                                             <i class="lni lni-pencil"></i> Güncelle
-
                                         </a>
 
                                     </div>
@@ -141,7 +123,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="7">No Product Found</td>
+                            <td colspan="5">Ürün Detayı Bulunamadı</td>
                         </tr>
                     }
 
@@ -150,19 +132,20 @@
             </table>
 
         </div>
+
     </div>
 </div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
 
-        const deleteForms = document.querySelectorAll("form[action*='DeleteProduct']");
+        const deleteForms = document.querySelectorAll("form[action*='DeleteProductDetail']");
 
         deleteForms.forEach(function (form) {
 
             form.addEventListener("submit", function (e) {
 
-                const confirmDelete = confirm("Bu ürünü silmek istediğinize emin misiniz?");
+                const confirmDelete = confirm("Bu ürün detayını silmek istediğinize emin misiniz?");
 
                 if (!confirmDelete) {
                     e.preventDefault();
