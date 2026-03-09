@@ -5,6 +5,7 @@ using Catolog.Services.ProductDetailDetailServices;
 using Catolog.Services.ProductDetailServices;
 using Catolog.Services.ProductImagesServices;
 using Catolog.Services.ProductServices;
+using Catolog.Services.SpecialOfferService;
 using Catolog.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFeatureSliderService, FeatureSliderService>();
 builder.Services.AddScoped<IProductDetailServices, ProductDetailServices>();
 builder.Services.AddScoped<IProductImageService, ProductImagesService>();
+builder.Services.AddScoped<ISpecialOfferService, SpecialOfferService>();
 
 //automapper konfigürasyonu
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

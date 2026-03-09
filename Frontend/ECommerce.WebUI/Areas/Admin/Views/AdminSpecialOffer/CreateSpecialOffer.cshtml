@@ -1,0 +1,50 @@
+﻿@model Frontend.DtosLayer.SpecialOfferDto.CreateSpecialOfferDto
+
+@{
+    ViewData["Title"] = "Yeni Teklif Ekle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card-style mb-30">
+                <h3 class="mb-25">Yeni Özel Teklif Ekle</h3>
+
+                <p class="text-sm mb-30">
+                    Ana sayfada görünecek olan kampanya başlığı, alt başlığı ve görsel linkini buradan tanımlayabilirsiniz.
+                </p>
+
+                <form method="post">
+                    <div class="input-style-1">
+                        <label>Teklif Ana Başlığı</label>
+                        <input type="text" asp-for="Title" placeholder="Örn: Yaz İndirimi" />
+                    </div>
+
+                    <div class="input-style-1">
+                        <label>Teklif Alt Başlığı (Slogan)</label>
+                        <input type="text" asp-for="SubTitle" placeholder="Örn: Tüm ürünlerde %20 indirim" />
+                    </div>
+
+                    <div class="input-style-1">
+                        <label>Teklif Görsel Url</label>
+                        <input type="text" asp-for="ImageUrl" placeholder="https://..." />
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="lni lni-save"></i> Kaydet
+                        </button>
+
+                        <a asp-action="Index"
+                           asp-controller="AdminSpecialOffer"
+                           asp-area="Admin"
+                           class="btn btn-secondary text-white">
+                            <i class="lni lni-arrow-left"></i> Geri Dön
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

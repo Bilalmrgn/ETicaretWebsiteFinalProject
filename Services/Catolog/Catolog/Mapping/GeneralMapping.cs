@@ -4,6 +4,7 @@ using Catolog.DTOs.FeatureSliderDto;
 using Catolog.DTOs.ProductDetailDTOs;
 using Catolog.DTOs.ProductDTOs;
 using Catolog.DTOs.ProductImagesDTOs;
+using Catolog.DTOs.SpecialOfferDto;
 using Catolog.Entities;
 
 namespace Catolog.Mapping
@@ -47,6 +48,11 @@ namespace Catolog.Mapping
             CreateMap<FeatureSlider, CreateFeatureSliderDto>().ReverseMap();
             CreateMap<FeatureSlider, UpdateFeatureSliderDto>().ReverseMap();
             CreateMap<FeatureSlider, GetByIdFeatureSliderDto>().ReverseMap();
+            
+            CreateMap<SpecialOffer, ResultSpecialOfferDto>().ReverseMap();
+            CreateMap<SpecialOffer, CreateSpecialOfferDto>().ReverseMap();
+            CreateMap<SpecialOffer, UpdateSpecialOfferDto>().ReverseMap();
+            CreateMap<SpecialOffer, GetByIdSpecialOfferDto>().ReverseMap();
         }
     }
 }

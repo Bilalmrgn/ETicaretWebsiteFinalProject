@@ -1,0 +1,111 @@
+﻿@model List<Frontend.DtosLayer.SpecialOfferDto.ResultSpecialOfferDto>
+@{
+    ViewData["Title"] = "Özel Teklifler";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+</style>
+
+<h1>Özel Teklifler (Special Offer)</h1>
+
+<div class="col-lg-6">
+    <div class="card-style mb-30">
+        <div class="d-flex justify-content-between align-items-center mb-10">
+            <h6 class="mb-10">Teklif Listesi</h6>
+            <a asp-area="Admin"
+               asp-controller="AdminSpecialOffer"
+               asp-action="CreateSpecialOffer"
+               class="btn btn-primary">
+                + Yeni Teklif Ekle
+            </a>
+        </div>
+
+        <p class="text-sm mb-20">
+            Ana sayfa üzerinde yer alan kampanya kutularını ve özel indirim tekliflerini buradan yönetebilirsiniz.
+        </p>
+
+        <div class="table-wrapper table-responsive">
+            <table class="table striped-table">
+                <thead>
+                    <tr>
+                        <th><h6>Görsel</h6></th>
+                        <th><h6>Üst Başlık</h6></th>
+                        <th><h6>Ana Başlık</h6></th>
+                        <th><h6>Sil</h6></th>
+                        <th><h6>Güncelle</h6></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@item.ImageUrl" style="width:80px;height:50px;object-fit:cover;border-radius:4px;" />
+                                </td>
+                                <td>
+                                    <p>@item.SubTitle</p>
+                                </td>
+                                <td>
+                                    <p>@item.Title</p>
+                                </td>
+                                <td>
+                                    <div class="action">
+                                        <form asp-area="Admin"
+                                              asp-controller="AdminSpecialOffer"
+                                              asp-action="DeleteSpecialOffer"
+                                              asp-route-id="@item.SpecialOfferId"
+                                              method="post">
+                                            <button class="text-danger" style="border:none;background:none;">
+                                                <i class="lni lni-trash-can"></i> Sil
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action">
+                                        <a asp-area="Admin"
+                                           asp-controller="AdminSpecialOffer"
+                                           asp-action="UpdateSpecialOffer"
+                                           asp-route-id="@item.SpecialOfferId"
+                                           class="text-primary">
+                                            <i class="lni lni-pencil"></i> Güncelle
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center">Henüz bir teklif içeriği bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteForms = document.querySelectorAll("form[action*='DeleteSpecialOffer']");
+        deleteForms.forEach(function (form) {
+            form.addEventListener("submit", function (e) {
+                const confirmDelete = confirm("Bu teklif içeriğini silmek istediğinize emin misiniz?");
+                if (!confirmDelete) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>
