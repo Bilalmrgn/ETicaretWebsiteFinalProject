@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="Services\ProductImagesServices\" />
     <Folder Include="Services\ProductDetailServices\" />
-    <Folder Include="Services\ProductServices\" />
   </ItemGroup>
 
 </Project>

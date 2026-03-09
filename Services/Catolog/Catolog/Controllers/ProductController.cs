@@ -18,14 +18,21 @@ namespace Catolog.Controllers
             _productService = productService;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllProducts")]
         public async Task<IActionResult> GetProduct()
         {
             var values = await _productService.GetAllProductAsync();
             return Ok(values);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetLast10Products")]
+        public async Task<IActionResult> GetLast10Product()
+        {
+            var values = await _productService.GetLast10ProductsAsync();
+            return Ok(values);
+        }
+
+        [HttpGet("GetProductById/{id}")]
         public async Task<IActionResult> GetProductById(string id)
         {
             var values = await _productService.GetByIdProductAsync(id);

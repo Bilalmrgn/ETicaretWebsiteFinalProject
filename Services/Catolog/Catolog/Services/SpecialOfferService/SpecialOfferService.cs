@@ -15,7 +15,7 @@ namespace Catolog.Services.SpecialOfferService
         {
             var client = new MongoClient(_databaseSettings.ConnectionString);
             var database = client.GetDatabase(_databaseSettings.DatabaseName);
-            _specialOfferCollection = database.GetCollection<SpecialOffer>(_databaseSettings.FeatureSliderCollectionName);
+            _specialOfferCollection = database.GetCollection<SpecialOffer>(_databaseSettings.SpecialOfferCollectionName);
             _mapper = mapper;
         }
 

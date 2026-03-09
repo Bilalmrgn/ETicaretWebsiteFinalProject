@@ -8,5 +8,8 @@ namespace Catolog.Entities
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string CategoryId { get; set; }//mongodb de id ler string ile tutulur
         public string CategoryName { get; set; }
+        public string ImageUrl { get; set; }
+        public int ProductCount { get; set; }
+
     }
 }

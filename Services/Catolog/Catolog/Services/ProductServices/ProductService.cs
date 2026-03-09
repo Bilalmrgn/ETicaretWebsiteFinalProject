@@ -49,10 +49,18 @@ namespace Catolog.Services.ProductServices
             return _mapper.Map<List<ResultProductDTOs>>(result);
         }
 
+        //Get By Id Product
         public async Task<GetByIdProductDTOs> GetByIdProductAsync(string id)
         {
             var values = await _productCollection.Find<Product>(x => x.ProductId == id).FirstOrDefaultAsync();
             return _mapper.Map<GetByIdProductDTOs>(values);
+        }
+
+        //Get Last 10 Product
+        public async Task<List<ResultProductDTOs>> GetLast10ProductsAsync()
+        {
+            var values = await _productCollection.Find(x => true).SortByDescending(x => x.CreatedDate).Limit(10).ToListAsync();
+            return _mapper.Map<List<ResultProductDTOs>>(values);
         }
 
         public async Task UpdateProductAsync(UpdateProductDTOs updateProductDTOs)

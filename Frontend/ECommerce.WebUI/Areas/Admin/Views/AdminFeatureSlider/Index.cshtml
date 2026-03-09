@@ -55,18 +55,20 @@
                                 <td>
                                     <p>@item.Title</p>
                                 </td>
-                                <td>
+                                @* <td>
                                     <p>@(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</p>
-                                </td>
+                                </td> *@
                                 <td>
-                                    @if (item.Status)
-                                    {
-                                        <span class="badge bg-success">Aktif</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-danger">Pasif</span>
-                                    }
+                                    <p>
+                                        @if (!string.IsNullOrEmpty(item.Description))
+                                        {
+                                            @(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)
+                                        }
+                                        else
+                                        {
+                                            <span>Açıklama yok</span>
+                                        }
+                                    </p>
                                 </td>
                                 <td>
                                     <div class="action">

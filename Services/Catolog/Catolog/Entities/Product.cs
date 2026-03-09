@@ -12,7 +12,7 @@ namespace Catolog.Entities
         public decimal ProductPrice { get; set; }
         public string ProductImageUrl { get; set; }
         public string ProductDescription { get; set; }
-
+        public DateTime CreatedDate { get; set; }
 
         [BsonElement("CategoryId")] // Veritabanındaki gerçek alan adıyla eşleşmeli
         [BsonRepresentation(BsonType.ObjectId)]

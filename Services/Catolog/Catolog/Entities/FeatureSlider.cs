@@ -2,6 +2,7 @@
 
 namespace Catolog.Entities
 {
+    [BsonIgnoreExtraElements]
     public class FeatureSlider
     {
         [BsonId] 

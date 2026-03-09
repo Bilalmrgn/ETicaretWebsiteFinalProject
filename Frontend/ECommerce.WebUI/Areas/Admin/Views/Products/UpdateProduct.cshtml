@@ -39,14 +39,11 @@
 
         <select asp-for="CategoryId" class="form-control">
 
-            @if (ViewBag.categories != null)
+            @foreach (var item in ViewBag.categories)
             {
-                foreach (var item in ViewBag.categories)
-                {
-                    <option value="@item.CategoryId">
-                        @item.CategoryName
-                    </option>
-                }
+                <option value="@item.CategoryId">
+                    @item.CategoryName
+                </option>
             }
 
         </select>
