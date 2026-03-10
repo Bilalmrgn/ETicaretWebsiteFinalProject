@@ -122,7 +122,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             //header da token gönderdikten sonra verimizi serialize şeklinde ileteceğiz. çünkü ekleme ve güncellemede serialize
-            var response = await client.GetAsync($"https://localhost:7166/api/Product/{id}");
+            var response = await client.GetAsync($"https://localhost:7166/api/Product/GetProductById/{id}");
 
             if (response.IsSuccessStatusCode) //405 hata kodu alıyorum buradan devam edeceğim
             {

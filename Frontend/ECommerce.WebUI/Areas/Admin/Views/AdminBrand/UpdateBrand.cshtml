@@ -1,0 +1,61 @@
+﻿@model Frontend.DtosLayer.BrandDto.UpdateBrandDto
+
+@{
+    ViewData["Title"] = "Marka Güncelle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+</style>
+
+<h1>Markayı Güncelle</h1>
+
+<div class="col-lg-6">
+    <div class="card-style mb-30">
+        <h6 class="mb-25">Marka Düzenleme Formu</h6>
+
+        <form asp-area="Admin"
+              asp-controller="AdminBrand"
+              asp-action="UpdateBrand"
+              method="post">
+
+            @* Güncelleme işlemi için Id mutlaka gizli olarak taşınmalıdır *@
+            <input type="hidden" asp-for="BrandId" />
+
+            <div class="input-style-1">
+                <label>Marka Adı</label>
+                <input type="text" asp-for="BrandName" placeholder="Marka adını giriniz..." />
+            </div>
+
+            <div class="input-style-1">
+                <label>Marka Logo/Görsel URL</label>
+                <input type="text" asp-for="BrandImageUrl" placeholder="https://..." />
+            </div>
+
+            @* Mevcut Logoyu Önizleme (Opsiyonel ama kullanışlı) *@
+            <div class="mb-25">
+                <label class="d-block mb-10 text-sm">Mevcut Logo Önizleme</label>
+                <img src="@Model.BrandImageUrl" style="width:120px; border:1px solid #eee; padding:5px; border-radius:4px;" />
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="main-btn primary-btn btn-hover">
+                    <i class="lni lni-reload mr-10"></i> Değişiklikleri Kaydet
+                </button>
+
+                <a asp-action="Index"
+                   asp-controller="AdminBrand"
+                   asp-area="Admin"
+                   class="main-btn secondary-btn btn-hover">
+                    <i class="lni lni-chevron-left mr-10"></i> Vazgeç
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

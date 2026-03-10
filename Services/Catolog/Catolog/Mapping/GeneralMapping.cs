@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Catolog.DTOs.BrandDto;
 using Catolog.DTOs.CategoryDTOs;
 using Catolog.DTOs.FeatureSliderDto;
 using Catolog.DTOs.ProductDetailDTOs;
@@ -53,6 +54,12 @@ namespace Catolog.Mapping
             CreateMap<SpecialOffer, CreateSpecialOfferDto>().ReverseMap();
             CreateMap<SpecialOffer, UpdateSpecialOfferDto>().ReverseMap();
             CreateMap<SpecialOffer, GetByIdSpecialOfferDto>().ReverseMap();
+            
+            //brand mapping
+            CreateMap<Brand, ResultBrandDto>().ReverseMap();
+            CreateMap<Brand, CreateBrandDto>().ReverseMap();
+            CreateMap<Brand, UpdateBrandDto>().ReverseMap();
+            CreateMap<Brand, GetByIdBrandDto>().ReverseMap();
         }
     }
 }

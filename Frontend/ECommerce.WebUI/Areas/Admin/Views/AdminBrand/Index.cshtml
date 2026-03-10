@@ -1,0 +1,114 @@
+﻿@model List<Frontend.DtosLayer.BrandDto.ResultBrandDto>
+@{
+    ViewData["Title"] = "Markalar";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+</style>
+
+<h1>Marka Yönetimi</h1>
+
+<div class="col-lg-6">
+    <div class="card-style mb-30">
+        <div class="d-flex justify-content-between align-items-center mb-10">
+            <h6 class="mb-10">Marka Listesi</h6>
+            <a asp-area="Admin"
+               asp-controller="AdminBrand"
+               asp-action="CreateBrand"
+               class="btn btn-primary">
+                + Yeni Marka Ekle
+            </a>
+        </div>
+
+        <p class="text-sm mb-20">
+            Sistemde kayıtlı olan markaları ve logolarını buradan yönetebilirsiniz.
+        </p>
+
+        <div class="table-wrapper table-responsive">
+            <table class="table striped-table">
+                <thead>
+                    <tr>
+                        <th><h6>Logo</h6></th>
+                        <th><h6>Marka Adı</h6></th>
+                        <th><h6>Sil</h6></th>
+                        <th><h6>Güncelle</h6></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.BrandImageUrl))
+                                    {
+                                        <img src="@item.BrandImageUrl" style="width:100px; height:auto; max-height:50px; object-fit:contain; border-radius:4px;" alt="@item.BrandName" />
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Görsel Yok</span>
+                                    }
+                                </td>
+                                <td>
+                                    <p>@item.BrandName</p>
+                                </td>
+                                <td>
+                                    <div class="action">
+                                        <form asp-area="Admin"
+                                              asp-controller="AdminBrand"
+                                              asp-action="DeleteBrand"
+                                              asp-route-id="@item.BrandId"
+                                              method="post">
+                                            <button type="submit" class="text-danger" style="border:none;background:none;">
+                                                <i class="lni lni-trash-can"></i> Sil
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action">
+                                        <a asp-area="Admin"
+                                           asp-controller="AdminBrand"
+                                           asp-action="UpdateBrand"
+                                           asp-route-id="@item.BrandId"
+                                           class="text-primary">
+                                            <i class="lni lni-pencil"></i> Güncelle
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">Henüz bir marka kaydı bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteForms = document.querySelectorAll("form[action*='DeleteBrand']");
+        deleteForms.forEach(function (form) {
+            form.addEventListener("submit", function (e) {
+                const confirmDelete = confirm("Bu markayı silmek istediğinize emin misiniz?");
+                if (!confirmDelete) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>

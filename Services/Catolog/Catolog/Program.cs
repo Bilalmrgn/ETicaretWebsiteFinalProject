@@ -1,4 +1,5 @@
 ﻿using Catolog.Mapping;
+using Catolog.Services.BrandService;
 using Catolog.Services.CategoryServices;
 using Catolog.Services.FeatureSliderService;
 using Catolog.Services.ProductDetailDetailServices;
@@ -34,6 +35,7 @@ builder.Services.AddScoped<IFeatureSliderService, FeatureSliderService>();
 builder.Services.AddScoped<IProductDetailServices, ProductDetailServices>();
 builder.Services.AddScoped<IProductImageService, ProductImagesService>();
 builder.Services.AddScoped<ISpecialOfferService, SpecialOfferService>();
+builder.Services.AddScoped<IBrandService, BrandService>();
 
 //automapper konfigürasyonu
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

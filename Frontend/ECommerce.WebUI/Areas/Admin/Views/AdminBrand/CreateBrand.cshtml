@@ -1,0 +1,48 @@
+﻿@model Frontend.DtosLayer.BrandDto.CreateBrandDto
+
+@{
+    ViewData["Title"] = "Yeni Marka Ekle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+</style>
+
+<h1>Yeni Marka Ekle</h1>
+
+<div class="col-lg-6">
+    <div class="card-style mb-30">
+        <h6 class="mb-25">Marka Bilgileri</h6>
+
+        <form method="post">
+            <div class="input-style-1">
+                <label>Marka Adı</label>
+                <input type="text" asp-for="BrandName" placeholder="Örn: BMW, Mercedes, Audi..." />
+            </div>
+
+            <div class="input-style-1">
+                <label>Marka Logo/Görsel URL</label>
+                <input type="text" asp-for="BrandImageUrl" placeholder="https://resim-yolu.com/logo.png" />
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="main-btn primary-btn btn-hover">
+                    <i class="lni lni-save mr-10"></i> Markayı Kaydet
+                </button>
+
+                <a asp-action="Index"
+                   asp-controller="AdminBrand"
+                   asp-area="Admin"
+                   class="main-btn secondary-btn btn-hover">
+                    <i class="lni lni-chevron-left mr-10"></i> Listeye Dön
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
