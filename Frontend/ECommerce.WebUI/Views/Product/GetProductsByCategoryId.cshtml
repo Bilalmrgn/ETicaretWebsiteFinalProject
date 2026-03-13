@@ -1,0 +1,90 @@
+﻿@model List<Frontend.DtosLayer.ProductsDto.ProductListDto>
+
+@{
+    ViewData["Title"] = "Ürün Listesi";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/">Anasayfa</a>
+                <a class="breadcrumb-item text-dark" href="#">Mağaza</a>
+                <span class="breadcrumb-item active">Ürün Listesi</span>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-3 col-md-4">
+            @await Component.InvokeAsync("ProductListPriceFilterComponentPartial")
+            @await Component.InvokeAsync("ProductListColorFilterComponentPartial")
+            @await Component.InvokeAsync("ProductListSizeFilterComponentPartial")
+        </div>
+
+        <div class="col-lg-9 col-md-8">
+            <div class="row pb-3">
+                @* Üst Sıralama Bileşeni *@
+                @await Component.InvokeAsync("ProductListSortinGetProductCountComponentPartial")
+
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden">
+                                    <img class="img-fluid w-100" src="@item.ProductImageUrl" alt="@item.ProductName">
+                                    <div class="product-action">
+                                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId"><i class="fa fa-search"></i></a>
+                                    </div>
+                                </div>
+                                <div class="text-center py-4">
+                                    <a class="h6 text-decoration-none text-truncate" asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId">@item.ProductName</a>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5>@item.ProductPrice.ToString("C2")</h5>
+                                        <h6 class="text-muted ml-2"><del>@((item.ProductPrice * 1.1m).ToString("C2"))</del></h6>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small>(99)</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center py-5">
+                        <div class="alert alert-light border">
+                            <i class="fa fa-info-circle fa-3x text-primary mb-3"></i>
+                            <h4>Bu kategoride ürün bulunamadı.</h4>
+                        </div>
+                    </div>
+                }
+                <div class="col-12">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled"><a class="page-link" href="#">Geri</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">İleri</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

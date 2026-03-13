@@ -1,4 +1,5 @@
 ﻿using Catolog.DTOs.ProductDetailDTOs;
+using Catolog.DTOs.ProductDTOs;
 
 namespace Catolog.Services.ProductDetailServices
 {
@@ -9,6 +10,9 @@ namespace Catolog.Services.ProductDetailServices
         Task CreateProductDetailAsync(CreateProductDetailDTOs ProductDetailDTOs);//burada kullanıcıya geri veri döndürmemize gerek yok bu yüzden Task<T> yapmadık
         Task DeleteProductDetailAsync(string id);
         Task<GetByIdProductDetailDTOs> GetByIdProductDetailAsync(string id);//burada kullanıcıya id ye göre bir değer döndüreceğimiz için Task<T> Yaptık
+        /*Task<ResultProductDTOs> GetProduct(string id);*/
 
+        //bastığım ürüne ait detayları getirme
+        Task<GetByIdProductDetailDTOs> GetProductByIdAsync(string productId);
     }
 }

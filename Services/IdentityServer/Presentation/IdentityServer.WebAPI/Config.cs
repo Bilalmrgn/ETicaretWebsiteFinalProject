@@ -8,7 +8,6 @@ namespace IdentityServer.WebAPI
      IdentityServer'a şunları öğretmek   
      yani hangi mikroservisler var
      bu servislerde hangi yetkiler olacak
-     
      */
 
     //program.cs dosyasında add lendi
@@ -96,13 +95,13 @@ namespace IdentityServer.WebAPI
             //Manager'ın sahip olacağı izinler burada verilecek
             new Client
             {
+
                 ClientId = "ECommerceManagerId",
                 ClientName = "ECommerce manager user",
                 AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
                 AllowedScopes = {"catalog.full", "order.getAllOrder", IdentityServerConstants.StandardScopes.OfflineAccess },
                 AllowOfflineAccess = true,//refresh token
-
             },
 
             //Admin in sahip olacağı izinler burada verilecek.

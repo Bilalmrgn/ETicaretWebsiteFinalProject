@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Catolog.Entities
 {
+    [BsonIgnoreExtraElements]
     public class Product
     {
         [BsonId]

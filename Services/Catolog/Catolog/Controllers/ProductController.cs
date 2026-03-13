@@ -32,6 +32,7 @@ namespace Catolog.Controllers
             return Ok(values);
         }
 
+        [AllowAnonymous]
         [HttpGet("GetProductById/{id}")]
         public async Task<IActionResult> GetProductById(string id)
         {
@@ -61,5 +62,12 @@ namespace Catolog.Controllers
             return Ok("Ürün başarıyla güncellendi.");
         }
 
+        //get product by category id
+        [HttpGet("GetProductsByCategoryId/{id}")]
+        public async Task<IActionResult> GetProductsByCategoryId(string id)
+        {
+            var values = await _productService.GetProductsByCategoryIdAsync(id);
+            return Ok(values);
+        }
     }
 }

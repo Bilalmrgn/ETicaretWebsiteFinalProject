@@ -45,6 +45,13 @@ namespace Catolog.Services.ProductDetailDetailServices
             return _mapper.Map<GetByIdProductDetailDTOs>(values);
         }
 
+        //bastığım ürüne ait detay sayfasını getirtme
+        public async Task<GetByIdProductDetailDTOs> GetProductByIdAsync(string productId)
+        {
+            var values = await _productDetailCollection.Find<ProductDetail>(x=>x.ProductId == productId).FirstOrDefaultAsync();
+            return _mapper.Map<GetByIdProductDetailDTOs>(values);
+        }
+
         public async Task UpdateProductDetailAsync(UpdateProductDetailDTOs updateProductDetailDTOs)
         {
             var values = _mapper.Map<ProductDetail>(updateProductDetailDTOs);

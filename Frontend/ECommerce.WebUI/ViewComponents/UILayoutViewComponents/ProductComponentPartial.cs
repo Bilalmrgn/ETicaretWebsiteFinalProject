@@ -30,7 +30,7 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
 
                 return View(values);
             }
-            return View();
+            return View(new List<ProductListDto>());  
         }
     }
 }

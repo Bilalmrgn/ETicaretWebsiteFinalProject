@@ -78,7 +78,11 @@ namespace Catolog.Services.ProductServices
             );
         }
 
+        public async Task<List<ResultProductDTOs>> GetProductsByCategoryIdAsync(string categoryId)
+        {
+            var values = await _productCollection.Find(x => x.CategoryId == categoryId).ToListAsync();
 
-
+            return _mapper.Map<List<ResultProductDTOs>>(values);
+        }
     }
 }

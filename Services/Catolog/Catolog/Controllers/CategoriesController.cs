@@ -19,6 +19,7 @@ namespace Catolog.Controllers
 
         // kategori listesi
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> CategoryList()
         {
             var values = await _categoryServices.GetAllCategoryAsync();
@@ -27,6 +28,7 @@ namespace Catolog.Controllers
 
         //id ye göre kategori listesi
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetCategoryById(string id)
         {
             var values = await _categoryServices.GetByIdCategoryAsync(id);

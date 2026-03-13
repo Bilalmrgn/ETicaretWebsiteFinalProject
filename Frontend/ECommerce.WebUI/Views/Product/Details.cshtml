@@ -1,6 +1,10 @@
-﻿@{
+﻿@model Frontend.DtosLayer.ProductsDto.GetProductByIdDto
+
+@{
     ViewData["Title"] = "Details";
     Layout = "~/Views/UILayout/_Layout.cshtml";
+    //id yi al
+    var productId = Model?.ProductId;
 }
 
 <h1>Details</h1>
@@ -15,13 +19,14 @@
         </div>
     </div>
 </div>
-<!-- Shop Detail Start -->
+
+
 <div class="container-fluid pb-5">
     <div class="row px-xl-5">
-        @await Component.InvokeAsync("ProductDetailImageSliderComponentPartial")
+        @* ID parametresini Component'lere gönderiyoruz *@
+        @await Component.InvokeAsync("ProductDetailImageSliderComponentPartial", new { id = productId })
 
-        @await Component.InvokeAsync("ProductDetailFeatureComponentPartial")
-
+        @await Component.InvokeAsync("ProductDetailFeatureComponentPartial", new { id = productId })
     </div>
     <div class="row px-xl-5">
         <div class="col">
@@ -32,13 +37,11 @@
                     <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
                 </div>
                 <div class="tab-content">
+                    @await Component.InvokeAsync("ProductDetailDescriptionComponentPartial", new { id = productId })
 
-                    @await Component.InvokeAsync("ProductDetailDescriptionComponentPartial")
+                    @await Component.InvokeAsync("ProductDetailInformationComponentPartial", new { id = productId })
 
-                    @await Component.InvokeAsync("ProductDetailInformationComponentPartial")
-
-                    @await Component.InvokeAsync("ProductDetailReviewComponentPartial")
-
+                    @await Component.InvokeAsync("ProductDetailReviewComponentPartial", new { id = productId })
                 </div>
             </div>
         </div>

@@ -10,6 +10,6 @@ namespace Catolog.Services.ProductServices
         Task DeleteProductAsync(string id);
         Task<GetByIdProductDTOs> GetByIdProductAsync(string id);//burada kullanıcıya id ye göre bir değer döndüreceğimiz için Task<T> Yaptık
         Task<List<ResultProductDTOs>> GetLast10ProductsAsync();
-
+        Task<List<ResultProductDTOs>> GetProductsByCategoryIdAsync(string categoryId);
     }
 }

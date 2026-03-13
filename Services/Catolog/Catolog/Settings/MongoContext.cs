@@ -23,6 +23,7 @@ namespace Catolog.Settings
             Products = Database.GetCollection<Product>(s.ProductCollectionName);
             ProductImages = Database.GetCollection<ProductImages>(s.ProductImagesCollectionName);
             ProductDetails = Database.GetCollection<ProductDetail>(s.ProductDetailConnectionName);
+            //
         }
     }
 }

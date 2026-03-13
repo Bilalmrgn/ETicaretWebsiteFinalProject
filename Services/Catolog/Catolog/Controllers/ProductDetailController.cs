@@ -19,6 +19,7 @@ namespace Catolog.Controllers
 
         // kategori listesi
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ProductDetailList()
         {
             var values = await _productDetailServices.GetAllProductDetailAsync();
@@ -27,6 +28,7 @@ namespace Catolog.Controllers
 
         //id ye göre kategori listesi
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProductDetailById(string id)
         {
             var values = _productDetailServices.GetByIdProductDetailAsync(id);
@@ -52,6 +54,15 @@ namespace Catolog.Controllers
         {
             await _productDetailServices.UpdateProductDetailAsync(updateProductDetailDTOs);
             return Ok("Ürün detayı başarıyla güncellendi.");
+        }
+
+        [AllowAnonymous]
+        [HttpGet("GetByProductId/{id}")]
+        public async Task<IActionResult> GetProductById(string id)
+        {
+            //id = productId
+            var value = await _productDetailServices.GetProductByIdAsync(id);
+            return Ok(value);
         }
     }
 }

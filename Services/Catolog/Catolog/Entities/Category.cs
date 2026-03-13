@@ -2,6 +2,7 @@
 
 namespace Catolog.Entities
 {
+    [BsonIgnoreExtraElements]
     public class Category
     {
         [BsonId] //mongodb de id olduğunu belirtmek için kullanılır
