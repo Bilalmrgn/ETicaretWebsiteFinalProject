@@ -28,7 +28,7 @@ namespace ECommerce.WebUI.Controllers
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await client.GetAsync($"https://localhost:7166/api/ProductDetail/GetByProductId/{id}");
+            var response = await client.GetAsync($"https://localhost:7166/api/Product/GetProductById/{id}");
 
             if (response.IsSuccessStatusCode)
             {

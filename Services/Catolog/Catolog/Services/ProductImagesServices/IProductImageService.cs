@@ -9,6 +9,6 @@ namespace Catolog.Services.ProductImagesServices
         Task CreateProductImagesAsync(CreateProductImagesDTOs ProductImageDTOs);//burada kullanıcıya geri veri döndürmemize gerek yok bu yüzden Task<T> yapmadık
         Task DeleteProductImagesAsync(string id);
         Task<GetByIdProductImagesDTOs> GetByIdProductImagesAsync(string id);//burada kullanıcıya id ye göre bir değer döndüreceğimiz için Task<T> Yaptık
-
+        Task<List<GetByIdProductImagesDTOs>> GetProductImagesByProductIdAsync(string productId);
     }
 }

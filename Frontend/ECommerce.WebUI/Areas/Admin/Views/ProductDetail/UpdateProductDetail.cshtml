@@ -1,0 +1,74 @@
+﻿@using Frontend.DtosLayer.ProductDetailDto
+@model Frontend.DtosLayer.ProductsDto.GetProductByIdDto
+
+@{
+    ViewData["Title"] = "Ürün Detay Yönetimi";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+    var detail = ViewBag.ExistingImage as ResultProductDetailDto;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="card-title">@Model.ProductName - Detay Bilgileri</h4>
+                        <p class="text-muted">Ürün ID: <strong>@Model.ProductId</strong></p>
+                    </div>
+                    <button type="button" id="btnEdit" class="btn btn-warning" onclick="enableEditMode()">
+                        <i class="fa fa-edit"></i> Bilgileri Düzenle
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/Admin/ProductDetail/UpdateProductDetail">
+                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                        <input type="hidden" name="ProductDetailId" value="@ViewBag.ProductDetailId" />
+
+                        <div class="form-group mb-4">
+                            <label class="font-weight-bold">Ürün Açıklaması (Description)</label>
+                            <textarea name="ProductDetailDescription" rows="5" class="form-control detail-input" readonly>@(detail?.ProductDetailDescription ?? "Açıklama bulunamadı.")</textarea>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="font-weight-bold">Ek Bilgiler (Information)</label>
+                            <textarea name="ProductDetailInformation" rows="8" class="form-control detail-input" readonly>@(detail?.ProductDetailInformation ?? "Ek bilgi bulunamadı.")</textarea>
+                            <small class="text-info">* Teknik özellikler, boyutlar veya materyal bilgileri burada yer alır.</small>
+                        </div>
+
+                        @* Kaydet/Vazgeç Butonları (Başlangıçta Gizli) *@
+                        <div id="editActions" style="display:none;">
+                            <hr />
+                            <div class="form-group mt-4">
+                                <button type="submit" class="btn btn-success px-4">
+                                    <i class="fa fa-save"></i> Değişiklikleri Kaydet
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="location.reload()">Vazgeç</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function enableEditMode() {
+            // Textarea'ları düzenlenebilir yap
+            const inputs = document.querySelectorAll('.detail-input');
+            inputs.forEach(input => {
+                input.removeAttribute('readonly');
+                input.classList.add('border-primary'); // Düzenleme modunda olduğunu belli et
+            });
+
+            // Butonları göster/gizle
+            document.getElementById('editActions').style.display = 'block';
+            document.getElementById('btnEdit').style.display = 'none';
+
+            // İlk textarea'ya odaklan
+            inputs[0].focus();
+        }
+    </script>
+}

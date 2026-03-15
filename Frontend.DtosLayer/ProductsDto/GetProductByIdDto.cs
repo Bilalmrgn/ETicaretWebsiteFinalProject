@@ -8,9 +8,11 @@ namespace Frontend.DtosLayer.ProductsDto
 {
     public class GetProductByIdDto
     {
-        public string ProductDetailId { get; set; }
-        public string ProductDetailInformation { get; set; }
-        public string ProductDetailDescription { get; set; }
         public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public decimal ProductPrice { get; set; }
+        public string ProductImageUrl { get; set; }
+        public string ProductDescription { get; set; }
+        public string CategoryId { get; set; }
     }
 }

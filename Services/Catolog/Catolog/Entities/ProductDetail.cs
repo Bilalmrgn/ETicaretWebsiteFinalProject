@@ -10,8 +10,8 @@ namespace Catolog.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string ProductDetailId { get; set; }
 
-        public string ProductDetailInformation { get; set; }
-        public string ProductDetailDescription { get; set; }
+        public string? ProductDetailInformation { get; set; }
+        public string? ProductDetailDescription { get; set; }
 
         // ÖNEMLİ: MongoDB'deki koleksiyonunuzda bu alanın tam adını kontrol edin. 
         // Eğer veritabanında "ProductId" ise "productId" yazmak null döndürür.

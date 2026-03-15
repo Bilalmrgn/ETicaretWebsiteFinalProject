@@ -23,10 +23,9 @@
 
 <div class="container-fluid pb-5">
     <div class="row px-xl-5">
-        @* ID parametresini Component'lere gönderiyoruz *@
-        @await Component.InvokeAsync("ProductDetailImageSliderComponentPartial", new { id = productId })
+        @await Component.InvokeAsync("ProductDetailImageSliderComponentPartial", new { id = productId })@*yapıldı*@
 
-        @await Component.InvokeAsync("ProductDetailFeatureComponentPartial", new { id = productId })
+        @await Component.InvokeAsync("ProductDetailFeatureComponentPartial", new { id = productId })@*yapıldı*@
     </div>
     <div class="row px-xl-5">
         <div class="col">

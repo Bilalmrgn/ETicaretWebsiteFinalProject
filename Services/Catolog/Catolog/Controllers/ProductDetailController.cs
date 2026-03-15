@@ -49,9 +49,11 @@ namespace Catolog.Controllers
             return Ok("Ürün detayı başarıyla silindi.");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateProductDetail(UpdateProductDetailDTOs updateProductDetailDTOs)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProductDetail(string id,UpdateProductDetailDTOs updateProductDetailDTOs)
         {
+            updateProductDetailDTOs.ProductId = id;
+
             await _productDetailServices.UpdateProductDetailAsync(updateProductDetailDTOs);
             return Ok("Ürün detayı başarıyla güncellendi.");
         }

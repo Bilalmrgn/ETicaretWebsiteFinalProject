@@ -1,0 +1,121 @@
+﻿@using Frontend.DtosLayer.ProductImageDto
+@model Frontend.DtosLayer.ProductsDto.GetProductByIdDto
+@{
+    ViewData["Title"] = "Görsel Yönetimi";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="card-title">@Model.ProductName - Görsel Yönetimi</h4>
+                        <p class="text-muted">Ürün ID: <strong>@Model.ProductId</strong></p>
+                    </div>
+                    <button type="button" id="btnEdit" class="btn btn-warning" onclick="enableEditMode()">
+                        <i class="fa fa-edit"></i> Düzenle / Yeni Ekle
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/Admin/ProductImage/CreateProductImage">
+                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+                        <div id="imageInputs">
+                            @if (ViewBag.ExistingImages != null)
+                            {
+                                int count = 1;
+                                foreach (var item in (List<ResultProductImageDto>)ViewBag.ExistingImages)
+                                {
+                                    @* Her bir görsel satırı için *@
+                                    foreach (var imgUrl in item.Images)
+                                    {
+                                        <div class="form-group image-row">
+                                            <label>Görsel URL <span class="row-number">@count</span></label>
+                                            <div class="input-group mb-3">
+                                                <input type="text" name="Images" class="form-control img-input" value="@imgUrl" readonly required>
+                                                <div class="input-group-append edit-controls" style="display:none;">
+                                                    @* Controller'daki Delete metoduna yönlendirir *@
+                                                    <a href="/Admin/ProductImage/DeleteProductImage/@item.ProductImagesId"
+                                                       class="btn btn-danger"
+                                                       onclick="return confirm('Bu görseli kalıcı olarak silmek istediğinize emin misiniz?')">
+                                                        Sil
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        count++;
+                                    }
+                                }
+                            }
+                        </div>
+
+                        @* Başlangıçta gizli olan aksiyon alanı *@
+                        <div id="editActions" style="display:none;">
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-info" onclick="addNewImageInput()">
+                                    <i class="fa fa-plus"></i> Yeni Görsel Alanı Ekle
+                                </button>
+                            </div>
+                            <hr />
+                            <div class="form-group mt-4">
+                                <button type="submit" class="btn btn-success">Değişiklikleri Kaydet (Post)</button>
+                                <button type="button" class="btn btn-secondary" onclick="location.reload()">Vazgeç</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function enableEditMode() {
+            // Salt okunur modunu kapat
+            const inputs = document.querySelectorAll('.img-input');
+            inputs.forEach(input => input.removeAttribute('readonly'));
+
+            // Düzenleme butonlarını (Sil butonu dahil) göster
+            const editControls = document.querySelectorAll('.edit-controls');
+            editControls.forEach(el => el.style.display = 'block');
+
+            // Kaydet ve Yeni Ekle butonlarını göster
+            document.getElementById('editActions').style.display = 'block';
+            document.getElementById('btnEdit').style.display = 'none';
+
+            // Eğer listede hiç resim yoksa kullanıcıya boş bir input aç
+            if (inputs.length === 0) {
+                addNewImageInput();
+            }
+        }
+
+        function addNewImageInput() {
+            const container = document.getElementById('imageInputs');
+            const currentRows = document.querySelectorAll('.image-row').length;
+            const nextIndex = currentRows + 1;
+
+            const newDiv = document.createElement('div');
+            newDiv.className = 'form-group image-row';
+            newDiv.innerHTML = `
+                        <label>Görsel URL <span class="row-number">${nextIndex}</span> (Yeni)</label>
+                        <div class="input-group mb-3">
+                            <input type="text" name="Images" class="form-control img-input" placeholder="https://..." required>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-danger" type="button" onclick="this.closest('.image-row').remove(); updateRowNumbers();">Kaldır</button>
+                            </div>
+                        </div>
+                    `;
+            container.appendChild(newDiv);
+        }
+
+        function updateRowNumbers() {
+            const numbers = document.querySelectorAll('.row-number');
+            numbers.forEach((span, index) => {
+                span.innerText = index + 1;
+            });
+        }
+    </script>
+}

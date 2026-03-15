@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DTOs\ProductDescription\" />
     <Folder Include="Services\ProductImagesServices\" />
     <Folder Include="Services\ProductDetailServices\" />
   </ItemGroup>

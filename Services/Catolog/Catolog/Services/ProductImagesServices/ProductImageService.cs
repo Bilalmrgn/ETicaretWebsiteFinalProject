@@ -44,6 +44,12 @@ namespace Catolog.Services.ProductImagesServices
             return _mapper.Map<GetByIdProductImagesDTOs>(values);
         }
 
+        public async Task<List<GetByIdProductImagesDTOs>> GetProductImagesByProductIdAsync(string productId)
+        {
+            var values = await _ProductImagesCollection.Find(x=>x.ProductId == productId).ToListAsync();
+            return _mapper.Map<List<GetByIdProductImagesDTOs>>(values);
+        }
+
         public async Task UpdateProductImagesAsync(UpdateProductImagesDTOs updateProductImagesDTOs)
         {
             var values = _mapper.Map<ProductImages>(updateProductImagesDTOs);

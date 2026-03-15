@@ -40,7 +40,7 @@ namespace Catolog.Controllers
             return Ok("Ürün görseli başarıyla eklendi");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductImages(string id)
         {
             await _productImagesServices.DeleteProductImagesAsync(id);
@@ -52,6 +52,13 @@ namespace Catolog.Controllers
         {
             await _productImagesServices.UpdateProductImagesAsync(updateProductImagesDTOs);
             return Ok("Ürün görseli başarıyla güncellendi.");
+        }
+
+        [HttpGet("GetProductImagesByProductId/{id}")]
+        public async Task<IActionResult> GetProductImagesByProductId(string id)
+        {
+            var values = await _productImagesServices.GetProductImagesByProductIdAsync(id);
+            return Ok(values);
         }
     }
 }

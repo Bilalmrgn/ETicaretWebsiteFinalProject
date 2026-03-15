@@ -37,16 +37,17 @@ namespace Catolog.Services.ProductServices
         //Get All Products
         public async Task<List<ResultProductDTOs>> GetAllProductAsync()
         {
-            var result = await _productCollection.Aggregate()
-                .Lookup<Product, Category, ProductWithCategory>(
-                    _categoryCollection,
-                    p => p.CategoryId,    
-                    c => c.CategoryId,    
-                    x => x.Categories 
-                )
-                .ToListAsync();
-            
-            return _mapper.Map<List<ResultProductDTOs>>(result);
+            var products = await _productCollection.Find(x => true).ToListAsync();
+
+            var categories = await _categoryCollection.Find(x => true).ToListAsync();
+
+            foreach (var product in products)
+            {
+                product.Category = categories.FirstOrDefault(x => x.CategoryId == product.CategoryId);
+            }
+
+            // 4. Map et ve gönder
+            return _mapper.Map<List<ResultProductDTOs>>(products);
         }
 
         //Get By Id Product
