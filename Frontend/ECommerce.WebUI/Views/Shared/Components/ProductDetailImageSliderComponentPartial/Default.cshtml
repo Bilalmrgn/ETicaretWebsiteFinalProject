@@ -7,17 +7,26 @@
                 int itemIndex = 0;
             }
 
-            @foreach (var item in Model)
+            @* 1. Kontrol: Model null mı veya boş mu? *@
+            @if (Model != null && Model.Any())
             {
-                @foreach (var imageUrl in item.Images)
+                @foreach (var item in Model)
                 {
-                    <div class="carousel-item @(itemIndex == 0 ? "active" : "")">
-                        <img class="w-100 h-100" src="@imageUrl" alt="Product Image">
-                    </div>
-                    itemIndex++;
+                    @* 2. Kontrol: Images listesi null mı? *@
+                    if (item.Images != null)
+                    {
+                        @foreach (var imageUrl in item.Images)
+                        {
+                            <div class="carousel-item @(itemIndex == 0 ? "active" : "")">
+                                <img class="w-100 h-100" src="@imageUrl" alt="Product Image">
+                            </div>
+                            itemIndex++;
+                        }
+                    }
                 }
             }
 
+            @* Eğer hiç resim dönmediyse veya model null ise varsayılan resmi göster *@
             @if (itemIndex == 0)
             {
                 <div class="carousel-item active">

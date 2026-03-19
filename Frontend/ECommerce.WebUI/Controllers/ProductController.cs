@@ -40,7 +40,7 @@ namespace ECommerce.WebUI.Controllers
         }
 
         //kategoriye göre ürünleri listeleme
-        public async Task<IActionResult> GetProductsByCategoryIdAsync(string id)
+        public async Task<IActionResult> GetProductsByCategoryId(string id)
         {
             var client = _httpClientFactory.CreateClient();
 

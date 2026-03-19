@@ -27,7 +27,7 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents.ProductDetailsVi
                 return View(value);
             }
 
-            return View();
+            return View(new List<GetByIdProductImageDto>());
         }
     }
 }

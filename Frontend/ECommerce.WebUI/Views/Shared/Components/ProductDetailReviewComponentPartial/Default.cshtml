@@ -1,47 +1,63 @@
-﻿<div class="tab-pane fade" id="tab-pane-3">
+﻿@model List<Frontend.DtosLayer.CommentDto.ResultCommentListDto>
+
+<div class="tab-pane fade" id="tab-pane-3">
     <div class="row">
         <div class="col-md-6">
-            <h4 class="mb-4">1 review for "Product Name"</h4>
-            <div class="media mb-4">
-                <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                <div class="media-body">
-                    <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                    <div class="text-primary mb-2">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                        <i class="far fa-star"></i>
+            @if (Model != null && Model.Count > 0)
+            {
+                <h4 class="mb-4">@Model.Count review for this product</h4>
+                @foreach (var item in Model)
+                {
+                    <div class="media mb-4">
+                        <div class="media-body">
+                            <h6>@item.NameSurname<small> - <i>@item.CreatedDate.ToString("dd MMM yyyy")</i></small></h6>
+                            <div class="text-primary mb-2">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <i class="@(i <= item.Rating ? "fas" : "far") fa-star"></i>
+                                }
+                            </div>
+                            <p>@item.CommentMessage</p>
+                        </div>
                     </div>
-                    <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                </div>
-            </div>
+                }
+            }
+            else
+            {
+                <h4 class="mb-4">No reviews yet. Be the first to review!</h4>
+            }
         </div>
+
         <div class="col-md-6">
             <h4 class="mb-4">Leave a review</h4>
             <small>Your email address will not be published. Required fields are marked *</small>
-            <div class="d-flex my-3">
-                <p class="mb-0 mr-2">Your Rating * :</p>
-                <div class="text-primary">
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <i class="far fa-star"></i>
+
+            <form asp-action="CreateComment" asp-controller="Comment" method="post">
+                <input type="hidden" name="ProductId" value="@ViewContext.RouteData.Values["id"]" />
+                <input type="hidden" name="Rating" id="selectedRating" value="0" />
+
+                <div class="d-flex my-3">
+                    <p class="mb-0 mr-2">Your Rating * :</p>
+                    <div class="text-primary" id="star-rating" style="cursor: pointer;">
+                        <i class="far fa-star star-item" data-value="1"></i>
+                        <i class="far fa-star star-item" data-value="2"></i>
+                        <i class="far fa-star star-item" data-value="3"></i>
+                        <i class="far fa-star star-item" data-value="4"></i>
+                        <i class="far fa-star star-item" data-value="5"></i>
+                    </div>
                 </div>
-            </div>
-            <form>
+
                 <div class="form-group">
                     <label for="message">Your Review *</label>
-                    <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
+                    <textarea name="CommentMessage" id="message" cols="30" rows="5" class="form-control" required></textarea>
                 </div>
                 <div class="form-group">
                     <label for="name">Your Name *</label>
-                    <input type="text" class="form-control" id="name">
+                    <input type="text" name="NameSurname" class="form-control" id="name" required>
                 </div>
                 <div class="form-group">
                     <label for="email">Your Email *</label>
-                    <input type="email" class="form-control" id="email">
+                    <input type="email" name="Email" class="form-control" id="email" required>
                 </div>
                 <div class="form-group mb-0">
                     <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
@@ -50,3 +66,24 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.star-item').forEach(star => {
+        star.addEventListener('click', function() {
+            let rating = this.getAttribute('data-value');
+            document.getElementById('selectedRating').value = rating;
+
+            // Yıldızların rengini güncelle
+            document.querySelectorAll('.star-item').forEach(s => {
+                let sValue = s.getAttribute('data-value');
+                if(sValue <= rating) {
+                    s.classList.remove('far');
+                    s.classList.add('fas');
+                } else {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                }
+            });
+        });
+    });
+</script>

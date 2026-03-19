@@ -15,7 +15,7 @@ namespace IdentityServer.WebAPI
     {
         //bu sınıfın amacı: benim catolog mikroservisim var ve bu mikroserviste ful ve sadece okuma izinleri yapacağım
         //ApiResource --> Hangi API'ler korunuyor
-        public static IEnumerable<ApiResource> ApiSResources => new ApiResource[]
+        public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
         {
             new ApiResource("catalog_microservice")//benim resourceCatolog isminde bir mikroservisim var ve bu mikroservisimi korumaya alacağım
             {
@@ -27,6 +27,11 @@ namespace IdentityServer.WebAPI
                 Scopes = { "discount.full"}
             },
 
+            new ApiResource("comment_microservice")
+            {
+                Scopes = { "comment.full","comment.read"}
+            },
+
             new ApiResource("order_microservice")
             {
                 Scopes = {"order.full","order.getAllOrder"}
@@ -35,6 +40,11 @@ namespace IdentityServer.WebAPI
             new ApiResource("basket_microservice")
             {
                 Scopes = { "basket.full"}
+            },
+
+            new ApiResource("contact_microservice")
+            {
+                Scopes = { "contact.full","contact.create"}
             },
 
             new ApiResource("cargo_microservice")//benim catalog_cargo isminde bir mikroservisim var ve bu mikroservisimi korumaya alacağım
@@ -76,6 +86,10 @@ namespace IdentityServer.WebAPI
             new ApiScope("cargo.full","kargo işlemlerine tam yetki"),
             new ApiScope("cargo.read","kargo işlemlerine okuma yetkisi"),
             new ApiScope("basket.full","basket işlemlerine full işlem yetkisi"),
+            new ApiScope("comment.full","comment işlemlerine full işlem yetkisi"),
+            new ApiScope("comment.read","comment işlemlerine okuma işlem yetkisi"),
+            new ApiScope("contact.full","contact işlemlerine tam işlem yetkisi"),
+            new ApiScope("contact.create","contact işlemlerine oluşturma işlem yetkisi"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -88,7 +102,7 @@ namespace IdentityServer.WebAPI
                 ClientName = "ECommerce visitor user",
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.read","cargo.read",IdentityServerConstants.StandardScopes.OfflineAccess},//visitor katalogları okuyabilme yetkisi verdik
+                AllowedScopes = {"catalog.read","cargo.read","comment.read","contact.create",IdentityServerConstants.StandardScopes.OfflineAccess},//visitor katalogları okuyabilme yetkisi verdik
             
             },
 
@@ -100,7 +114,7 @@ namespace IdentityServer.WebAPI
                 ClientName = "ECommerce manager user",
                 AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.full", "order.getAllOrder", IdentityServerConstants.StandardScopes.OfflineAccess },
+                AllowedScopes = {"catalog.full", "order.getAllOrder","comment.full", "contact.create", IdentityServerConstants.StandardScopes.OfflineAccess },
                 AllowOfflineAccess = true,//refresh token
             },
 
@@ -111,7 +125,7 @@ namespace IdentityServer.WebAPI
                 ClientName = "ECommerce admin user",
                 AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.full", "order.full" , "discount.full","cargo.full","basket.full" ,IdentityServerConstants.StandardScopes.OfflineAccess,
+                AllowedScopes = {"catalog.full", "order.full" , "discount.full","cargo.full","basket.full","comment.full" , "contact.full",IdentityServerConstants.StandardScopes.OfflineAccess,
                 IdentityServerConstants.LocalApi.ScopeName,
                 IdentityServerConstants.StandardScopes.Email,
                 IdentityServerConstants.StandardScopes.OpenId,

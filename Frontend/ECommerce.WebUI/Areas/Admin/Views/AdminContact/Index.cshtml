@@ -1,0 +1,127 @@
+﻿@model List<Frontend.DtosLayer.ContactDto.ResultContactDto>
+
+@{
+    ViewData["Title"] = "Gelen Mesajlar";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+    /* Okunmamış mesajları belirginleştirmek için küçük bir ekleme */
+    .unread-row {
+        font-weight: bold;
+        background-color: rgba(0,0,0,0.02);
+    }
+</style>
+
+<h1>Gelen Mesajlar</h1>
+
+<div class="col-lg-6">
+    <div class="card-style mb-30">
+        <div class="d-flex justify-content-between align-items-center mb-10">
+            <h6 class="mb-10">İletişim Formu Mesajları</h6>
+        </div>
+
+        <p class="text-sm mb-20">
+            Müşterilerinizden gelen tüm iletişim ve destek taleplerini buradan görüntüleyebilirsiniz.
+        </p>
+
+        <div class="table-wrapper table-responsive">
+            <table class="table striped-table">
+                <thead>
+                    <tr>
+                        <th><h6>Gönderen</h6></th>
+                        <th><h6>Konu</h6></th>
+                        <th><h6>Tarih</h6></th>
+                        <th><h6>Durum</h6></th>
+                        <th><h6>Mesajı Aç</h6></th>
+                        <th><h6>Sil</h6></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr class="@(item.IsRead ? "" : "unread-row")">
+                                <td>
+                                    <p>@item.NameSurname</p>
+                                    <span class="text-sm text-gray">@item.Email</span>
+                                </td>
+                                <td>
+                                    <p>@item.Subject</p>
+                                </td>
+                                <td>
+                                    <p>@item.SendDate.ToString("dd.MM.yyyy HH:mm")</p>
+                                </td>
+                                <td>
+                                    @if (item.IsRead)
+                                    {
+                                        <span class="status-btn success-btn">Okundu</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-btn danger-btn">Yeni</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="action">
+                                        <a asp-area="Admin"
+                                           asp-controller="AdminContact"
+                                           asp-action="GetByIdContactMessage"
+                                           asp-route-id="@item.ContactId"
+                                           class="text-primary">
+                                            <i class="lni lni-eye"></i> Detay
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action">
+                                        <form asp-area="Admin"
+                                              asp-controller="AdminContact"
+                                              asp-action="DeleteContactMessage"
+                                              asp-route-id="@item.ContactId"
+                                              method="post"
+                                              class="delete-contact-form">
+                                            <button class="text-danger" style="border:none;background:none;">
+                                                <i class="lni lni-trash-can"></i> Sil
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">Henüz bir mesaj bulunmuyor.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Form seçiciyi Contact için güncelledim
+        const deleteForms = document.querySelectorAll(".delete-contact-form");
+
+        deleteForms.forEach(function (form) {
+            form.addEventListener("submit", function (e) {
+                const confirmDelete = confirm("Bu mesajı silmek istediğinize emin misiniz?");
+                if (!confirmDelete) {
+                    e.preventDefault();
+                }
+            });
+        });
+    });
+</script>

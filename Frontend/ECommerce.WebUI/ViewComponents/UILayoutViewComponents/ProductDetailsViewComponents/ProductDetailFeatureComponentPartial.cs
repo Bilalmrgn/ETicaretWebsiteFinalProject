@@ -29,7 +29,7 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents.ProductDetailsVi
                 var values = JsonConvert.DeserializeObject<GetProductByIdDto>(jsonData);
                 return View(values);
             }
-            return View();
+            return View(new GetProductByIdDto());
         }
     }
 }

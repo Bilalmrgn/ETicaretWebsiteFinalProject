@@ -1,0 +1,108 @@
+﻿@model Frontend.DtosLayer.ContactDto.GetByIdContactDto
+@{
+    ViewData["Title"] = "Mesaj Detayı";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    .message-header {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    .message-content {
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        padding: 25px;
+        line-height: 1.6;
+        min-height: 200px;
+        white-space: pre-wrap; /* Mesajdaki satır boşluklarını korur */
+    }
+
+    .info-label {
+        font-weight: bold;
+        color: #5d657b;
+        width: 120px;
+        display: inline-block;
+    }
+
+    .badge-status {
+        font-size: 0.8rem;
+        padding: 5px 12px;
+        border-radius: 50px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="title-wrapper pt-30">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="title mb-30">
+                    <h2>Mesaj Detayı</h2>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="breadcrumb-wrapper mb-30">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a asp-area="Admin" asp-controller="AdminContact" asp-action="Index">Mesajlar</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                Detay
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-style mb-30">
+        <div class="message-header">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h4 class="mb-10">@Model.Subject</h4>
+                    <div class="mb-2">
+                        <span class="info-label">Gönderen:</span>
+                        <span class="text-dark font-weight-bold">@Model.NameSurname</span>
+                        <span class="text-muted ml-2">(@Model.Email)</span>
+                    </div>
+                    <div>
+                        <span class="info-label">Tarih:</span>
+                        <span>@Model.SendDate.ToString("dd MMMM yyyy HH:mm")</span>
+                    </div>
+                </div>
+                <div>
+                    <span class="badge-status @(Model.IsRead ? "success-btn" : "danger-btn") status-btn">
+                        @(Model.IsRead ? "Okundu" : "Yeni Mesaj")
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="message-body">
+            <h6 class="mb-10 text-muted">Mesaj İçeriği:</h6>
+            <div class="message-content text-dark">
+                @Model.Message
+            </div>
+        </div>
+
+        <div class="mt-30 d-flex gap-3">
+            <a asp-area="Admin" asp-controller="AdminContact" asp-action="Index" class="btn btn-outline-primary">
+                <i class="lni lni-arrow-left"></i> Listeye Dön
+            </a>
+
+            <a href="mailto:@Model.Email" class="btn btn-primary">
+                <i class="lni lni-reply"></i> Yanıtla (Mail Gönder)
+            </a>
+
+            <form asp-area="Admin" asp-controller="AdminContact" asp-action="DeleteContact" asp-route-id="@Model.ContactId" method="post" onsubmit="return confirm('Bu mesajı silmek istediğinize emin misiniz?');" style="display:inline;">
+                <button type="submit" class="btn btn-danger">
+                    <i class="lni lni-trash-can"></i> Mesajı Sil
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
