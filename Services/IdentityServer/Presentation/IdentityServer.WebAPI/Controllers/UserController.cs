@@ -21,8 +21,8 @@ namespace IdentityServer.WebAPI.Controllers
             _emailService = emailService;
         }
         //Create User
-        [Authorize(LocalApi.PolicyName)]
-        [HttpPost]
+        [AllowAnonymous]
+        [HttpPost("register")]
         public async Task<IActionResult> CreateUser(RegisterDto dto)
         {
             var result = await _userService.RegisterAsync(dto);
@@ -39,6 +39,8 @@ namespace IdentityServer.WebAPI.Controllers
 
             return Ok(result);
         }
+
+        //change password
         [Authorize(LocalApi.PolicyName)]
         [HttpPost("change-password")]//url de change password yazar
         public async Task<IActionResult> ChangePassword(string userId, ChangePasswordDto dto)
@@ -79,6 +81,14 @@ namespace IdentityServer.WebAPI.Controllers
         {
             var result = await _userService.GetAllAsync();
 
+            return Ok(result);
+        }
+
+        //Login user
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser(LoginDto loginDto)
+        {
+            var result = await _userService.LoginAsync(loginDto);
             return Ok(result);
         }
     }

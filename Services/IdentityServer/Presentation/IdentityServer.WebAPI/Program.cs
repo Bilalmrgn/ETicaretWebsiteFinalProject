@@ -1,4 +1,5 @@
 using IdentityServer.Domain;
+using IdentityServer.Persistence.Concrete;
 using IdentityServer.Persistence.ServiceRegistration;
 using IdentityServer.WebAPI;
 
@@ -22,7 +23,8 @@ builder.Services
     .AddInMemoryApiScopes(Config.ApiScopes)
     .AddInMemoryIdentityResources(Config.IdentityResources)
     .AddInMemoryClients(Config.Clients)
-    .AddDeveloperSigningCredential();
+    .AddDeveloperSigningCredential()
+    .AddProfileService<CustomProfileService>();
 
 //mikroservis koruma altýna alýnmasý
 builder.Services.AddLocalApiAuthentication();

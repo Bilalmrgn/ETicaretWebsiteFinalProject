@@ -84,7 +84,7 @@ namespace IdentityServer.Persistence.Concrete
                 City = x.City
             }).ToListAsync();
 
-            if(users == null)
+            if (users == null)
             {
                 throw new Exception("Kullanıcılar Listelenemedi. (Identity/Persistence/UserService/GetAllAsync)");
             }
@@ -92,9 +92,31 @@ namespace IdentityServer.Persistence.Concrete
             return users;
         }
 
-        public Task<UserResponse> LoginAsync(LoginDto loginDto)
+        //Login işlemleri
+        public async Task<UserResponse> LoginAsync(LoginDto loginDto)
         {
-            throw new NotImplementedException();
+            //1. kullanıcıyı bul
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+
+            if (user == null)
+            {
+                return new UserResponse { Succeeded = false, Message = "Kullanıcı bulunamadı." };
+            }
+
+            //2. şifre doğrulanır
+            var isPassword = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if (!isPassword)
+            {
+                return new UserResponse { Succeeded = false, Message = "Email veya şifre hatalı." };
+            }
+
+            return new UserResponse
+            {
+                Succeeded = true,
+                Message = "Giriş Başarılı"
+            };
+
         }
 
         public async Task<UserResponse> RegisterAsync(RegisterDto registerDto)
@@ -103,7 +125,7 @@ namespace IdentityServer.Persistence.Concrete
             if (registerDto.Password != registerDto.ConfirmPassword)
                 throw new Exception("Şifreler eşleşmiyor");
 
-            IdentityResult result = await _userManager.CreateAsync(new()
+            var user = new AppUser
             {
                 Name = registerDto.Name,
                 Surname = registerDto.Surname,
@@ -111,25 +133,24 @@ namespace IdentityServer.Persistence.Concrete
                 Email = registerDto.Email,
                 City = registerDto.City,
                 PhoneNumber = registerDto.PhoneNumber
-            }, registerDto.Password);
 
+            };
 
-
-            UserResponse response = new() { Succeeded = result.Succeeded };
+            IdentityResult result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (result.Succeeded)
             {
-                response.Message = "Kullanıcı başarıyla oluşturuldu";
-            }
-            else
-            {
-                foreach (var error in result.Errors)
-                {
-                    response.Message += $"{error.Code} - {error.Description}\n";
-                }
+                // yeni kayıt olan herkes normal user olmasını istiyorum. bunun token e eklenmesini sağlayan sınıf ise customProfileServis kısmıdır
+                await _userManager.AddClaimAsync(user, new System.Security.Claims.Claim("role", "User"));
+
+                return new UserResponse { Succeeded = true, Message = "Kullanıcı başarıyla oluşturuldu" };
             }
 
-            return response;
+            return new UserResponse
+            {
+                Succeeded = false,
+                Message = string.Join(", ", result.Errors.Select(e => e.Description))
+            };
 
         }
 

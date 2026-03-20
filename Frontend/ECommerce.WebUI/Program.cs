@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 //IHTTPClientFactory kýsmýný kullanabilmem için bunu entegre ettim. IHttpClientFactory nin amacý farklý api lere istek göndermek ve bu istekleri iþlemek
