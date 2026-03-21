@@ -10,16 +10,30 @@ builder.Services.AddHttpClient();
 
 //Service Registration (IoC)
 builder.Services.AddScoped<ITokenService, TokenService>();
-
+builder.Services.AddHttpContextAccessor();
 //Authentication konfigurasyonlarý
 
 //cookie authentication ekle. Çünkü MVC uygulamasý, kullanýcýyý cookie üzerinden tanýyacaktýr
-builder.Services.AddAuthentication("Cookies").AddCookie("Cookies", options =>
-{
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.ExpireTimeSpan = TimeSpan.FromHours(3);//cookie süresi. bu süre dolduðunda kullanýcý logout gibi gözükür ve tekrar giriþ yapmasý gerekir
-    
-});
+builder.Services.AddAuthentication("Cookies")
+    .AddCookie("Cookies", options =>
+    {
+        options.Cookie.Name = "ECommerceCookie"; // Çereze bir isim ver
+        options.LoginPath = "/Login/Index";
+        options.LogoutPath = "/Login/LogOut";
+        options.AccessDeniedPath = "/Error/Index";
+        options.ExpireTimeSpan = TimeSpan.FromHours(3);
+        options.SlidingExpiration = true; // Kullanýcý iþlem yaptýkça süre uzasýn
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.HttpOnly = true; // Güvenlik için (XSS korumasý)
+        options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
+        {
+            OnSigningIn = context =>
+            {
+                // Tokenlarýn mevcut olduðundan emin olur
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 var app = builder.Build();
 

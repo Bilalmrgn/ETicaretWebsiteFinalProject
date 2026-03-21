@@ -23,7 +23,7 @@ namespace IdentityServer.WebAPI.Controllers
         //Create User
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> CreateUser(RegisterDto dto)
+        public async Task<IActionResult> CreateUser([FromBody] RegisterDto dto)
         {
             var result = await _userService.RegisterAsync(dto);
 

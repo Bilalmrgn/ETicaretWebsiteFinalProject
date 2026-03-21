@@ -1,0 +1,144 @@
+﻿@model Frontend.DtosLayer.LoginDto.LoginDto
+
+@{
+    ViewData["Title"] = "Giriş Yap";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+<style>
+    /* Kart Sabit ve Vakur Duruş */
+    .login-card {
+        border: none;
+        border-radius: 24px;
+        background: #ffffff;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+        overflow: hidden;
+        max-width: 900px;
+        margin: auto;
+    }
+
+    /* Sol Görsel Alanı - Daha Soft Bir Sarı */
+    .login-side-panel {
+        background-color: #ffd333;
+        color: #3d464d;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        text-align: center;
+    }
+
+    /* Input Tasarımı - Apple Style Minimalist */
+    .form-control-elegant {
+        border-radius: 12px;
+        border: 2px solid #f1f3f5;
+        background-color: #f8f9fa;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control-elegant:focus {
+            border-color: #3d464d;
+            background-color: #fff;
+            box-shadow: none;
+        }
+
+    /* Login Butonu */
+    .btn-login {
+        background: #3d464d;
+        color: #ffd333;
+        border: none;
+        border-radius: 12px;
+        padding: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-login:hover {
+            background: #2c343a;
+            color: #fff;
+        }
+
+    .text-muted-custom {
+        color: #86868b;
+        font-size: 0.9rem;
+    }
+
+    .link-custom {
+        color: #3d464d;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .link-custom:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="container py-5 mt-5">
+    <div class="login-card row g-0">
+        <div class="col-lg-5 login-side-panel d-none d-lg-flex">
+            <i class="fas fa-lock fa-4x mb-4"></i>
+            <h2 class="fw-bold">Tekrar Hoş Geldin</h2>
+            <p class="opacity-75">MultiShop dünyasına güvenli bir giriş yap ve kaldığın yerden devam et.</p>
+            <div class="mt-4">
+                <p class="mb-1 small">Henüz hesabın yok mu?</p>
+                <a href="/Register/Index" class="btn btn-outline-dark btn-sm rounded-pill px-4 fw-bold">Kayıt Ol</a>
+            </div>
+        </div>
+
+        <div class="col-lg-7 p-4 p-md-5 bg-white">
+            <div class="mb-5 text-center text-lg-start">
+                <h3 class="fw-bold text-dark mb-2">Giriş Yap</h3>
+                <p class="text-muted-custom">Lütfen kayıtlı e-posta adresinizi ve şifrenizi giriniz.</p>
+            </div>
+
+            <form asp-action="Index" asp-controller="Login" method="post">
+                <div class="mb-4">
+                    <label class="form-label fw-bold small text-secondary">E-POSTA ADRESİ</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0 ps-0"><i class="fas fa-envelope text-muted"></i></span>
+                        <input type="email" asp-for="Email" class="form-control form-control-elegant border-start-0 ps-0" placeholder="mail@example.com">
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between">
+                        <label class="form-label fw-bold small text-secondary">ŞİFRE</label>
+                        <a href="/Login/ForgotPassword" class="link-custom small">Şifremi Unuttum?</a>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-0 ps-0"><i class="fas fa-key text-muted"></i></span>
+                        <input type="password" asp-for="Password" class="form-control form-control-elegant border-start-0 ps-0" placeholder="••••••••">
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4 form-check">
+                    <input type="checkbox" asp-for="RememberMe" class="form-check-input" id="rememberCheck">
+                    <label class="form-check-label text-muted-custom small" for="rememberCheck">Oturumu açık tut (Beni Hatırla)</label>
+                </div>
+
+                <button type="submit" class="btn btn-login w-100 shadow-sm mt-2">
+                    <i class="fas fa-sign-in-alt me-2"></i>Giriş Yap
+                </button>
+
+                <div class="mt-4 text-center d-lg-none">
+                    <span class="text-muted-custom small">Hesabın yok mu? <a href="/Register/Index" class="link-custom">Kayıt Ol</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Scriptler *@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>

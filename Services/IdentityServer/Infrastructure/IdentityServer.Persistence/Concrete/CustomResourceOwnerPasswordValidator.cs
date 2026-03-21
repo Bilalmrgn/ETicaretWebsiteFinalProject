@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +21,11 @@ namespace IdentityServer.Persistence.Concrete
         public async Task ValidateAsync(ResourceOwnerPasswordValidationContext context)
         {
             var user = await _userManager.FindByNameAsync(context.UserName);
+
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(context.UserName);
+            }
 
             if (user == null)
             {

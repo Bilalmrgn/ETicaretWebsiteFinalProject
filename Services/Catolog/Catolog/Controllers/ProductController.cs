@@ -25,6 +25,7 @@ namespace Catolog.Controllers
             return Ok(values);
         }
 
+        [AllowAnonymous]
         [HttpGet("GetLast10Products")]
         public async Task<IActionResult> GetLast10Product()
         {

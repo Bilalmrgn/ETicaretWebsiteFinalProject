@@ -17,8 +17,8 @@ namespace ECommerce.WebUI.Services
         public async Task<string> GetAccessToken(HttpContext context)
         {
 
-            var accessToken = await context.GetTokenAsync("access_token");//cookie içerisinden access token alır
-            var refreshToken = await context.GetTokenAsync("refresh_token");//cookie içerisinden refresh token alır
+            var accessToken = await context.GetTokenAsync("Cookies", "access_token");
+            var refreshToken = await context.GetTokenAsync("Cookies", "refresh_token");
 
             if (string.IsNullOrEmpty(accessToken))
             {

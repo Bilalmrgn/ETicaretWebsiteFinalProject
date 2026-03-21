@@ -1,8 +1,7 @@
-﻿<!-- Topbar Start -->
 <div class="container-fluid">
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
         <div class="col-lg-4">
-            <a href="" class="text-decoration-none">
+            <a href="/" class="text-decoration-none">
                 <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
                 <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
             </a>
@@ -10,7 +9,7 @@
         <div class="col-lg-4 col-6 text-left">
             <form action="">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input type="text" class="form-control" placeholder="Ürün ara...">
                     <div class="input-group-append">
                         <span class="input-group-text bg-transparent text-primary">
                             <i class="fa fa-search"></i>
@@ -19,10 +18,33 @@
                 </div>
             </form>
         </div>
+
         <div class="col-lg-4 col-6 text-right">
-            <p class="m-0">Customer Service</p>
-            <h5 class="m-0">+012 345 6789</h5>
+            <div class="d-inline-flex align-items-center">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-light border dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user text-primary mr-1"></i> @(User.Identity.Name ?? "Hesabım")
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="/User/Profile" class="dropdown-item">Hesap Ayarları</a>
+                            <a href="/Cart/Index" class="dropdown-item">Sepetim</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/Login/LogOut" class="dropdown-item text-danger">Çıkış Yap</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a href="/Login/Index" class="btn btn-sm btn-light border mr-2">
+                        <i class="fa fa-sign-in-alt text-primary mr-1"></i> Giriş Yap
+                    </a>
+                    <a href="/Register/Index" class="btn btn-sm btn-primary">
+                        <i class="fa fa-user-plus mr-1"></i> Kayıt Ol
+                    </a>
+                }
+            </div>
         </div>
     </div>
 </div>
-<!-- Topbar End -->

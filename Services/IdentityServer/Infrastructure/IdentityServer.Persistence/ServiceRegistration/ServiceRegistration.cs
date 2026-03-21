@@ -26,6 +26,7 @@ namespace IdentityServer.Persistence.ServiceRegistration
 
             services.AddIdentity<AppUser, AppUserRole>(options =>
             {
+                options.User.RequireUniqueEmail = true; // aynı e postaya sahip 2 kişi üye olamasın
                 options.Password.RequireDigit = true;           // sayı
                 options.Password.RequireLowercase = true;       // küçük harf
                 options.Password.RequireUppercase = true;       // büyük harf

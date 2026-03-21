@@ -1,4 +1,4 @@
-﻿using Duende.IdentityServer;
+using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 
 namespace IdentityServer.WebAPI
@@ -109,13 +109,20 @@ namespace IdentityServer.WebAPI
             //Manager'ın sahip olacağı izinler burada verilecek
             new Client
             {
-
                 ClientId = "ECommerceManagerId",
                 ClientName = "ECommerce manager user",
                 AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.full", "order.getAllOrder","comment.full", "contact.create", IdentityServerConstants.StandardScopes.OfflineAccess },
-                AllowOfflineAccess = true,//refresh token
+                AllowedScopes = {
+                    "catalog.full",
+                    "order.getAllOrder",
+                    "comment.full",
+                    "contact.create",
+                    IdentityServerConstants.StandardScopes.OfflineAccess,
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile
+                },
+                AllowOfflineAccess = true,
             },
 
             //Admin in sahip olacağı izinler burada verilecek.

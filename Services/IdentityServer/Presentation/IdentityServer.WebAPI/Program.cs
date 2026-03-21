@@ -47,7 +47,6 @@ app.UseIdentityServer();//token i almamý saðlayan kýsým
 app.UseAuthentication();//mikroservisin koruma altýna alýnmasý
 app.UseAuthorization();
 
-app.UseAuthorization();
 
 app.MapControllers();
 

@@ -1,0 +1,189 @@
+﻿@model Frontend.DtosLayer.RegisterDto.RegisterDto
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+<style>
+    /* Kart Sabit Dursun - Havaya kalkma kaldırıldı */
+    .auth-card {
+        border: none;
+        border-radius: 20px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Daha hafif ve elegant gölge */
+    }
+
+    .auth-side-panel {
+        background: #3d464d; /* Daha koyu, göz yormayan ana renk */
+        color: #ffd333; /* MultiShop sarısı vurgu için */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+    }
+
+    /* Input Alanları - Daha sade ve ferah */
+    .form-floating > .form-control {
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+        background-color: #fcfcfc;
+        transition: border-color 0.2s;
+    }
+
+        .form-floating > .form-control:focus {
+            border-color: #ffd333;
+            background-color: #fff;
+            box-shadow: none; /* Parlama kaldırıldı */
+            transform: none; /* Scale kaldırıldı */
+        }
+
+    .btn-submit {
+        background: #ffd333;
+        color: #3d464d;
+        border: none;
+        border-radius: 10px;
+        padding: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: background 0.3s;
+    }
+
+        .btn-submit:hover {
+            background: #f0c52c;
+            color: #3d464d;
+        }
+
+    .link-forgot {
+        color: #6c757d;
+        font-size: 0.85rem;
+        text-decoration: none;
+    }
+
+        .link-forgot:hover {
+            color: #3d464d;
+            text-decoration: underline;
+        }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-11 col-xl-10">
+            <div class="card auth-card">
+                <div class="row g-0">
+                    <div class="col-lg-4 auth-side-panel d-none d-lg-flex text-center">
+                        <div class="mb-4">
+                            <i class="fas fa-user-plus fa-4x mb-3"></i>
+                            <h2 class="fw-bold">Bize Katıl</h2>
+                            <p class="opacity-75 small">MultiShop dünyasına adım atarak sana özel fırsatları keşfet.</p>
+                        </div>
+                        <div class="mt-5 pt-3 border-top border-light border-opacity-10 w-75">
+                            <small class="text-white-50">Hesabın var mı?</small>
+                            <br />
+                            <a href="/Login/Index" class="btn btn-outline-warning btn-sm mt-2 px-4 rounded-pill">Giriş Yap</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-8 p-4 p-md-5">
+                        <div class="mb-4">
+                            <h3 class="fw-bold text-dark mb-1">Yeni Hesap Oluştur</h3>
+                            <p class="text-muted small">Tüm alanları eksiksiz doldurunuz.</p>
+                        </div>
+                        @if (ViewBag.ErrorMessage != null)
+                        {
+                            <div class="alert alert-danger border-0 shadow-sm mb-4 d-flex align-items-center" style="border-radius: 12px; background-color: #fff5f5; color: #e03131;">
+                                <i class="fas fa-exclamation-circle me-3 fa-lg"></i>
+                                <div class="small fw-bold">@ViewBag.ErrorMessage</div>
+                            </div>
+                        }
+                        <form asp-action="Index" asp-controller="Register" method="post">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" asp-for="Name" class="form-control" placeholder="Ad">
+                                        <label asp-for="Name"><i class="fas fa-id-card me-2"></i>Ad</label>
+                                    </div>
+                                    <span asp-validation-for="Name" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" asp-for="Surname" class="form-control" placeholder="Soyad">
+                                        <label asp-for="Surname">Soyad</label>
+                                    </div>
+                                    <span asp-validation-for="Surname" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" asp-for="UserName" class="form-control" placeholder="Kullanıcı Adı">
+                                        <label asp-for="UserName"><i class="fas fa-at me-2"></i>Kullanıcı Adı</label>
+                                    </div>
+                                    <span asp-validation-for="UserName" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="email" asp-for="Email" class="form-control" placeholder="E-posta">
+                                        <label asp-for="Email"><i class="fas fa-envelope me-2"></i>E-posta Adresi</label>
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" asp-for="PhoneNumber" class="form-control" placeholder="Telefon">
+                                        <label asp-for="PhoneNumber"><i class="fas fa-phone me-2"></i>Telefon</label>
+                                    </div>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" asp-for="City" class="form-control" placeholder="Şehir">
+                                        <label asp-for="City"><i class="fas fa-map-marker-alt me-2"></i>Şehir</label>
+                                    </div>
+                                    <span asp-validation-for="City" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="form-floating">
+                                        <input type="password" asp-for="Password" class="form-control" placeholder="Şifre">
+                                        <label asp-for="Password"><i class="fas fa-lock me-2"></i>Şifre</label>
+                                    </div>
+                                    <span asp-validation-for="Password" class="text-danger small"></span>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-floating">
+                                        <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Tekrar">
+                                        <label asp-for="ConfirmPassword">Şifre Tekrar</label>
+                                    </div>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                    <label class="form-check-label small" for="termsCheck">Şartları kabul ediyorum.</label>
+                                </div>
+                                <a href="/Login/ForgotPassword" class="link-forgot">Şifremi Unuttum?</a>
+                            </div>
+
+                            <button type="submit" class="btn btn-submit w-100">
+                                <i class="fas fa-check-circle me-2"></i>Kaydı Tamamla
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
