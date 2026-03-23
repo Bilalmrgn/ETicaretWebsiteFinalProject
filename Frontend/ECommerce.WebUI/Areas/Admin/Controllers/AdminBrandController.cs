@@ -1,4 +1,5 @@
 ﻿using Frontend.DtosLayer.BrandDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.Text;
 
 namespace ECommerce.WebUI.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class AdminBrandController : Controller
     {

@@ -1,4 +1,4 @@
-﻿using IdentityServer.Application.Dtos;
+using IdentityServer.Application.Dtos;
 using IdentityServer.Application.Exceptions;
 using IdentityServer.Application.Interfaces;
 using IdentityServer.Domain;
@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -111,10 +112,14 @@ namespace IdentityServer.Persistence.Concrete
                 return new UserResponse { Succeeded = false, Message = "Email veya şifre hatalı." };
             }
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+
             return new UserResponse
             {
                 Succeeded = true,
-                Message = "Giriş Başarılı"
+                Message = "Giriş Başarılı",
+                Email = user.Email,
+                Roles = userRoles.ToList()
             };
 
         }
@@ -182,7 +187,7 @@ namespace IdentityServer.Persistence.Concrete
                 throw new Exception("Kullanıcı bulunamadı.(/Identity/Persistence/Concrete/UserService/UpdateUserProfile)");
 
 
-            // 🔹 SADECE alanları güncelle
+       
             user.UserName = updateUserProfileDto.UserName;
             user.Email = updateUserProfileDto.Email;
             user.PhoneNumber = updateUserProfileDto.PhoneNumber;
@@ -193,12 +198,14 @@ namespace IdentityServer.Persistence.Concrete
 
             var result = await _userManager.UpdateAsync(user);
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+
             return new UserResponse
             {
-                Succeeded = result.Succeeded,
-                Message = result.Succeeded
-                    ? "Kullanıcı başarıyla güncellendi"
-                    : string.Join("\n", result.Errors.Select(e => e.Description))
+                Succeeded = true,
+                Message = "Giriş Başarılı",
+                Email = user.Email, // Response nesnesinde bu alanların olduğundan emin ol
+                Roles = userRoles.ToList() // List<string> olarak rolleri gönderiyoruz
             };
         }
     }

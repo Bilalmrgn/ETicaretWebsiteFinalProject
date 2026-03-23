@@ -1,9 +1,11 @@
 ﻿using Frontend.DtosLayer.UserListDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace ECommerce.WebUI.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     //kullanıcıları admin sayfasında listelemek için yazılan bir controller dır
     [Area("admin")]
     public class UserListController : Controller

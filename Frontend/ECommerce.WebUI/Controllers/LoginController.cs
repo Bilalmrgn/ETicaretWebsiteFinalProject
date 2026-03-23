@@ -57,6 +57,7 @@ namespace ECommerce.WebUI.Controllers
 
                 //identity server dan login olunca token iste
                 var disco = await client.GetDiscoveryDocumentAsync("https://localhost:7222");
+
                 var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
                 {
                     Address = disco.TokenEndpoint,
@@ -66,13 +67,8 @@ namespace ECommerce.WebUI.Controllers
                     Password = dto.Password,
                     Scope = scopes
                 });
-                if (tokenResponse.IsError)
-                {
-                    // Buraya breakpoint koyun ve 'tokenResponse.ErrorDescription' içeriğine bakın.
-                    // Muhtemelen "invalid_scope" hatası alıyorsunuz.
-                    var error = tokenResponse.Error;
-                    return View(dto);
-                }
+
+
                 //burası kullanıcı giriş yaptığında sağ üst top bar kısmında kullanıcı adını göstermek için
                 var claims = new List<Claim>
                 {
@@ -100,6 +96,7 @@ namespace ECommerce.WebUI.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            ModelState.AddModelError("", "E-posta veya şifre hatalı.");
             return View(dto);
 
 

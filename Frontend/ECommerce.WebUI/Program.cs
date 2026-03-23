@@ -1,35 +1,35 @@
-using ECommerce.WebUI.Services;
+ï»¿using ECommerce.WebUI.Services;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-//IHTTPClientFactory kýsmýný kullanabilmem için bunu entegre ettim. IHttpClientFactory nin amacý farklý api lere istek göndermek ve bu istekleri iþlemek
+//IHTTPClientFactory kï¿½smï¿½nï¿½ kullanabilmem iï¿½in bunu entegre ettim. IHttpClientFactory nin amacï¿½ farklï¿½ api lere istek gï¿½ndermek ve bu istekleri iï¿½lemek
 builder.Services.AddHttpClient();
 
 //Service Registration (IoC)
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddHttpContextAccessor();
-//Authentication konfigurasyonlarý
+//Authentication konfigurasyonlarï¿½
 
-//cookie authentication ekle. Çünkü MVC uygulamasý, kullanýcýyý cookie üzerinden tanýyacaktýr
+//cookie authentication ekle. ï¿½ï¿½nkï¿½ MVC uygulamasï¿½, kullanï¿½cï¿½yï¿½ cookie ï¿½zerinden tanï¿½yacaktï¿½r
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies", options =>
     {
-        options.Cookie.Name = "ECommerceCookie"; // Çereze bir isim ver
+        options.Cookie.Name = "ECommerceCookie"; // ï¿½ereze bir isim ver
         options.LoginPath = "/Login/Index";
         options.LogoutPath = "/Login/LogOut";
         options.AccessDeniedPath = "/Error/Index";
         options.ExpireTimeSpan = TimeSpan.FromHours(3);
-        options.SlidingExpiration = true; // Kullanýcý iþlem yaptýkça süre uzasýn
+        options.SlidingExpiration = true; // Kullanï¿½cï¿½ iï¿½lem yaptï¿½kï¿½a sï¿½re uzasï¿½n
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.HttpOnly = true; // Güvenlik için (XSS korumasý)
+        options.Cookie.HttpOnly = true; // Gï¿½venlik iï¿½in (XSS korumasï¿½)
         options.Events = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents
         {
             OnSigningIn = context =>
             {
-                // Tokenlarýn mevcut olduðundan emin olur
+                // Tokenlarï¿½n mevcut olduï¿½undan emin olur
                 return Task.CompletedTask;
             }
         };

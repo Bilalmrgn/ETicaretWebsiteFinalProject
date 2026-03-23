@@ -1,4 +1,4 @@
-﻿@model Frontend.DtosLayer.LoginDto.LoginDto
+@model Frontend.DtosLayer.LoginDto.LoginDto
 
 @{
     ViewData["Title"] = "Giriş Yap";
@@ -33,19 +33,35 @@
     }
 
     /* Input Tasarımı - Apple Style Minimalist */
-    .form-control-elegant {
+    .input-group-custom {
         border-radius: 12px;
-        border: 2px solid #f1f3f5;
+        border: 2px solid #e9ecef;
         background-color: #f8f9fa;
-        padding: 12px 15px;
         transition: all 0.3s ease;
+        overflow: hidden;
     }
 
-        .form-control-elegant:focus {
-            border-color: #3d464d;
-            background-color: #fff;
-            box-shadow: none;
-        }
+    .input-group-custom:focus-within {
+        border-color: #3d464d;
+        background-color: #fff;
+        box-shadow: 0 0 0 0.2rem rgba(61, 70, 77, 0.25);
+    }
+
+    .input-group-custom .input-group-text {
+        border: none;
+        background: transparent;
+        padding-left: 15px;
+        color: #3d464d;
+    }
+
+    .input-group-custom .form-control {
+        border: none;
+        background: transparent;
+        padding: 12px 15px 12px 0;
+        box-shadow: none;
+        color: #3d464d;
+        font-weight: 500;
+    }
 
     /* Login Butonu */
     .btn-login {
@@ -58,11 +74,33 @@
         text-transform: uppercase;
         letter-spacing: 1px;
         transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
         .btn-login:hover {
             background: #2c343a;
             color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+    .btn-admin {
+        border-radius: 12px;
+        padding: 12px;
+        letter-spacing: 1px;
+        color: #3d464d;
+        border: 2px solid #3d464d;
+        background: transparent;
+        font-weight: 700;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+    }
+
+        .btn-admin:hover {
+            background: #3d464d;
+            color: #ffd333 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
 
     .text-muted-custom {
@@ -100,11 +138,13 @@
             </div>
 
             <form asp-action="Index" asp-controller="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger border-0 small"></div>
+
                 <div class="mb-4">
                     <label class="form-label fw-bold small text-secondary">E-POSTA ADRESİ</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-transparent border-0 ps-0"><i class="fas fa-envelope text-muted"></i></span>
-                        <input type="email" asp-for="Email" class="form-control form-control-elegant border-start-0 ps-0" placeholder="mail@example.com">
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                        <input type="email" asp-for="Email" class="form-control" placeholder="mail@example.com">
                     </div>
                     <span asp-validation-for="Email" class="text-danger small"></span>
                 </div>
@@ -114,9 +154,9 @@
                         <label class="form-label fw-bold small text-secondary">ŞİFRE</label>
                         <a href="/Login/ForgotPassword" class="link-custom small">Şifremi Unuttum?</a>
                     </div>
-                    <div class="input-group">
-                        <span class="input-group-text bg-transparent border-0 ps-0"><i class="fas fa-key text-muted"></i></span>
-                        <input type="password" asp-for="Password" class="form-control form-control-elegant border-start-0 ps-0" placeholder="••••••••">
+                    <div class="input-group input-group-custom">
+                        <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        <input type="password" asp-for="Password" class="form-control" placeholder="••••••••">
                     </div>
                     <span asp-validation-for="Password" class="text-danger small"></span>
                 </div>
@@ -126,9 +166,13 @@
                     <label class="form-check-label text-muted-custom small" for="rememberCheck">Oturumu açık tut (Beni Hatırla)</label>
                 </div>
 
-                <button type="submit" class="btn btn-login w-100 shadow-sm mt-2">
+                <button type="submit" class="btn btn-login w-100 shadow-sm mt-2 mb-3">
                     <i class="fas fa-sign-in-alt me-2"></i>Giriş Yap
                 </button>
+
+                <a asp-area="Admin" asp-controller="AdminLogin" asp-action="Index" class="btn btn-admin w-100 d-flex align-items-center justify-content-center">
+                    <i class="fas fa-user-shield me-2"></i>Yönetici Girişi
+                </a>
 
                 <div class="mt-4 text-center d-lg-none">
                     <span class="text-muted-custom small">Hesabın yok mu? <a href="/Register/Index" class="link-custom">Kayıt Ol</a></span>

@@ -1,5 +1,6 @@
 ﻿using Frontend.DtosLayer.SliderFeatureDto;
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Text;
 
 namespace ECommerce.WebUI.Areas.Admin.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class AdminFeatureSliderController : Controller
     {
