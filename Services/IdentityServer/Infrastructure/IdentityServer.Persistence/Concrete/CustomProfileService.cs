@@ -1,4 +1,4 @@
-﻿using Duende.IdentityServer.Extensions;
+using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using IdentityServer.Domain;
@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Duende.IdentityModel;
 
 namespace IdentityServer.Persistence.Concrete
 {
-/// <summary>
-/// IProfileService: IdentityServer'ın kullanıcı bilgilerini bulundurur. (Claim)
-/// Token içerisine yerleştirmek için kullanılır
-/// </summary>
+    /// <summary>
+    /// IProfileService: IdentityServer'ın kullanıcı bilgilerini bulundurur. (Claim)
+    /// Token içerisine yerleştirmek için kullanılır
+    /// </summary>
     public class CustomProfileService : IProfileService
     {
         private readonly UserManager<AppUser> _userManager;
@@ -27,15 +28,22 @@ namespace IdentityServer.Persistence.Concrete
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var sub = context.Subject.GetSubjectId();
-
             var user = await _userManager.FindByIdAsync(sub);
 
             if (user != null)
             {
-                //Veritabanındaki role : user ya da role : admin claim ini çekiyoruz
+                //manuel eklenen claim leri al
                 var claims = await _userManager.GetClaimsAsync(user);
 
-                //bu claim i token'ın içerisine ekliyoruz
+                //kullanıcının rolleri
+                var roles = await _userManager.GetRolesAsync(user);
+
+                //rolleri claim listesine ekle
+                foreach (var role in roles)
+                {
+                    claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, role));
+                }
+
                 context.IssuedClaims.AddRange(claims);
             }
         }
@@ -44,7 +52,7 @@ namespace IdentityServer.Persistence.Concrete
         {
             var sub = context.Subject.GetSubjectId();
 
-            var user= await _userManager.FindByIdAsync(sub);
+            var user = await _userManager.FindByIdAsync(sub);
             context.IsActive = user != null;
         }
     }

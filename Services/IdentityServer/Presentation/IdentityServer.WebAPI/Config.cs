@@ -3,18 +3,10 @@ using Duende.IdentityServer.Models;
 
 namespace IdentityServer.WebAPI
 {
-    /*
-     Config sınıfının amacı:
-     IdentityServer'a şunları öğretmek   
-     yani hangi mikroservisler var
-     bu servislerde hangi yetkiler olacak
-     */
 
-    //program.cs dosyasında add lendi
     public static class Config
     {
-        //bu sınıfın amacı: benim catolog mikroservisim var ve bu mikroserviste ful ve sadece okuma izinleri yapacağım
-        //ApiResource --> Hangi API'ler korunuyor
+        #region Resources
         public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
         {
             new ApiResource("catalog_microservice")//benim resourceCatolog isminde bir mikroservisim var ve bu mikroservisimi korumaya alacağım
@@ -52,30 +44,21 @@ namespace IdentityServer.WebAPI
                 Scopes = {"cargo.full","cargo.read"},//yani bu catolog servisimde tam yetki alabilir, sadece okuma yetkisi alabilir
             },
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
-            /*
-             new ApiResource("catalog_microservice")
-             {
-                    Scopes = { "catalog.full", "catalog.read" }
-             }
-
-            catolog_mivroservice api si şu scope lar ile korunuyor.
-
-
-                ApiScope  →  Scope tanımı
-                ApiResource → Scope hangi API’ye ait
-                Client → Scope’u kim alabilir
-             */
 
         };
+
+        #endregion
 
         public static IEnumerable<IdentityResource> IdentityResources => new IdentityResource[]
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Email(),
             new IdentityResources.Profile(),
+            new IdentityResource("roles", "User Roles", new[] { "role" })
         };
 
 
+        #region Scopes
         public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
         {
             new ApiScope("catalog.full","katolog işlemlerine tam yetki"),
@@ -92,6 +75,7 @@ namespace IdentityServer.WebAPI
             new ApiScope("contact.create","contact işlemlerine oluşturma işlem yetkisi"),
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
+        #endregion
 
         public static IEnumerable<Client> Clients => new Client[]
         {
@@ -109,15 +93,27 @@ namespace IdentityServer.WebAPI
             //Manager'ın sahip olacağı izinler burada verilecek
             new Client
             {
-                ClientId = "ECommerceManagerId",
-                ClientName = "ECommerce manager user",
-                AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
+                ClientId = "ECommerceCustomerId",
+                ClientName = "ECommerce Customer user",
+                AllowedGrantTypes= GrantTypes.Code,
+                RequirePkce = true,
+                RequireClientSecret = true,
+
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
+
+                //giriş yaptıktan sonra dönülecek adres
+                RedirectUris = { "https://localhost:7145/signin-oidc" },
+
+                //çıkış yaptıktan sonra dönülecek adres
+                PostLogoutRedirectUris = { "https://localhost:7145/signout-callback-oidc" },
+
                 AllowedScopes = {
                     "catalog.full",
+                    "catalog.read",
                     "order.getAllOrder",
                     "comment.full",
                     "contact.create",
+                    "roles",
                     IdentityServerConstants.StandardScopes.OfflineAccess,
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile
@@ -130,13 +126,36 @@ namespace IdentityServer.WebAPI
             {
                 ClientId = "ECommerceAdminId",
                 ClientName = "ECommerce admin user",
-                AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
+                AllowedGrantTypes= GrantTypes.Code,
+                RequirePkce = true,
+                RequireClientSecret = true,
+
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.full", "order.full" , "discount.full","cargo.full","basket.full","comment.full" , "contact.full",IdentityServerConstants.StandardScopes.OfflineAccess,
-                IdentityServerConstants.LocalApi.ScopeName,
-                IdentityServerConstants.StandardScopes.Email,
-                IdentityServerConstants.StandardScopes.OpenId,
-                IdentityServerConstants.StandardScopes.Profile},
+
+                //giriş yaptıktan sonra dönülecek adres
+                RedirectUris = { "https://localhost:7145/signin-oidc" },
+
+                //çıkış yaptıktan sonra dönülecek adres
+                PostLogoutRedirectUris = { "https://localhost:7145/signout-callback-oidc" },
+
+                AllowedScopes = {
+    "roles",
+    "catalog.full",
+    "catalog.read",
+    "order.full",
+    "order.getAllOrder",
+    "discount.full",
+    "cargo.full",
+    "basket.full",
+    "comment.full",
+    "comment.read",
+    "contact.full", // <--- Burayı kontrol et, listede olduğundan emin ol
+    IdentityServerConstants.StandardScopes.OfflineAccess,
+    IdentityServerConstants.LocalApi.ScopeName,
+    IdentityServerConstants.StandardScopes.Email,
+    IdentityServerConstants.StandardScopes.OpenId,
+    IdentityServerConstants.StandardScopes.Profile
+},
                 /*AccessTokenLifetime = 604800,//token süresi
                 AllowOfflineAccess = true//token imin süresi bittiğinde bu satır sayesinde refresh token üretirim*/
 

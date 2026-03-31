@@ -7,26 +7,32 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews(); // MVC desteÄŸi eklendi
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+builder.Services.AddScoped<CustomProfileService>();
 //persistence service registration
 builder.Services.AddDatabase(builder.Configuration);
 
 //IdentityServer,Controller
 builder.Services
-    .AddIdentityServer()//Token almamýzý saðlayan kýsým connect/token endpoint inden token üretir
+    .AddIdentityServer(opt =>
+    {
+        opt.EmitStaticAudienceClaim = true;
+        opt.UserInteraction.PromptValuesSupported.Add("create"); // 'create' deÄŸerini desteklenenlere ekle
+    })
     .AddInMemoryApiResources(Config.ApiResources)
     .AddInMemoryApiScopes(Config.ApiScopes)
     .AddInMemoryIdentityResources(Config.IdentityResources)
     .AddInMemoryClients(Config.Clients)
     .AddDeveloperSigningCredential()
+    .AddAspNetIdentity<AppUser>()
+    // Sonra senin Ã¶zel servisin (SÄ±ralama Ã¶nemli)
     .AddProfileService<CustomProfileService>();
 
-//mikroservis koruma altýna alýnmasý
+//mikroservis koruma altÄ±na alÄ±nmasÄ±
 builder.Services.AddLocalApiAuthentication();
 
 
@@ -40,13 +46,18 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // Statik dosyalar (CSS/JS) iÃ§in eklendi
 
 app.UseRouting();
-app.UseIdentityServer();//token i almamý saðlayan kýsým
+app.UseIdentityServer(); // IdentityServer middleware
 
-app.UseAuthentication();//mikroservisin koruma altýna alýnmasý
+app.UseAuthentication();
 app.UseAuthorization();
 
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"); // VarsayÄ±lan route eklendi
 
 app.MapControllers();
 

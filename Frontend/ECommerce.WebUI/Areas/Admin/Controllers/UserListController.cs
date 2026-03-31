@@ -17,9 +17,9 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("IdentityClient");
 
-            var response = await client.GetAsync("https://localhost:7222/api/User");
+            var response = await client.GetAsync("api/User");
 
             //gelen response başarılı ise
             if (response.IsSuccessStatusCode)

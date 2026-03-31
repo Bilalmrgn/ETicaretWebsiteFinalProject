@@ -19,11 +19,11 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
         {
             var token = await _tokenService.GetAccessToken(HttpContext);
 
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("CatalogClient" );
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
 
-            var response = await client.GetAsync("https://localhost:7166/api/Product/GetLast10Products");
+            var response = await client.GetAsync("api/Product/GetLast10Products");
 
             if (response.IsSuccessStatusCode)
             {

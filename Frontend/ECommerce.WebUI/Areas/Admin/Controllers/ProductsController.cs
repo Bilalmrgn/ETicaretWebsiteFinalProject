@@ -22,13 +22,11 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var token = await _tokenService.GetAccessToken(HttpContext);
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    
             
-            var response = await client.GetAsync("https://localhost:7166/api/Product/GetAllProducts");
+            var response = await client.GetAsync("api/Product/GetAllProducts");
 
             if (response.IsSuccessStatusCode)
             {
@@ -46,12 +44,11 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> CreateProduct()
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var token = await _tokenService.GetAccessToken(HttpContext);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+    
 
-            var response = await client.GetAsync("https://localhost:7166/api/Categories");
+            var response = await client.GetAsync("api/Categories");
 
             if (response.IsSuccessStatusCode)
             {
@@ -70,12 +67,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> CreateProduct(CreateProductDto dto)
         {
             //api ye istek göndermem için bir HTTPClient nesnesi oluşturdum
-            var client = _httpClientFactory.CreateClient();
-
-            /* var token = await _tokenService.GetAccessToken(HttpContext);*/
-            var token = await _tokenService.GetAccessToken(HttpContext);
-            //api isteğine authorization header ekler
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var client = _httpClientFactory.CreateClient("CatalogClient");       
 
             //ekleme ve güncelleme işlemlerinde serialize
             var jsonData = JsonConvert.SerializeObject(dto);
@@ -83,7 +75,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             //json verisini http içeriğine çevirme
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("https://localhost:7166/api/Product", stringContent);
+            var response = await client.PostAsync("api/Product", stringContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -97,13 +89,9 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(string id)
         {
-            var client = _httpClientFactory.CreateClient();
+            var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var token = await _tokenService.GetAccessToken(HttpContext);
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var response = await client.DeleteAsync($"https://localhost:7166/api/Product/{id}");
+            var response = await client.DeleteAsync($"api/Product/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -117,15 +105,10 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateProduct(string id)
         {
-            var client = _httpClientFactory.CreateClient();
-
-            var token = await _tokenService.GetAccessToken(HttpContext);
-
-            //bizi tanıması için header da token gönderdik
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var client = _httpClientFactory.CreateClient("CatalogClient");
 
             //header da token gönderdikten sonra verimizi serialize şeklinde ileteceğiz. çünkü ekleme ve güncellemede serialize
-            var response = await client.GetAsync($"https://localhost:7166/api/Product/GetProductById/{id}");
+            var response = await client.GetAsync($"api/Product/GetProductById/{id}");
 
             if (response.IsSuccessStatusCode) //405 hata kodu alıyorum buradan devam edeceğim
             {
@@ -136,7 +119,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
                 var values = JsonConvert.DeserializeObject<UpdateProductDto>(jsonData);
 
                 //kategori değiştirebilmek için kategorileri listeleme
-                var categoryResponse = await client.GetAsync("https://localhost:7166/api/Categories");
+                var categoryResponse = await client.GetAsync("api/Categories");
 
                 if (categoryResponse.IsSuccessStatusCode)
                 {
@@ -161,25 +144,21 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(UpdateProductDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-
-            var token = await _tokenService.GetAccessToken(HttpContext);
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var client = _httpClientFactory.CreateClient("CatalogClient");
 
             var jsonData = JsonConvert.SerializeObject(dto);
 
             //string veriyi Http içerisine koymamız gerekiyor
             StringContent stringContent = new StringContent(jsonData,Encoding.UTF8,"application/json");
 
-            var response = await client.PutAsync($"https://localhost:7166/api/Product/{dto.ProductId}",stringContent);
+            var response = await client.PutAsync($"api/Product/{dto.ProductId}",stringContent);
 
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "Products", new { area = "Admin" });
             }
             // ❗ tekrar kategori yükle
-            var categoryResponse = await client.GetAsync("https://localhost:7166/api/Categories");
+            var categoryResponse = await client.GetAsync("api/Categories");
 
             if (categoryResponse.IsSuccessStatusCode)
             {

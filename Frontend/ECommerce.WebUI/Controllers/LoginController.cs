@@ -21,92 +21,39 @@ namespace ECommerce.WebUI.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            return Challenge(new AuthenticationProperties
+            {
+                RedirectUri = "/"
+            }, "oidc");
         }
 
         //login post metod
         [HttpPost]
-        public async Task<IActionResult> Index(LoginDto dto)
+        public IActionResult Index(LoginDto dto)
         {
-            var client = _httpClientFactory.CreateClient();
-
-            var jsonData = JsonConvert.SerializeObject(dto);
-
-            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-            //api ye git ve bu kullanıcı var mı ve rolü ne kontrolü yap
-            var response = await client.PostAsync("https://localhost:7222/api/User/login", content);
-
-            if (response.IsSuccessStatusCode)
+            // Challenge metodu, Program.cs'deki OpenIdConnect konfigürasyonunu tetikler.
+            // Bu işlem kullanıcıyı IdentityServer'ın login sayfasına yönlendirir.
+            var properties = new AuthenticationProperties
             {
-                //api'den gelen kullanıcı detaylarını oku
-                var responseConent = await response.Content.ReadAsStringAsync();
+                RedirectUri = "/", 
+                IsPersistent = dto.RememberMe
+            };
 
-                var userDetail = JsonConvert.DeserializeObject<LoginDto>(responseConent);
-
-                //varsayılan kullanıcı
-                string clientId = "ECommerceManagerId";
-                string scopes = "catalog.full order.getAllOrder comment.full contact.create offline_access openid profile";
-
-                //api'den gelen roller içinde "admin" varsa admin'e yükselticez
-                if (userDetail.Roles != null && userDetail.Roles.Contains("Admin"))
-                {
-                    clientId = "ECommerceAdminId";
-                    scopes = "catalog.full order.full discount.full cargo.full basket.full comment.full contact.full offline_access openid profile email";
-                }
-
-                //identity server dan login olunca token iste
-                var disco = await client.GetDiscoveryDocumentAsync("https://localhost:7222");
-
-                var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
-                {
-                    Address = disco.TokenEndpoint,
-                    ClientId = clientId,
-                    ClientSecret = "ecommercesecret",
-                    UserName = dto.Email,
-                    Password = dto.Password,
-                    Scope = scopes
-                });
-
-
-                //burası kullanıcı giriş yaptığında sağ üst top bar kısmında kullanıcı adını göstermek için
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, dto.Email),
-                    new Claim(ClaimTypes.Email, dto.Email)
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = dto.RememberMe
-                };
-
-                authProperties.StoreTokens(new List<AuthenticationToken>
-                {
-                    new AuthenticationToken { Name = "access_token", Value = tokenResponse.AccessToken },
-                    new AuthenticationToken { Name = "refresh_token", Value = tokenResponse.RefreshToken },
-                    new AuthenticationToken { Name = "expires_at", Value = DateTime.UtcNow.AddSeconds(tokenResponse.ExpiresIn).ToString("o") }
-                });
-
-
-                //SignInAsync yaptık çünkü giriş yaptıktan sonra oturumun açık kalmasını istiyorum
-                await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(claimsIdentity), authProperties);
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            ModelState.AddModelError("", "E-posta veya şifre hatalı.");
-            return View(dto);
-
-
+            // "OpenIdConnectDefaults.AuthenticationScheme" veya senin Program.cs'de verdiğin isim
+            return Challenge(properties, "oidc");
         }
 
         [HttpGet]
         public async Task<IActionResult> LogOut()
         {
-            await HttpContext.SignOutAsync("Cookies");
-            return RedirectToAction("Index", "Home");
+            return SignOut(new AuthenticationProperties
+            {
+                RedirectUri = "/" // IdentityServer'dan dönünce buraya gelecek
+            }, "Cookies", "oidc");
         }
     }
 }

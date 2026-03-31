@@ -1,4 +1,5 @@
 ﻿
+using Duende.IdentityModel.Client;
 using Frontend.DtosLayer.TokenResponseDtos;
 using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
@@ -10,80 +11,77 @@ namespace ECommerce.WebUI.Services
     public class TokenService : ITokenService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public TokenService(IHttpClientFactory httpClientFactory)
+        private readonly IConfiguration _configuration;
+        public TokenService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
         }
         public async Task<string> GetAccessToken(HttpContext context)
         {
+            var accessToken = await context.GetTokenAsync("access_token");
+            var refreshToken = await context.GetTokenAsync("refresh_token");
 
-            var accessToken = await context.GetTokenAsync("Cookies", "access_token");
-            var refreshToken = await context.GetTokenAsync("Cookies", "refresh_token");
-
-            if (string.IsNullOrEmpty(accessToken))
+            if(string.IsNullOrEmpty(accessToken) )
             {
                 return null;
             }
 
-            //token içerisindeki bilgileri okumak için
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(accessToken);
 
-            var expire = jwtToken.Claims.FirstOrDefault(x => x.Type == "exp")?.Value;
+            //token süre konttrolü
+            var expClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == "exp")?.Value;
 
-            var clientId = jwtToken.Claims.FirstOrDefault(x => x.Type == "client_id").Value;
-
-            if (expire != null)//yani exp == süresi dolmuş ise if içine gireceksin
+            if(expClaim != null )
             {
-                var expireDate = DateTimeOffset.FromUnixTimeSeconds(long.Parse(expire));
+                var expireDate = DateTimeOffset.FromUnixTimeSeconds(long.Parse(expClaim));
 
-                if (expireDate <= DateTime.UtcNow)
+                if (expireDate <= DateTimeOffset.UtcNow.AddSeconds(30))
                 {
+                    // ClientId'yi claimlerden alırken "client_id" bazen farklı isimlendirilebilir
+                    var clientId = jwtToken.Claims.FirstOrDefault(x => x.Type == "client_id")?.Value;
                     accessToken = await RefreshToken(context, refreshToken, clientId);
                 }
             }
             return accessToken;
         }
 
-        public async Task<string> RefreshToken(HttpContext context, string refreshToken, string clientId)
+        public async Task<string> RefreshToken(HttpContext context,string refreshToken, string clientId)
         {
             var client = _httpClientFactory.CreateClient();
 
-            var response = await client.PostAsync(
-            "https://localhost:5001/connect/token",
-            new FormUrlEncodedContent(new Dictionary<string, string>
-            {
-                {"grant_type","refresh_token"},
-                {"refresh_token",refreshToken},
-                {"client_id", clientId},
-        {"client_secret","ecommercesecret"}
-            }));
+            //token i discovery ile alacağız
+            var disco = await client.GetDiscoveryDocumentAsync("https://localhost:7222");
 
-            if (!response.IsSuccessStatusCode)
+            if (disco.IsError)
             {
                 return null;
             }
 
-            //ekleme ve güncelleme işlemlerinde serialize 
-            //listeleme işlemlerinde deserialize kullanılır
-            //refresh token da bir getirme yani listeleme işlemidir
-            var json = await response.Content.ReadAsStringAsync();
-            var token = JsonConvert.DeserializeObject<TokenResponseDto>(json);
+            var tokenResponse = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
+            {
+                Address = disco.TokenEndpoint,
+                ClientId = clientId,
+                ClientSecret = _configuration["Client:clientSecret"],
+                RefreshToken = refreshToken,
+            });
 
-            var auth = await context.AuthenticateAsync();
+            if(tokenResponse.IsError)
+            {
+                return null;
+            }
 
-            // access token güncellenir
-            auth.Properties.UpdateTokenValue("access_token", token.access_token);
+            //cookie ve claims güncelleme
+            var authResult = await context.AuthenticateAsync();
 
-            // refresh token güncellenir
-            auth.Properties.UpdateTokenValue("refresh_token", token.refresh_token);
+            authResult.Properties.UpdateTokenValue("access_token", tokenResponse.AccessToken);
+            authResult.Properties.UpdateTokenValue("refresh_token", tokenResponse.RefreshToken);
 
-            // cookie yeniden yazılır
-            await context.SignInAsync(
-                auth.Principal,
-                auth.Properties);
+            await context.SignInAsync(authResult.Principal, authResult.Properties);
 
-            return token.access_token;
+            return tokenResponse.AccessToken;
+
         }
     }
 }

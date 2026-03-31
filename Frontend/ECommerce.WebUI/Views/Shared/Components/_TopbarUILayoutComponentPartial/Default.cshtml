@@ -21,6 +21,14 @@
 
         <div class="col-lg-4 col-6 text-right">
             <div class="d-inline-flex align-items-center">
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-danger fw-bold" asp-area="Admin" asp-controller="AdminHome" asp-action="Index">
+                            <i class="fas fa-user-shield"></i> Yönetim Paneline Git
+                        </a>
+                    </li>
+                }
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div class="btn-group">
@@ -37,7 +45,7 @@
                 }
                 else
                 {
-                    <a href="/Login/Index" class="btn btn-sm btn-light border mr-2">
+                    <a href="~/Login/Index" class="btn btn-sm btn-light border mr-2">
                         <i class="fa fa-sign-in-alt text-primary mr-1"></i> Giriş Yap
                     </a>
                     <a href="/Register/Index" class="btn btn-sm btn-primary">

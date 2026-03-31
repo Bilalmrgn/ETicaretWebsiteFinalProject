@@ -20,6 +20,7 @@ namespace Catolog.Controllers
         }
 
         // kategori listesi
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> FeatureSliderList()
         {

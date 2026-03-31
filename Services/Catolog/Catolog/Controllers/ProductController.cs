@@ -17,7 +17,7 @@ namespace Catolog.Controllers
         {
             _productService = productService;
         }
-
+        [AllowAnonymous]
         [HttpGet("GetAllProducts")]
         public async Task<IActionResult> GetProduct()
         {
@@ -25,7 +25,7 @@ namespace Catolog.Controllers
             return Ok(values);
         }
 
-        
+        [AllowAnonymous]
         [HttpGet("GetLast10Products")]
         public async Task<IActionResult> GetLast10Product()
         {
@@ -65,6 +65,7 @@ namespace Catolog.Controllers
 
         //get product by category id
         [HttpGet("GetProductsByCategoryId/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProductsByCategoryId(string id)
         {
             var values = await _productService.GetProductsByCategoryIdAsync(id);
