@@ -20,7 +20,12 @@
 </style>
 
 <h1>Gelen Mesajlar</h1>
-
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["success"]
+    </div>
+}
 <div class="col-lg-6">
     <div class="card-style mb-30">
         <div class="d-flex justify-content-between align-items-center mb-10">

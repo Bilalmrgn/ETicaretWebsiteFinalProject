@@ -33,7 +33,12 @@
         border-radius: 50px;
     }
 </style>
-
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["success"]
+    </div>
+}
 <div class="container-fluid">
     <div class="title-wrapper pt-30">
         <div class="row align-items-center">
@@ -98,7 +103,7 @@
                 <i class="lni lni-reply"></i> Yanıtla (Mail Gönder)
             </a>
 
-            <form asp-area="Admin" asp-controller="AdminContact" asp-action="DeleteContact" asp-route-id="@Model.ContactId" method="post" onsubmit="return confirm('Bu mesajı silmek istediğinize emin misiniz?');" style="display:inline;">
+            <form asp-area="Admin" asp-controller="AdminContact" asp-action="DeleteContactMessage" asp-route-id="@Model.ContactId" method="post" onsubmit="return confirm('Bu mesajı silmek istediğinize emin misiniz?');" style="display:inline;">
                 <button type="submit" class="btn btn-danger">
                     <i class="lni lni-trash-can"></i> Mesajı Sil
                 </button>

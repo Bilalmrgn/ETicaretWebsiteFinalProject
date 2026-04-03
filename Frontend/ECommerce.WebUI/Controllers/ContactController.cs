@@ -22,7 +22,7 @@ namespace ECommerce.WebUI.Controllers
 
         //create contact message
         [HttpPost]
-        public async Task<IActionResult> CreateContactMessage(CreateContactDto dto)
+        public async Task<IActionResult> Index(CreateContactDto dto)
         {
             var client = _httpClientFactory.CreateClient("ContactClient");
 

@@ -41,8 +41,6 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("ContactClient");
 
-           
-
             var response = await client.GetAsync($"api/Contact/{id}");
 
             if (response.IsSuccessStatusCode)
@@ -67,6 +65,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                TempData["success"] = "Mesaj başarıyla silindi.";
                 return RedirectToAction("Index", "AdminContact", new { Area = "Admin" });
             }
 
