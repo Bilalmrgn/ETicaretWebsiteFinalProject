@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-//IHTTPClientFactory k�sm�n� kullanabilmem i�in bunu entegre ettim. IHttpClientFactory nin amac� farkl� api lere istek g�ndermek ve bu istekleri i�lemek
 builder.Services.AddHttpClient();
 
 //handler sınıfları

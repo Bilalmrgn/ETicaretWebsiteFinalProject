@@ -85,6 +85,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contact", "Contact", "{3A0B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce.WebAPI", "Services\Contact\ECommerce.WebAPI\ECommerce.WebAPI.csproj", "{202B6DE3-6845-4417-80FC-25FA55FFDD1B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateway", "Gateway", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerceFinalProject.OcelotGateway", "ECommerceFinalProject.OcelotGateway\ECommerceFinalProject.OcelotGateway.csproj", "{08573374-0521-416A-AE1B-EA0A0A250C0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,6 +183,10 @@ Global
 		{202B6DE3-6845-4417-80FC-25FA55FFDD1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{202B6DE3-6845-4417-80FC-25FA55FFDD1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{202B6DE3-6845-4417-80FC-25FA55FFDD1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08573374-0521-416A-AE1B-EA0A0A250C0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08573374-0521-416A-AE1B-EA0A0A250C0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08573374-0521-416A-AE1B-EA0A0A250C0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08573374-0521-416A-AE1B-EA0A0A250C0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -223,6 +231,7 @@ Global
 		{D385EEBB-3A33-4685-8154-DD181BF30B18} = {F6DBEBEC-45C3-4730-94A7-564438361538}
 		{3A0B3E6F-70F4-4BBF-80ED-C6EF05915EA7} = {EC6B6095-7B3D-40A9-BD4D-BC137E46372B}
 		{202B6DE3-6845-4417-80FC-25FA55FFDD1B} = {3A0B3E6F-70F4-4BBF-80ED-C6EF05915EA7}
+		{08573374-0521-416A-AE1B-EA0A0A250C0B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6E24F53E-F5FC-477C-B8AB-C1251EC326A2}
