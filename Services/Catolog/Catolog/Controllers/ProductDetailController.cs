@@ -36,6 +36,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateProductDetail(CreateProductDetailDTOs createProductDetailDTOs)
         {
             await _productDetailServices.CreateProductDetailAsync(createProductDetailDTOs);
@@ -43,6 +45,8 @@ namespace Catolog.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteProductDetail(string id)
         {
             await _productDetailServices.DeleteProductDetailAsync(id);
@@ -50,6 +54,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> UpdateProductDetail(string id,UpdateProductDetailDTOs updateProductDetailDTOs)
         {
             updateProductDetailDTOs.ProductId = id;

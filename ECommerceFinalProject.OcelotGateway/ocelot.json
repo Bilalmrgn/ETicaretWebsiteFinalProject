@@ -1,0 +1,344 @@
+{
+  "Routes": [
+    //get all product
+    {
+      "DownstreamPathTemplate": "/api/Product",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/product",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //product write operations and get by id operation
+    {
+      "DownstreamPathTemplate": "/api/Product/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/product/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "catalog.read", "catalog.full" ]
+      }
+    },
+
+
+    //----------------------------------------------------------------------------------------------------------------------------------
+
+
+    //category get all 
+    {
+      "DownstreamPathTemplate": "/api/Categories",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/category",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //category get by id
+    {
+      "DownstreamPathTemplate": "/api/Categories/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/category",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //category write operations
+    {
+      "DownstreamPathTemplate": "/api/Categories/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/category",
+      "UpstreamHttpMethod": [ "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "catalog.read", "catalog.full" ]
+      }
+    },
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+
+    //get all Brand
+    {
+      "DownstreamPathTemplate": "/api/Brand",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/brand",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //get brand by id
+    {
+      "DownstreamPathTemplate": "/api/Brand/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/brand/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //brand write operations
+    {
+      "DownstreamPathTemplate": "/api/Brand/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/brand/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "catalog.read", "catalog.full" ]
+      }
+    },
+
+    //-----------------------------------------------------------------------------------------------------------------------------------
+
+    //get all FeatureSlider
+    {
+      "DownstreamPathTemplate": "/api/FeatureSlider",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/FeatureSlider",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //get FeatureSlider by id
+    {
+      "DownstreamPathTemplate": "/api/FeatureSlider/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/FeatureSlider/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //FeatureSlider write operations
+    {
+      "DownstreamPathTemplate": "/api/FeatureSlider/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/FeatureSlider/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "catalog.read", "catalog.full" ]
+      }
+    },
+
+    //------------------------------------------------------------------------------------------------------------------------------------
+
+    //get all productDetail
+    {
+      "DownstreamPathTemplate": "/api/ProductDetail",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/ProductDetail",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //get productDetail by id
+    {
+      "DownstreamPathTemplate": "/api/ProductDetail/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/ProductDetail/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //productDetail write operations
+    {
+      "DownstreamPathTemplate": "/api/ProductDetail/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/ProductDetail/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "catalog.read", "catalog.full" ]
+      }
+    },
+
+
+    //-------------------------------------------------------------------------------------------------------------------------------------
+
+    //get all ProductImages
+    {
+      "DownstreamPathTemplate": "/api/ProductImages",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/ProductImages",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //get ProductImages by id
+    {
+      "DownstreamPathTemplate": "/api/ProductImages/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/ProductImages/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //ProductImages write operations
+    {
+      "DownstreamPathTemplate": "/api/ProductImages/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/ProductImages/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "catalog.read", "catalog.full" ]
+      }
+    },
+
+    //-------------------------------------------------------------------------------------------------------------------------------------
+
+    //get all SpecialOffer
+    {
+      "DownstreamPathTemplate": "/api/SpecialOffer",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/SpecialOffer",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //get SpecialOffer by id
+    {
+      "DownstreamPathTemplate": "/api/SpecialOffer/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/SpecialOffer/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //SpecialOffer write operations
+    {
+      "DownstreamPathTemplate": "/api/SpecialOffer/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/SpecialOffer/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "catalog.read", "catalog.full" ]
+      }
+    },
+
+
+    //identity server routes
+    {
+      "DownstreamPathTemplate": "/connect/authorize",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/connect/authorize",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    //identity server routes
+    {
+      "DownstreamPathTemplate": "/connect/token",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/login",
+      "UpstreamHttpMethod": [ "Post" ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7185"
+  }
+}

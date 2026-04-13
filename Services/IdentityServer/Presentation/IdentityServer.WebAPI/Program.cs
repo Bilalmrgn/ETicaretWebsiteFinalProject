@@ -21,7 +21,6 @@ builder.Services
     .AddIdentityServer(opt =>
     {
         opt.EmitStaticAudienceClaim = true;
-        opt.UserInteraction.PromptValuesSupported.Add("create"); // 'create' değerini desteklenenlere ekle
     })
     .AddInMemoryApiResources(Config.ApiResources)
     .AddInMemoryApiScopes(Config.ApiScopes)

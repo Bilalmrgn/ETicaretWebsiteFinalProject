@@ -36,6 +36,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateCategory(CreateCategoryDTOs createCategoryDTOs)
         {
             await _categoryServices.CreateCategoryAsync(createCategoryDTOs);
@@ -43,6 +45,8 @@ namespace Catolog.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteCategory(string id)
         {
             await _categoryServices.DeleteCategoryAsync(id);
@@ -50,6 +54,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPut("{categoryId}")]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> UpdateCategory(string categoryId, [FromBody] UpdateCategoryDTOs updateCategoryDTOs)
         {
             updateCategoryDTOs.CategoryId = categoryId;

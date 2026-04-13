@@ -26,7 +26,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     options.RequireHttpsMetadata = false;
 });
 
-
+//authorization policy konfigurasyonu
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+});
 
 var app = builder.Build();
 

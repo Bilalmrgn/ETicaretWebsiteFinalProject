@@ -36,6 +36,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateSpecialOffer(CreateSpecialOfferDto dto)
         {
             await _specialOfferService.CreateSpecialOfferAsync(dto);
@@ -43,6 +45,8 @@ namespace Catolog.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteSpecialOffer(string id)
         {
             await _specialOfferService.DeleteSpecialOfferAsync(id);
@@ -50,8 +54,10 @@ namespace Catolog.Controllers
         }
 
         [HttpPut("{specialOfferId}")]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> UpdateSpecialOffer(string specialOfferId, [FromBody] UpdateSpecialOfferDto updateSpecialOfferDto)
-        {
+        {  
             updateSpecialOfferDto.SpecialOfferId = specialOfferId;
 
             await _specialOfferService.UpdateSpecialOfferAsync(updateSpecialOfferDto);

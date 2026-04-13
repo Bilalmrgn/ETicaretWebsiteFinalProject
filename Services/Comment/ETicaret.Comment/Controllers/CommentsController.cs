@@ -20,6 +20,7 @@ namespace ETicaret.Comment.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> CommentList()
         {
             var comments = await _commentService.GetCommentListAsync();
@@ -28,6 +29,7 @@ namespace ETicaret.Comment.Controllers
 
         //Get by id comment
         [HttpGet("{commentId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetByIdComment(int commentId)
         {
             var comment = await _commentService.GetCommentById(commentId);
@@ -38,6 +40,7 @@ namespace ETicaret.Comment.Controllers
 
         //create comment
         [HttpPost]
+        [Authorize(Policy="CommentFullPermission")]
         public async Task<IActionResult> CreateComment(CreateCommentDto dto)
         {
             await _commentService.CreateCommentAsync(dto);
@@ -46,6 +49,8 @@ namespace ETicaret.Comment.Controllers
 
         //update comment
         [HttpPut("{commentId}")]
+        [Authorize(Policy = "CommentFullPermission")]
+
         public async Task<IActionResult> UpdateComment(UpdateCommentDto dto)
         {
             await _commentService.UpdateCommentAsync(dto);
@@ -54,6 +59,8 @@ namespace ETicaret.Comment.Controllers
 
         //delete comment
         [HttpDelete("{commentId}")]
+        [Authorize(Policy = "CommentFullPermission")]
+
         public async Task<IActionResult> DeleteComment(int commentId)
         {
             await _commentService.DeleteCommentAsync(commentId);
@@ -62,6 +69,7 @@ namespace ETicaret.Comment.Controllers
 
         //ProductId sine göre bütün yorumları listeleme
         [HttpGet("GetCommentListByProductId/{productId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetCommentByProductId(string productId)
         {
             var comments = await _commentService.GetAllCommentsByProductIdAsync(productId);

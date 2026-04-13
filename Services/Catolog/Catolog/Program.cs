@@ -1,4 +1,4 @@
-﻿using Catolog.Mapping;
+using Catolog.Mapping;
 using Catolog.Services.BrandService;
 using Catolog.Services.CategoryServices;
 using Catolog.Services.FeatureSliderService;
@@ -10,10 +10,17 @@ using Catolog.Services.SpecialOfferService;
 using Catolog.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 using System.Reflection;
 
+using System.IdentityModel.Tokens.Jwt;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Claim mapping'i temizleyerek JWT içindeki role ve scope gibi alanların .NET tarafından değiştirilmesini engelliyoruz.
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 
 //mikroservisin kormua altına alınması
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -24,6 +31,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     options.RequireHttpsMetadata = false;
     //3.parametre
     options.Audience = "catalog_microservice";//burada katolog mikroservisini ayağa kaldırdığım için identity deki config dosyamın resource kısmındaki yeri okur. yani catalog_microservice
+    
+    //claim için bunu ekledik
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = "name",
+        RoleClaimType = "role"
+    };
+
 });
 
 
@@ -67,6 +82,20 @@ builder.Services.AddSingleton<MongoContext>();
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
 
 
+
+
+//authorzation için policy tanımlama
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("CatalogRead", policy => policy.RequireClaim("scope", "catalog.read", "catalog.full"));
+    opt.AddPolicy("CatalogWrite", policy =>
+        policy.RequireClaim("scope", "catalog.full"));
+
+    //Admin kontrolü
+    opt.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
+
+});
 
 
 var app = builder.Build();

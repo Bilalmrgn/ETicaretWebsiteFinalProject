@@ -43,8 +43,22 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = redisHost;
 });
 
+builder.Services.AddAuthorization(opt =>
+{
+    opt.AddPolicy("CatalogRead", policy => policy.RequireClaim("scope", "catalog.read", "catalog.full"));
+    opt.AddPolicy("CatalogWrite", policy =>
+        policy.RequireClaim("scope", "catalog.full"));
 
+    //Admin kontrolü
+    opt.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
 
+});
+//authorization policy configuration
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("BasketFullPermission", policy => policy.RequireClaim("scope", "basket.full"));
+});
 
 var app = builder.Build();
 

@@ -19,6 +19,7 @@ namespace Catolog.Controllers
 
         // kategori listesi
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ProductImagesList()
         {
             var values = await _productImagesServices.GetAllProductImagesAsync();
@@ -27,6 +28,7 @@ namespace Catolog.Controllers
 
         //id ye göre kategori listesi
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProductImagesById(string id)
         {
             var values = _productImagesServices.GetByIdProductImagesAsync(id);
@@ -34,6 +36,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateProductImages(CreateProductImagesDTOs createProductImagesDTOs)
         {
             await _productImagesServices.CreateProductImagesAsync(createProductImagesDTOs);
@@ -41,6 +45,8 @@ namespace Catolog.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteProductImages(string id)
         {
             await _productImagesServices.DeleteProductImagesAsync(id);
@@ -48,6 +54,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> UpdateProductImages(UpdateProductImagesDTOs updateProductImagesDTOs)
         {
             await _productImagesServices.UpdateProductImagesAsync(updateProductImagesDTOs);
@@ -55,6 +63,7 @@ namespace Catolog.Controllers
         }
 
         [HttpGet("GetProductImagesByProductId/{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProductImagesByProductId(string id)
         {
             var values = await _productImagesServices.GetProductImagesByProductIdAsync(id);

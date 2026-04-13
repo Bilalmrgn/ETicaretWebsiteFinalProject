@@ -37,6 +37,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateFeatureSlider(CreateFeatureSliderDto dto)
         {
             await _featureSliderService.CreateFeatureSliderAsync(dto);
@@ -44,6 +46,8 @@ namespace Catolog.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteFeatureSlider(string id)
         {
             await _featureSliderService.DeleteFeatureSliderAsync(id);
@@ -51,6 +55,8 @@ namespace Catolog.Controllers
         }
 
         [HttpPut("{featureSliderId}")]
+        [Authorize(Policy = "CatalogWrite")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> UpdateFeatureSlider(string featureSliderId, [FromBody] UpdateFeatureSliderDto updateFeatureSliderDto)
         {
             updateFeatureSliderDto.FeatureSliderId = featureSliderId;

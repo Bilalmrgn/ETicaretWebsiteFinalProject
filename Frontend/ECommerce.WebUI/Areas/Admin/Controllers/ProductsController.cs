@@ -1,4 +1,4 @@
-﻿using ECommerce.WebUI.Services;
+using ECommerce.WebUI.Services;
 using Frontend.DtosLayer.CategoryDto;
 using Frontend.DtosLayer.ProductsDto;
 using Microsoft.AspNetCore.Authorization;
@@ -20,13 +20,15 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             _httpClientFactory = httpClientFactory;
             _tokenService = tokenService;
         }
+
+        //get all product
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
     
             
-            var response = await client.GetAsync("api/Product/GetAllProducts");
+            var response = await client.GetAsync("/catalog/product");
 
             if (response.IsSuccessStatusCode)
             {
@@ -47,8 +49,8 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
     
-
-            var response = await client.GetAsync("api/Categories");
+            //get all category
+            var response = await client.GetAsync("/catalog/category");
 
             if (response.IsSuccessStatusCode)
             {
@@ -75,7 +77,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             //json verisini http içeriğine çevirme
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("api/Product", stringContent);
+            var response = await client.PostAsync("/catalog/product", stringContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -91,7 +93,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var response = await client.DeleteAsync($"api/Product/{id}");
+            var response = await client.DeleteAsync($"/catalog/product/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -108,7 +110,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
             //header da token gönderdikten sonra verimizi serialize şeklinde ileteceğiz. çünkü ekleme ve güncellemede serialize
-            var response = await client.GetAsync($"api/Product/GetProductById/{id}");
+            var response = await client.GetAsync($"/catalog/product/{id}");
 
             if (response.IsSuccessStatusCode) //405 hata kodu alıyorum buradan devam edeceğim
             {
@@ -119,7 +121,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
                 var values = JsonConvert.DeserializeObject<UpdateProductDto>(jsonData);
 
                 //kategori değiştirebilmek için kategorileri listeleme
-                var categoryResponse = await client.GetAsync("api/Categories");
+                var categoryResponse = await client.GetAsync("/catalog/category");
 
                 if (categoryResponse.IsSuccessStatusCode)
                 {
@@ -151,14 +153,14 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             //string veriyi Http içerisine koymamız gerekiyor
             StringContent stringContent = new StringContent(jsonData,Encoding.UTF8,"application/json");
 
-            var response = await client.PutAsync($"api/Product/{dto.ProductId}",stringContent);
+            var response = await client.PutAsync($"/catalog/product/{dto.ProductId}",stringContent);
 
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "Products", new { area = "Admin" });
             }
             // ❗ tekrar kategori yükle
-            var categoryResponse = await client.GetAsync("api/Categories");
+            var categoryResponse = await client.GetAsync("/catalog/category");
 
             if (categoryResponse.IsSuccessStatusCode)
             {

@@ -1,10 +1,12 @@
 ﻿using Basket.Dtos;
 using Basket.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Basket.Controllers
 {
+    [Authorize(Policy = "BasketFullPermission")]
     [Route("api/[controller]")]
     [ApiController]
     public class BasketController : ControllerBase

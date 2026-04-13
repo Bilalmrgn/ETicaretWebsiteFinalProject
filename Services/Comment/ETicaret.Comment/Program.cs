@@ -3,10 +3,12 @@ using ETicaret.Comment.Services.CommentService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -28,6 +30,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     options.Authority = builder.Configuration["IdentityServerUrl"];
     options.Audience = "comment_microservice";
     options.RequireHttpsMetadata = false;
+});
+
+
+//authorization policy konfigurasyonu
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CommentFullPermission", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "comment.full");
+    });
+    options.AddPolicy("CommentReadPermission", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "comment.read");
+    });
 });
 
 

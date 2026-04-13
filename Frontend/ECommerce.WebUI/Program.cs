@@ -21,7 +21,7 @@ builder.Services.AddTransient<TokenHandler>();
 //brand api portu
 builder.Services.AddHttpClient("CatalogClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7166/");
+    client.BaseAddress = new Uri("https://localhost:7185/");
 }).AddHttpMessageHandler<TokenHandler>();
 
 //contact

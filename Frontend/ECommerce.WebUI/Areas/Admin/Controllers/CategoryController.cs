@@ -26,15 +26,8 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
-            //token al çünkü api kısmımda authorize var
-            /*            var token = await _tokenService.GetAccessToken(HttpContext);
-            */
-    
 
-
-
-            var response = await client.GetAsync("api/Categories");
-
+            var response = await client.GetAsync("/catalog/category");
 
             if (response.IsSuccessStatusCode)
             {
@@ -68,7 +61,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var responseMessage = await client.PostAsync("api/Categories", stringContent);
+            var responseMessage = await client.PostAsync("/catalog/category", stringContent);
 
             if (responseMessage.IsSuccessStatusCode)
             {
@@ -85,7 +78,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
          
-            var response = await client.DeleteAsync($"api/Categories/{id}");
+            var response = await client.DeleteAsync($"/catalog/category/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -103,7 +96,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
        
 
-            var response = await client.GetAsync($"Categories/{id}");
+            var response = await client.GetAsync($"/catalog/category/{id}");
 
             if(response.IsSuccessStatusCode)
             {
@@ -129,7 +122,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             var jsonData = JsonConvert.SerializeObject(dto);
             StringContent stringContent = new StringContent(jsonData,Encoding.UTF8,"application/json");
 
-            var response = await client.PutAsync($"api/Categories/{dto.CategoryId}" , stringContent);
+            var response = await client.PutAsync($"/catalog/category/{dto.CategoryId}" , stringContent);
 
             if(response.IsSuccessStatusCode)
             {

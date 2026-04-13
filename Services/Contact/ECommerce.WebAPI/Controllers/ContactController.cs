@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.WebAPI.Controllers
 {
-    
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ContactController : ControllerBase
@@ -20,6 +20,7 @@ namespace ECommerce.WebAPI.Controllers
 
         //Get all contact message
         [HttpGet]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> GetAllContactMessage()
         {
             var values = await _contactService.GetAllContactsAsync();
@@ -28,6 +29,8 @@ namespace ECommerce.WebAPI.Controllers
 
         //Get by id contact message
         [HttpGet("{id}")]
+        [Authorize(Policy = "AdminOnly")]
+
         public async Task<IActionResult> GetByIdContactMessage(int id)
         {
             var value = await _contactService.GetByIdContactAsync(id);
@@ -36,6 +39,7 @@ namespace ECommerce.WebAPI.Controllers
 
         //Create contact message 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateContactMessage(CreateContactDto dto)
         {
             await _contactService.CreateContactAsync(dto);
@@ -44,6 +48,7 @@ namespace ECommerce.WebAPI.Controllers
 
         //Delete contact message
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteContactMessage(int id)
         {
             await _contactService.DeleteContactAsync(id);

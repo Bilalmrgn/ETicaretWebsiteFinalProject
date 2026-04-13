@@ -11,32 +11,38 @@ namespace IdentityServer.WebAPI
         {
             new ApiResource("catalog_microservice")//benim resourceCatolog isminde bir mikroservisim var ve bu mikroservisimi korumaya alacağım
             {
-                Scopes = {"catalog.full","catalog.read"},//yani bu catolog servisimde tam yetki alabilir, sadece okuma yetkisi alabilir
+                Scopes = {"catalog.full","catalog.read"},
+                UserClaims = { "role" }//yani bu catolog servisimde tam yetki alabilir, sadece okuma yetkisi alabilir
             },
 
             new ApiResource("discount_microservice")
             {
-                Scopes = { "discount.full"}
+                Scopes = { "discount.full"},
+                UserClaims = { "role" }
             },
 
             new ApiResource("comment_microservice")
             {
-                Scopes = { "comment.full","comment.read"}
+                Scopes = { "comment.full","comment.read"},
+                UserClaims = { "role" }
             },
 
             new ApiResource("order_microservice")
             {
-                Scopes = {"order.full","order.getAllOrder"}
+                Scopes = {"order.full","order.getAllOrder"},
+                UserClaims = { "role" }
             },
 
             new ApiResource("basket_microservice")
             {
-                Scopes = { "basket.full"}
+                Scopes = { "basket.full"},
+                UserClaims = { "role" } // Basket mikroservisi için "role" claim'ini ekleyelim
             },
 
             new ApiResource("contact_microservice")
             {
-                Scopes = { "contact.full","contact.create"}
+                Scopes = { "contact.full","contact.create"},
+                UserClaims = { "role" }
             },
 
             new ApiResource("cargo_microservice")//benim catalog_cargo isminde bir mikroservisim var ve bu mikroservisimi korumaya alacağım
@@ -86,7 +92,7 @@ namespace IdentityServer.WebAPI
                 ClientName = "ECommerce visitor user",
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
-                AllowedScopes = {"catalog.read","cargo.read","comment.read","contact.create",IdentityServerConstants.StandardScopes.OfflineAccess},//visitor katalogları okuyabilme yetkisi verdik
+                AllowedScopes = {"catalog.read","cargo.read","comment.read","contact.create",IdentityServerConstants.StandardScopes.OfflineAccess},//token içerisine bu alanları yazdırdım scope kısmına
             
             },
 
@@ -96,13 +102,13 @@ namespace IdentityServer.WebAPI
                 ClientId = "ECommerceCustomerId",
                 ClientName = "ECommerce Customer user",
                 AllowedGrantTypes= GrantTypes.Code,
-                RequirePkce = true,
+                RequirePkce = false,
                 RequireClientSecret = true,
 
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
 
                 //giriş yaptıktan sonra dönülecek adres
-                RedirectUris = { "https://localhost:7145/signin-oidc" },
+                RedirectUris = { "https://localhost:7145/signin-oidc", "https://oauth.pstmn.io/v1/browser-callback", "https://oauth.pstmn.io/v1/callback" },
 
                 //çıkış yaptıktan sonra dönülecek adres
                 PostLogoutRedirectUris = { "https://localhost:7145/signout-callback-oidc" },
@@ -112,6 +118,7 @@ namespace IdentityServer.WebAPI
                     "catalog.read",
                     "order.getAllOrder",
                     "comment.full",
+                    "basket.full",
                     "contact.create",
                     "roles",
                     IdentityServerConstants.StandardScopes.OfflineAccess,
@@ -127,13 +134,13 @@ namespace IdentityServer.WebAPI
                 ClientId = "ECommerceAdminId",
                 ClientName = "ECommerce admin user",
                 AllowedGrantTypes= GrantTypes.Code,
-                RequirePkce = true,
+                RequirePkce = false,
                 RequireClientSecret = true,
 
                 ClientSecrets = {new Secret("ecommercesecret".Sha256())},
 
                 //giriş yaptıktan sonra dönülecek adres
-                RedirectUris = { "https://localhost:7145/signin-oidc" },
+                RedirectUris = { "https://localhost:7145/signin-oidc", "https://oauth.pstmn.io/v1/browser-callback", "https://oauth.pstmn.io/v1/callback" },
 
                 //çıkış yaptıktan sonra dönülecek adres
                 PostLogoutRedirectUris = { "https://localhost:7145/signout-callback-oidc" },
