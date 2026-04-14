@@ -15,6 +15,13 @@ namespace IdentityServer.WebAPI
                 UserClaims = { "role" }//yani bu catolog servisimde tam yetki alabilir, sadece okuma yetkisi alabilir
             },
 
+            //favorite işlemleri için
+            new ApiResource("favorite_microservice")
+            {
+                Scopes = {"favorite.full"},
+                UserClaims = { "role" }
+            },
+
             new ApiResource("discount_microservice")
             {
                 Scopes = { "discount.full"},
@@ -68,6 +75,7 @@ namespace IdentityServer.WebAPI
         public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
         {
             new ApiScope("catalog.full","katolog işlemlerine tam yetki"),
+            new ApiScope("favorite.full","favori işlemlerine tam yetki"),
             new ApiScope("catalog.read","Katolog işlemlerinde okuma yetkisi"),
             new ApiScope("discount.full","discount' a tam yetki"),
             new ApiScope("order.full","Order' a tam yetki"),
@@ -114,6 +122,7 @@ namespace IdentityServer.WebAPI
                 PostLogoutRedirectUris = { "https://localhost:7145/signout-callback-oidc" },
 
                 AllowedScopes = {
+                    "favorite.full",
                     "catalog.full",
                     "catalog.read",
                     "order.getAllOrder",
@@ -146,6 +155,7 @@ namespace IdentityServer.WebAPI
                 PostLogoutRedirectUris = { "https://localhost:7145/signout-callback-oidc" },
 
                 AllowedScopes = {
+                    "favorite.full",
     "roles",
     "catalog.full",
     "catalog.read",

@@ -495,11 +495,7 @@
         }
       ],
       "UpstreamPathTemplate": "/contact",
-      "UpstreamHttpMethod": [ "Post" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "contact.full" ]
-      }
+      "UpstreamHttpMethod": [ "Post" ]
     },
 
     //PUT AND DELETE operations
