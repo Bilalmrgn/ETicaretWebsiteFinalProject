@@ -1,4 +1,4 @@
-﻿namespace ETicaret.Comment.Entities
+namespace ETicaret.Comment.Entities
 {
     public class UserComment
     {

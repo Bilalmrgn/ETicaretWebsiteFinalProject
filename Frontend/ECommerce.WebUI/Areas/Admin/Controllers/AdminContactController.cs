@@ -22,7 +22,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("ContactClient");
 
-            var response = await client.GetAsync("api/Contact");
+            var response = await client.GetAsync("/contact");
 
             if (response.IsSuccessStatusCode)
             {
@@ -41,7 +41,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("ContactClient");
 
-            var response = await client.GetAsync($"api/Contact/{id}");
+            var response = await client.GetAsync($"/contact/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -61,7 +61,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("ContactClient");
 
-            var response = await client.DeleteAsync($"api/Contact/{id}");
+            var response = await client.DeleteAsync($"/contact/{id}");
 
             if (response.IsSuccessStatusCode)
             {

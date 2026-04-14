@@ -26,7 +26,7 @@ namespace ECommerce.WebUI.Controllers
 
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var response = await client.GetAsync($"api/Product/GetProductById/{id}");
+            var response = await client.GetAsync($"/catalog/product/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -42,7 +42,7 @@ namespace ECommerce.WebUI.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient"); 
 
-            var response = await client.GetAsync($"api/Product/GetProductsByCategoryId/{id}");
+            var response = await client.GetAsync($"/catalog/product/by-category/{id}");
 
             if (response.IsSuccessStatusCode)
             {

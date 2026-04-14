@@ -30,7 +30,7 @@ namespace ECommerce.WebUI.Controllers
 
             StringContent stringContent = new StringContent(jsonData,Encoding.UTF8,"application/json");
 
-            var response = await client.PostAsync("api/Contact",stringContent);
+            var response = await client.PostAsync("/contact", stringContent);
 
             if (response.IsSuccessStatusCode)
             {

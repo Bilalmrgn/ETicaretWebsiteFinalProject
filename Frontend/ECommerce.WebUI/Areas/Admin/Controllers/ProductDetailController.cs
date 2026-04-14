@@ -28,7 +28,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var productResponse = await client.GetAsync($"https://localhost:7166/api/Product/GetProductById/{id}");
+            var productResponse = await client.GetAsync($"/catalog/ProductDetail/{id}");
 
 
             if (productResponse.IsSuccessStatusCode)
@@ -37,7 +37,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
                 var product = JsonConvert.DeserializeObject<GetProductByIdDto>(jsonData);
 
                 //bastığım ürüne ait detayları getirmek için
-                var productDetailResponse = await client.GetAsync($"api/ProductDetail/GetByProductId/{id}");
+                var productDetailResponse = await client.GetAsync($"/catalog/ProductDetail{id}");
 
                 if (productDetailResponse.IsSuccessStatusCode)
                 {
@@ -68,7 +68,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync($"api/ProductDetail/{dto.ProductId}",stringContent);
+            var response = await client.PutAsync($"/catalog/ProductDetail/{dto.ProductId}",stringContent);
 
             if (response.IsSuccessStatusCode)
             {

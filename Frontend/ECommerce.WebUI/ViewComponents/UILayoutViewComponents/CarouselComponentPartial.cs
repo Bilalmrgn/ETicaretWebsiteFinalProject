@@ -17,7 +17,7 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
 
-            var response = await client.GetAsync("api/FeatureSlider");
+            var response = await client.GetAsync("/catalog/FeatureSlider/");
 
             if (response.IsSuccessStatusCode)
             {

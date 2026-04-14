@@ -24,7 +24,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
 
-            var response = await client.GetAsync("api/FeatureSlider");
+            var response = await client.GetAsync("/catalog/FeatureSlider");
 
             if (response.IsSuccessStatusCode)
             {
@@ -57,7 +57,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("api/FeatureSlider", stringContent);
+            var response = await client.PostAsync("/catalog/FeatureSlider", stringContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -75,7 +75,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
 
 
-            var response = await client.DeleteAsync($"https://localhost:7166/api/FeatureSlider/{id}");
+            var response = await client.DeleteAsync($"/catalog/FeatureSlider/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -94,7 +94,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
      
 
-            var response = await client.GetAsync($"api/FeatureSlider/{id}");
+            var response = await client.GetAsync($"/catalog/FeatureSlider/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -114,13 +114,11 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-     
-
             var jsonData = JsonConvert.SerializeObject(dto);
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync($"api/FeatureSlider/{dto.FeatureSliderId}", stringContent);
+            var response = await client.PutAsync($"/catalog/FeatureSlider/{dto.FeatureSliderId}", stringContent);
 
             if (response.IsSuccessStatusCode)
             {

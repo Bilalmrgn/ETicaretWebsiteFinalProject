@@ -21,9 +21,7 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
 
             var client = _httpClientFactory.CreateClient("CatalogClient" );
 
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer",token);
-
-            var response = await client.GetAsync("api/Product/GetLast10Products");
+            var response = await client.GetAsync("/catalog/product/last10");
 
             if (response.IsSuccessStatusCode)
             {

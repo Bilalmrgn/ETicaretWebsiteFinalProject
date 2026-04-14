@@ -1,4 +1,4 @@
-﻿namespace ETicaret.Comment.Dtos
+namespace ETicaret.Comment.Dtos
 {
     public class CreateCommentDto
     {

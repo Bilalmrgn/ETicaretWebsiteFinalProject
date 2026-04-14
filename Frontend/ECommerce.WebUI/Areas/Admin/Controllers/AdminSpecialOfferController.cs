@@ -24,7 +24,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
 
-            var response = await client.GetAsync("api/SpecialOffer");
+            var response = await client.GetAsync("/catalog/SpecialOffer");
 
             if (response.IsSuccessStatusCode)
             {
@@ -56,7 +56,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("api/SpecialOffer",stringContent);
+            var response = await client.PostAsync("/catalog/SpecialOffer", stringContent);
 
             if(response.IsSuccessStatusCode)
             {
@@ -73,7 +73,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
 
 
-            var response = await client.GetAsync($"api/SpecialOffer/{id}");
+            var response = await client.GetAsync($"/catalog/SpecialOffer/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -99,7 +99,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             StringContent stringContent = new StringContent(jsonData,Encoding.UTF8,"application/json");
 
-            var response = await client.PutAsync($"api/SpecialOffer/{dto.SpecialOfferId}",stringContent);
+            var response = await client.PutAsync($"/catalog/SpecialOffer/{dto.SpecialOfferId}",stringContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -116,7 +116,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
 
-            var response = await client.DeleteAsync($"api/SpecialOffer/{id}");
+            var response = await client.DeleteAsync($"/catalog/SpecialOffer/{id}");
 
             if(response.IsSuccessStatusCode)
             {

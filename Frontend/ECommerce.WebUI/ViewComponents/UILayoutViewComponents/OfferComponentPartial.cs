@@ -16,7 +16,7 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var response = await client.GetAsync("api/SpecialOffer");
+            var response = await client.GetAsync("/catalog/SpecialOffer");
 
             if (response.IsSuccessStatusCode)
             {

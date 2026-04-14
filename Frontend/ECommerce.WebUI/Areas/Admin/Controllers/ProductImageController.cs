@@ -28,7 +28,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var productResponse = await client.GetAsync($"api/Product/GetProductById/{id}");
+            var productResponse = await client.GetAsync($"/catalog/ProductImages/{id}");
 
 
             if (productResponse.IsSuccessStatusCode)
@@ -36,7 +36,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
                 var jsonData = await productResponse.Content.ReadAsStringAsync();
                 var product = JsonConvert.DeserializeObject<GetProductByIdDto>(jsonData);
 
-                var imageResponse = await client.GetAsync($"api/ProductImages/GetProductImagesByProductId/{id}");
+                var imageResponse = await client.GetAsync($"/catalog/ProductImages/{id}");
 
                 if(imageResponse.IsSuccessStatusCode)
                 {
@@ -60,7 +60,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             StringContent stringContent = new StringContent(jsonData,Encoding.UTF8,"application/json");
 
-            var response = await client.PostAsync("/api/ProductImages", stringContent);
+            var response = await client.PostAsync("/catalog/ProductImages", stringContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -77,7 +77,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
 
-            var response = await client.DeleteAsync($"api/ProductImages/{id}");
+            var response = await client.DeleteAsync($"/catalog/ProductImages/{id}");
 
             if (response.IsSuccessStatusCode)
             {

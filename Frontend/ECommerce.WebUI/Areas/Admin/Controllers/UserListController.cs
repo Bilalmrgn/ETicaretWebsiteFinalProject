@@ -19,7 +19,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("IdentityClient");
 
-            var response = await client.GetAsync("api/User");
+            var response = await client.GetAsync("/identity/user");
 
             //gelen response başarılı ise
             if (response.IsSuccessStatusCode)

@@ -233,10 +233,10 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
 
                     <div class="mb-3">
-                        <label class="form-label">E-Posta Adresiniz</label>
+                        <label class="form-label">E-Posta Adresi veya Kullanıcı Adı</label>
                         <div class="custom-input-group">
-                            <input type="email" asp-for="Email" class="form-control-custom" placeholder="isim@ornek.com" autocomplete="email">
-                            <i class="fas fa-envelope"></i>
+                            <input type="text" asp-for="Email" class="form-control-custom" placeholder="E-Posta veya Kullanıcı Adı" autocomplete="username">
+                            <i class="fas fa-user"></i>
                         </div>
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>

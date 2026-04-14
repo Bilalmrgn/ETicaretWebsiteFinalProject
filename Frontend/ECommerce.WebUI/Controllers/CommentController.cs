@@ -1,4 +1,4 @@
-﻿using Frontend.DtosLayer.CategoryDto;
+using Frontend.DtosLayer.CategoryDto;
 using Frontend.DtosLayer.CommentDto;
 using Humanizer;
 using Microsoft.AspNetCore.Mvc;
@@ -21,16 +21,24 @@ namespace ECommerce.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComment(CreateCommentDto dto)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                // Giriş yapılmamışsa Login sayfasına yönlendir. 
+                // ReturnUrl olarak gelinen sayfayı (Ürün Detay) verebilirsin.
+                return RedirectToAction("Index", "Login");
+            }
+
             var client = _httpClientFactory.CreateClient("CommentClient");
 
             var jsonData = JsonConvert.SerializeObject(dto);
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("/api/Comments", stringContent);
+            var response = await client.PostAsync("/comments", stringContent);
 
             if (response.IsSuccessStatusCode)
             {
+                TempData["CommentSuccess"] = "Yorumunuz başarıyla kaydedildi.";
                 return RedirectToAction("Details", "Product", new { id = dto.ProductId });
             }
             return View();

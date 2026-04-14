@@ -1,4 +1,4 @@
-﻿using ETicaret.Comment.Context;
+using ETicaret.Comment.Context;
 using ETicaret.Comment.Dtos;
 using ETicaret.Comment.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -20,9 +20,9 @@ namespace ETicaret.Comment.Services.CommentService
         public async Task CreateCommentAsync(CreateCommentDto createCommentDto)
         {
             //gelen token'dan kullanıcının id sini oku
-            var userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
-            if(userId == null)
+            if (userId == null)
             {
                 throw new Exception("kullanıcı bulunamadı (CommentService createCommentAsync metodu)");
             }

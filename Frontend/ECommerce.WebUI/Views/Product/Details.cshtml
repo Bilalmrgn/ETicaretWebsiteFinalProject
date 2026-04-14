@@ -1,4 +1,4 @@
-﻿@model Frontend.DtosLayer.ProductsDto.GetProductByIdDto
+@model Frontend.DtosLayer.ProductsDto.GetProductByIdDto
 
 @{
     ViewData["Title"] = "Details";
@@ -8,6 +8,23 @@
 }
 
 <h1>Details</h1>
+
+@if (TempData["CommentSuccess"] != null)
+{
+    <div class="container-fluid pt-3">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle mr-2"></i> @TempData["CommentSuccess"]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <div class="container-fluid">
     <div class="row px-xl-5">
         <div class="col-12">

@@ -1,4 +1,4 @@
-using Duende.IdentityServer.Services;
+ï»¿using Duende.IdentityServer.Services;
 using IdentityServer.Domain;
 using IdentityServer.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -34,10 +34,10 @@ namespace IdentityServer.WebAPI.Controllers
                     return Redirect(returnUrl);
                 }
             }
-            // 1. Gelen returnUrl içindeki parametreleri çöz (IdentityServer interaction service kullanarak)
+            // 1. Gelen returnUrl iÃ§indeki parametreleri Ã§Ã¶z (IdentityServer interaction service kullanarak)
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
 
-            // 2. Eðer return_to parametresi "register" ise direkt Register'a yolla
+            // 2. EÄŸer return_to parametresi "register" ise direkt Register'a yolla
             if (context?.Parameters.Get("return_to") == "register")
             {
                 return RedirectToAction("Index", "Register", new { returnUrl });
@@ -53,12 +53,17 @@ namespace IdentityServer.WebAPI.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                user = await _userManager.FindByNameAsync(model.Email);
+            }
+
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
-                    // returnUrl varsa oraya, yoksa ana sayfaya yönlendir
+                    // returnUrl varsa oraya, yoksa ana sayfaya yÃ¶nlendir
                     if (_interaction.IsValidReturnUrl(returnUrl))
                     {
                         return Redirect(returnUrl);
@@ -67,14 +72,14 @@ namespace IdentityServer.WebAPI.Controllers
                 }
             }
 
-            ModelState.AddModelError("", "Geçersiz giriþ denemesi.");
+            ModelState.AddModelError("", "GeÃ§ersiz giriÅŸ denemesi.");
             return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Logout(string logoutId)
         {
-            // 1. IdentityServer oturumunu (ASP.NET Identity üzerinden) kapat
+            // 1. IdentityServer oturumunu (ASP.NET Identity Ã¼zerinden) kapat
             await _signInManager.SignOutAsync();
 
             var logoutRequest = await _interaction.GetLogoutContextAsync(logoutId);

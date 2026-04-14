@@ -23,7 +23,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var response = await client.GetAsync("api/Brand");
+            var response = await client.GetAsync("/catalog/brand");
 
             if (response.IsSuccessStatusCode)
             {
@@ -55,7 +55,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("api/Brand", stringContent);
+            var response = await client.PostAsync("/catalog/brand", stringContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -73,7 +73,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var response = await client.GetAsync($"api/Brand/{id}");
+            var response = await client.GetAsync($"/catalog/brand/{id}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -96,7 +96,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync($"api/Brand/{dto.BrandId}", stringContent);
+            var response = await client.PutAsync($"/catalog/brand/{dto.BrandId}", stringContent);
 
             if (response.IsSuccessStatusCode)
             {
@@ -113,7 +113,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var response = await client.DeleteAsync($"api/Brand/{id}");
+            var response = await client.DeleteAsync($"/catalog/brand/{id}");
 
             if (response.IsSuccessStatusCode)
             {

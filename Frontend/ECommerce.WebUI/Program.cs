@@ -27,19 +27,19 @@ builder.Services.AddHttpClient("CatalogClient", client =>
 //contact
 builder.Services.AddHttpClient("ContactClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7162/");
+    client.BaseAddress = new Uri("https://localhost:7185/");
 }).AddHttpMessageHandler<TokenHandler>();
 
 
 builder.Services.AddHttpClient("IdentityClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7222/");
+    client.BaseAddress = new Uri("https://localhost:7185/");
 }).AddHttpMessageHandler<TokenHandler>();
 
 
 builder.Services.AddHttpClient("CommentClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7221");
+    client.BaseAddress = new Uri("https://localhost:7185");
 }).AddHttpMessageHandler<TokenHandler>();
 
 

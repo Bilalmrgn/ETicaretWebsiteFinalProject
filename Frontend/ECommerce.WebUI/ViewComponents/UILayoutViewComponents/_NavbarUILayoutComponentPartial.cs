@@ -1,4 +1,4 @@
-﻿using Frontend.DtosLayer.CategoryDto;
+using Frontend.DtosLayer.CategoryDto;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -17,8 +17,8 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
 
-            var response = await client.GetAsync("api/Categories");
-
+            var response = await client.GetAsync("/catalog/category");
+            
             if(response.IsSuccessStatusCode)
             {
                 var jsonData = await response.Content.ReadAsStringAsync();
@@ -28,7 +28,7 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
                 return View(values);
             }
 
-            return View();
+            return View(new List<CategoryListDto>());
         }
     }
 }
