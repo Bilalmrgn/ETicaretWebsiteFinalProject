@@ -1,25 +1,52 @@
-﻿@model List<Frontend.DtosLayer.ProductsDto.ProductListDto>
+@model List<ECommerce.WebUI.ViewModel.ProductWithFavoriteViewModel>
+
 <div class="container-fluid pt-5 pb-3">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Featured Products</span></h2>
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
+        <span class="bg-secondary pr-3">Öne Çıkan Ürünler</span>
+    </h2>
+
     <div class="row px-xl-5">
         @foreach (var item in Model)
         {
             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
                 <div class="product-item bg-light mb-4">
+
                     <div class="product-img position-relative overflow-hidden">
-                        <img class="img-fluid w-100" src="@item.ProductImageUrl" alt="ürün resmi bulunamadı.">
+                        <img class="img-fluid w-100" src="@item.Product.ProductImageUrl" alt="@item.Product.ProductName">
+
                         <div class="product-action">
-                            <a class="btn btn-outline-dark btn-square" href="/ProductDetail/Index/@item.ProductId"><i class="fa fa-shopping-cart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href="/ProductDetail/Index/@item.ProductId"><i class="far fa-heart"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href="/ProductDetail/Index/@item.ProductId"><i class="fa fa-sync-alt"></i></a>
-                            <a class="btn btn-outline-dark btn-square" href="/ProductDetail/Index/@item.ProductId"><i class="fa fa-search"></i></a>
+
+                            <a class="btn btn-outline-dark btn-square" href="/Product/Details/@item.Product.ProductId">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+
+                            <!-- ✅ FAVORİ TOGGLE BUTONU (HOVER FİX) -->
+                            <form id="favForm-@item.Product.ProductId" method="post" asp-controller="Favorite" asp-action="@(item.IsFavorite ? "RemoveFavorite" : "AddFavorite")" style="display:none;">
+                                <input type="hidden" name="productId" value="@item.Product.ProductId" />
+                            </form>
+                            <a class="btn btn-outline-dark btn-square" href="javascript:void(0);" onclick="document.getElementById('favForm-@item.Product.ProductId').submit();">
+                                <i class="@(item.IsFavorite ? "fas fa-heart text-primary" : "far fa-heart")"></i>
+                            </a>
+
+                            <a class="btn btn-outline-dark btn-square" href="/Product/Details/@item.Product.ProductId">
+                                <i class="fa fa-sync-alt"></i>
+                            </a>
+
+                            <a class="btn btn-outline-dark btn-square" href="/Product/Details/@item.Product.ProductId">
+                                <i class="fa fa-search"></i>
+                            </a>
                         </div>
                     </div>
+
                     <div class="text-center py-4">
-                        <a class="h6 text-decoration-none text-truncate" href="/Product/Details/@item.ProductId">@item.ProductName</a>
+                        <a class="h6 text-decoration-none text-truncate" href="/Product/Details/@item.Product.ProductId">
+                            @item.Product.ProductName
+                        </a>
+
                         <div class="d-flex align-items-center justify-content-center mt-2">
-                            <h5>@item.ProductPrice</h5><h6 class="text-muted ml-2"></h6>
+                            <h5>@item.Product.ProductPrice.ToString("C")</h5>
                         </div>
+
                         <div class="d-flex align-items-center justify-content-center mb-1">
                             <small class="fa fa-star text-primary mr-1"></small>
                             <small class="fa fa-star text-primary mr-1"></small>
@@ -29,10 +56,9 @@
                             <small>(99)</small>
                         </div>
                     </div>
+
                 </div>
             </div>
         }
     </div>
 </div>
-
-<!-- Products End -->

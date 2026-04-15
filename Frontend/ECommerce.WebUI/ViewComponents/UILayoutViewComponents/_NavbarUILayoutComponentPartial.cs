@@ -1,3 +1,4 @@
+using ECommerce.WebUI.ViewModel;
 using Frontend.DtosLayer.CategoryDto;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,23 +13,35 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
         {
             _httpClientFactory = httpClientFactory;
         }
+
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var client = _httpClientFactory.CreateClient("CatalogClient");
-
-
-            var response = await client.GetAsync("/catalog/category");
+            // 1. Kategoriler
+            var catalogClient = _httpClientFactory.CreateClient("CatalogClient");
+            var categoryResponse = await catalogClient.GetAsync("/catalog/category");
             
-            if(response.IsSuccessStatusCode)
+            List<CategoryListDto> categories = new List<CategoryListDto>();
+            if (categoryResponse.IsSuccessStatusCode)
             {
-                var jsonData = await response.Content.ReadAsStringAsync();
-
-                var values = JsonConvert.DeserializeObject <List<CategoryListDto>>(jsonData);
-
-                return View(values);
+                var jsonData = await categoryResponse.Content.ReadAsStringAsync();
+                categories = JsonConvert.DeserializeObject<List<CategoryListDto>>(jsonData);
             }
 
-            return View(new List<CategoryListDto>());
+            // 2. Favori Sayısını Çek (Oturum Kapalıysa 0 Gelecek)
+            ViewBag.FavoriteCount = 0;
+            if (User.Identity.IsAuthenticated)
+            {
+                var favoriteClient = _httpClientFactory.CreateClient("FavoriteClient");
+                var favoriteResponse = await favoriteClient.GetAsync("https://localhost:7135/api/Favorite");
+                if (favoriteResponse.IsSuccessStatusCode)
+                {
+                    var favJson = await favoriteResponse.Content.ReadAsStringAsync();
+                    var favorites = JsonConvert.DeserializeObject<List<FavoriteModel>>(favJson);
+                    ViewBag.FavoriteCount = favorites != null ? favorites.Count : 0;
+                }
+            }
+
+            return View(categories);
         }
     }
 }

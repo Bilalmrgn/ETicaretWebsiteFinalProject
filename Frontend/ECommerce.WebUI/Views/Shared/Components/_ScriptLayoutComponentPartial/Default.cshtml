@@ -1,4 +1,4 @@
-﻿<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 <link href="img/favicon.ico" rel="icon">
 
@@ -15,11 +15,18 @@
 
 <!-- Customized Bootstrap Stylesheet -->
 <link href="~/WebsiteTemplate/css/style.css" rel="stylesheet">
+
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 <script src="~/WebsiteTemplate/lib/easing/easing.min.js"></script>
 <script src="~/WebsiteTemplate/lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <!-- Contact Javascript File -->
 <script src="~/WebsiteTemplate/mail/jqBootstrapValidation.min.js"></script>
@@ -27,3 +34,25 @@
 
 <!-- Template Javascript -->
 <script src="~/WebsiteTemplate/js/main.js"></script>
+
+@if (TempData["LoginRequired"] != null)
+{
+    <script>
+        Swal.fire({
+            title: 'Oturum Açmanız Gerekiyor!',
+            text: 'Favorilere ürün ekleyebilmek veya silebilmek için lütfen önce giriş yapınız.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FFD333',
+            cancelButtonColor: '#3D464D',
+            confirmButtonText: 'Giriş Yap',
+            cancelButtonText: 'Kapat',
+            background: '#F5F5F5',
+            color: '#3D464D'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/Login/Index';
+            }
+        });
+    </script>
+}

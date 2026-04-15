@@ -42,6 +42,11 @@ builder.Services.AddHttpClient("CommentClient", client =>
     client.BaseAddress = new Uri("https://localhost:7185");
 }).AddHttpMessageHandler<TokenHandler>();
 
+builder.Services.AddHttpClient("FavoriteClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7135");
+}).AddHttpMessageHandler<TokenHandler>();
+
 
 
 
@@ -97,6 +102,7 @@ builder.Services.AddAuthentication(option =>
         options.Scope.Add("discount.full");
         options.Scope.Add("contact.full");
         options.Scope.Add("offline_access");
+        options.Scope.Add("favorite.full");
         options.Scope.Add("roles");
 
         // 1. JWT içindeki "role" claim'ini yakala ve sistemin "Role" tipine eşle
