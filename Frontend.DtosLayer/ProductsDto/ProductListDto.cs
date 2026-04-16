@@ -1,4 +1,4 @@
-﻿using Frontend.DtosLayer.CategoryDto;
+using Frontend.DtosLayer.CategoryDto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +14,7 @@ namespace Frontend.DtosLayer.ProductsDto
         public string ProductImageUrl { get; set; }
         public string ProductDescription { get; set; }
         public string ProductId { get; set; }
+        public int Quantity { get; set; }
         public CategoryListDto Category { get; set; }
 
     }

@@ -47,6 +47,11 @@ builder.Services.AddHttpClient("FavoriteClient", client =>
     client.BaseAddress = new Uri("https://localhost:7135");
 }).AddHttpMessageHandler<TokenHandler>();
 
+builder.Services.AddHttpClient("BasketClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7178");
+}).AddHttpMessageHandler<TokenHandler>();
+
 
 
 

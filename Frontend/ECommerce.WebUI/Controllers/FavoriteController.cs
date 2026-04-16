@@ -52,7 +52,7 @@ namespace ECommerce.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFavorite(string productId)
         {
-            // ✅ OTURUM KONTROLÜ
+            // kullanıcı giriş yaptı mı
             if (!User.Identity.IsAuthenticated)
             {
                 TempData["LoginRequired"] = true;

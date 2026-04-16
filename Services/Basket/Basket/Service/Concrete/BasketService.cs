@@ -29,12 +29,13 @@ namespace Basket.Service.Concrete
 
             if (existBasket == null)
             {
-                throw new Exception("Sepet Bulunamadi. (Service/Concrete/BasketService)");
+                return new BasketTotalDto();
             }
 
             return JsonSerializer.Deserialize<BasketTotalDto>(existBasket);
         }
 
+        //update and create = save
         public async Task SaveAsync(BasketTotalDto basket)
         {
             await _redisService.SetAsync(basket.UserId, JsonSerializer.Serialize(basket));//benim basket kısmım = obje türünde. redis benden string ister bu yüzden serialize

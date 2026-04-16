@@ -69,24 +69,38 @@
                     </div>
                 </form>
             </div>
-            <div class="d-flex align-items-center mb-4 pt-2">
-                <div class="input-group quantity mr-3" style="width: 130px;">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary btn-minus">
-                            <i class="fa fa-minus"></i>
-                        </button>
+
+            <!-- SEPETE EKLEME FORMU BAŞLANGICI -->
+            <form asp-controller="Basket" asp-action="AddToBasket">
+                <input type="hidden" name="productId" value="@Model.ProductId" />
+
+                <div class="d-flex align-items-center mb-4 pt-2">
+                    <div class="input-group quantity mr-3" style="width: 130px;">
+                        <div class="input-group-btn">
+                            <!-- Eksi butonu formu yollamasın diye type="button" eklendi -->
+                            <button type="button" class="btn btn-primary btn-minus">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+
+                        <!-- name="quantity" eklendi -->
+                        <input type="text" name="quantity" class="form-control bg-secondary border-0 text-center" value="1">
+
+                        <div class="input-group-btn">
+                            <!-- Artı butonu formu yollamasın diye type="button" eklendi -->
+                            <button type="button" class="btn btn-primary btn-plus">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
                     </div>
-                    <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary btn-plus">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
+
+                    <!-- Ana Buton: type="submit" eklendi -->
+                    <button type="submit" class="btn btn-primary px-3">
+                        <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
+                    </button>
                 </div>
-                <button class="btn btn-primary px-3">
-                    <i class="fa fa-shopping-cart mr-1"></i> Add To Cart
-                </button>
-            </div>
+            </form>
+            <!-- SEPETE EKLEME FORMU BİTİŞİ -->
         }
         else
         {

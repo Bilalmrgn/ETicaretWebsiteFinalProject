@@ -16,7 +16,7 @@
 
                         <div class="product-action">
 
-                            <a class="btn btn-outline-dark btn-square" href="/Product/Details/@item.Product.ProductId">
+                            <a asp-action="AddToBasket" asp-controller="Basket" asp-route-productId="@item.Product.ProductId" class="btn btn-outline-dark btn-square">
                                 <i class="fa fa-shopping-cart"></i>
                             </a>
 
