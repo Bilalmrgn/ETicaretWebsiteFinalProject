@@ -91,7 +91,7 @@ builder.Services.AddAuthentication(option =>
         options.ResponseType = "code"; // Authorization Code flow
 
         options.SaveTokens = true;
-        options.GetClaimsFromUserInfoEndpoint = true;
+        options.GetClaimsFromUserInfoEndpoint = false;
 
         options.Scope.Add("openid");
         options.Scope.Add("profile");
@@ -119,27 +119,8 @@ builder.Services.AddAuthentication(option =>
         };
 
         // Eğer roller hala gelmiyorsa şunu ekle (IdentityServer rollerini UserInfo endpoint'inden çeker):
-        options.GetClaimsFromUserInfoEndpoint = true;
+        options.GetClaimsFromUserInfoEndpoint = false;
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
