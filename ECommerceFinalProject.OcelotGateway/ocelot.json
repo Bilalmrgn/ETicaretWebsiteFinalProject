@@ -582,7 +582,70 @@
     },
 
     //-------------------------------------------------------IDENTITY İŞLEMLERİ------------------------------------------------------------------------------
-    //kullanıcı kayıt işlemleri
+    //-------------------------------------------------------IDENTITY İŞLEMLERİ------------------------------------------------------------------------------
+    {
+      "DownstreamPathTemplate": "/api/AccountSettings/change-email",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/change-email",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "Identity.full" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AccountSettings/confirm-email-change",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/confirm-email-change",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/AccountSettings/me",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/me",
+      "UpstreamHttpMethod": [ "Get" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "Identity.full" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AccountSettings/change-password",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/change-password",
+      "UpstreamHttpMethod": [ "Post" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "Identity.full" ]
+      }
+    },
+
+    //---------------- USER ----------------
+
     {
       "DownstreamPathTemplate": "/api/User/register",
       "DownstreamScheme": "https",
@@ -595,7 +658,18 @@
       "UpstreamPathTemplate": "/auth/register",
       "UpstreamHttpMethod": [ "Post" ]
     },
-    //kullanıcı şifre sıfırlama işlemleri
+    {
+      "DownstreamPathTemplate": "/api/User/login",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/login",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
     {
       "DownstreamPathTemplate": "/api/User/reset-password",
       "DownstreamScheme": "https",
@@ -608,75 +682,6 @@
       "UpstreamPathTemplate": "/auth/reset-password",
       "UpstreamHttpMethod": [ "Post" ]
     },
-
-
-    {
-      "DownstreamPathTemplate": "/connect/authorize",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7222
-        }
-      ],
-      "UpstreamPathTemplate": "/connect/authorize",
-      "UpstreamHttpMethod": [ "Get" ]
-    },
-
-    //kullanıcı listeleme işlemleri
-    {
-      "DownstreamPathTemplate": "/api/User",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7222
-        }
-      ],
-      "UpstreamPathTemplate": "/identity/user",
-      "UpstreamHttpMethod": [ "Get" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "roles" ]
-      }
-    },
-
-    //kullanıcı güncelleme işlemleri
-    {
-      "DownstreamPathTemplate": "/api/User",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7222
-        }
-      ],
-      "UpstreamPathTemplate": "/identity/user",
-      "UpstreamHttpMethod": [ "Put" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "CatalogAuthKey"
-      }
-    },
-
-    //kullanıcı silme işlemleri
-    {
-      "DownstreamPathTemplate": "/api/User/{everything}",
-      "DownstreamScheme": "https",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 7222
-        }
-      ],
-      "UpstreamPathTemplate": "/identity/user/{everything}",
-      "UpstreamHttpMethod": [ "Delete" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "roles" ]
-      }
-    },
-
-    //kullanıcı şifre değiştirme işlemleri
     {
       "DownstreamPathTemplate": "/api/User/change-password",
       "DownstreamScheme": "https",
@@ -686,10 +691,43 @@
           "Port": 7222
         }
       ],
-      "UpstreamPathTemplate": "/identity/change-password",
+      "UpstreamPathTemplate": "/auth/user-change-password",
       "UpstreamHttpMethod": [ "Post" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "CatalogAuthKey"
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "Identity.full" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/user",
+      "UpstreamHttpMethod": [ "Get", "Put" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "Identity.full" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/user/{id}",
+      "UpstreamHttpMethod": [ "Delete" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "Identity.full" ]
       }
     }
   ],

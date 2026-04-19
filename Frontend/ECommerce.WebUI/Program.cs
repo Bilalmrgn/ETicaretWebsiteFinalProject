@@ -72,6 +72,7 @@ builder.Services.AddHttpClient("BasketClient", client =>
 
 
 
+
 //Service Registration (IoC)
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddHttpContextAccessor();
@@ -108,6 +109,7 @@ builder.Services.AddAuthentication(option =>
         options.Scope.Add("contact.full");
         options.Scope.Add("offline_access");
         options.Scope.Add("favorite.full");
+        options.Scope.Add("Identity.full");
         options.Scope.Add("roles");
 
         // 1. JWT içindeki "role" claim'ini yakala ve sistemin "Role" tipine eşle

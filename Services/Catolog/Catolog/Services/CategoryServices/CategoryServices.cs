@@ -46,7 +46,9 @@ namespace Catolog.Services.CategoryServices
                 ImageUrl = c.ImageUrl,
                 ProductCount = products.Count(p => p.CategoryId == c.CategoryId)
             }).ToList();
+            var list = await _CategoryCollection.Find(x => true).ToListAsync();
 
+            Console.WriteLine(list.Count);
             return result;
         }
 

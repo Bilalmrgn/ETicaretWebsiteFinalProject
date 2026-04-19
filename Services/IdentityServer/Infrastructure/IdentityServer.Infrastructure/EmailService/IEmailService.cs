@@ -9,5 +9,6 @@ namespace IdentityServer.Infrastructure.EmailService
     public interface IEmailService
     {
         Task SendResetPasswordEmail(string resetEmailLink, string toEmail);
+        Task SendEmailConfirmationEmail(string link, string toEmail);
     }
 }

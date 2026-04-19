@@ -21,6 +21,11 @@ namespace IdentityServer.WebAPI
                 Scopes = {"favorite.full"},
                 UserClaims = { "role" }
             },
+            new ApiResource("Identity_microservice")
+            {
+                Scopes = {"Identity.full"},
+                UserClaims = { "role" }
+            },
 
             new ApiResource("discount_microservice")
             {
@@ -75,6 +80,7 @@ namespace IdentityServer.WebAPI
         public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
         {
             new ApiScope("catalog.full","katolog işlemlerine tam yetki"),
+            new ApiScope("Identity.full","identity işlemlerine tam yetki"),
             new ApiScope("favorite.full","favori işlemlerine tam yetki"),
             new ApiScope("catalog.read","Katolog işlemlerinde okuma yetkisi"),
             new ApiScope("discount.full","discount' a tam yetki"),
@@ -123,6 +129,7 @@ namespace IdentityServer.WebAPI
 
                 AllowedScopes = {
                     "favorite.full",
+                    "Identity.full",
                     "catalog.full",
                     "catalog.read",
                     "order.getAllOrder",
@@ -158,6 +165,7 @@ namespace IdentityServer.WebAPI
                     "favorite.full",
     "roles",
     "catalog.full",
+    "Identity.full",
     "catalog.read",
     "order.full",
     "order.getAllOrder",

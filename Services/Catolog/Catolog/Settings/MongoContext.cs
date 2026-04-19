@@ -24,6 +24,10 @@ namespace Catolog.Settings
             ProductImages = Database.GetCollection<ProductImages>(s.ProductImagesCollectionName);
             ProductDetails = Database.GetCollection<ProductDetail>(s.ProductDetailConnectionName);
             //
+            var clients = new MongoClient(opt.Value.ConnectionString);
+            var database = clients.GetDatabase(opt.Value.DatabaseName);
+
+            Console.WriteLine("MongoDB bağlantısı kuruldu ✔");
         }
     }
 }
