@@ -1,3 +1,4 @@
+using Duende.IdentityModel;
 using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
@@ -6,9 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Duende.IdentityModel;
 
 namespace IdentityServer.Persistence.Concrete
 {
@@ -41,7 +42,7 @@ namespace IdentityServer.Persistence.Concrete
                 //rolleri claim listesine ekle
                 foreach (var role in roles)
                 {
-                    claims.Add(new System.Security.Claims.Claim(JwtClaimTypes.Role, role));
+                    claims.Add(new Claim("role", role));
                 }
 
                 context.IssuedClaims.AddRange(claims);

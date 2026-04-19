@@ -1,4 +1,4 @@
-﻿using IdentityServer.Application.Dtos;
+﻿/*using IdentityServer.Application.Dtos;
 using IdentityServer.Application.Interfaces;
 using IdentityServer.Infrastructure.EmailService;
 using Microsoft.AspNetCore.Authorization;
@@ -93,3 +93,4 @@ namespace IdentityServer.WebAPI.Controllers
         }
     }
 }
+*/

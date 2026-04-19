@@ -1,9 +1,12 @@
+using Duende.IdentityServer.Services;
 using IdentityServer.Domain;
 using IdentityServer.Persistence.Concrete;
 using IdentityServer.Persistence.ServiceRegistration;
 using IdentityServer.WebAPI;
+using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 // Add services to the container.
 
@@ -13,6 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<CustomProfileService>();
+/*builder.Services.AddScoped<IProfileService, ProfileService>();*/
+
 //persistence service registration
 builder.Services.AddDatabase(builder.Configuration);
 

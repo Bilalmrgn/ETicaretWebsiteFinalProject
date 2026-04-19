@@ -30,7 +30,7 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
                 return View(values);
             }
-            return View(response);
+            return View(new List<UserListDto>());
         }
     }
 }

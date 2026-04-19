@@ -33,7 +33,7 @@ builder.Services.AddHttpClient("ContactClient", client =>
 
 builder.Services.AddHttpClient("IdentityClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7185/");
+    client.BaseAddress = new Uri("https://localhost:7185");
 }).AddHttpMessageHandler<TokenHandler>();
 
 
@@ -72,7 +72,6 @@ builder.Services.AddHttpClient("BasketClient", client =>
 
 
 
-
 //Service Registration (IoC)
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddHttpContextAccessor();
@@ -82,6 +81,7 @@ builder.Services.AddAuthentication(option =>
 {
     option.DefaultScheme = "Cookies";
     option.DefaultChallengeScheme = "oidc";
+
 })
     .AddCookie("Cookies")
     .AddOpenIdConnect("oidc", options =>
@@ -92,7 +92,7 @@ builder.Services.AddAuthentication(option =>
         options.ResponseType = "code"; // Authorization Code flow
 
         options.SaveTokens = true;
-        options.GetClaimsFromUserInfoEndpoint = false;
+        options.GetClaimsFromUserInfoEndpoint = true;
 
         options.Scope.Add("openid");
         options.Scope.Add("profile");
@@ -109,20 +109,60 @@ builder.Services.AddAuthentication(option =>
         options.Scope.Add("contact.full");
         options.Scope.Add("offline_access");
         options.Scope.Add("favorite.full");
-        options.Scope.Add("Identity.full");
+        options.Scope.Add("IdentityServerApi");
         options.Scope.Add("roles");
-
+        options.MapInboundClaims = false;
+        options.ClaimActions.DeleteClaim("role");
+        options.ClaimActions.DeleteClaim("roles");
         // 1. JWT içindeki "role" claim'ini yakala ve sistemin "Role" tipine eşle
-        options.ClaimActions.MapJsonKey("role", "role"); // JSON içindeki role'ü claim'e haritala
+        options.ClaimActions.MapJsonKey(ClaimTypes.Role, "role"); // JSON içindeki role'ü claim'e haritala
         options.TokenValidationParameters = new TokenValidationParameters
         {
             NameClaimType = "name",
-            RoleClaimType = "role" // User.IsInRole("Admin") çalışması için şart
+            RoleClaimType = ClaimTypes.Role // User.IsInRole("Admin") çalışması için şart
+        };
+        options.Events = new OpenIdConnectEvents
+        {
+            OnTokenValidated = context =>
+            {
+                var identity = (ClaimsIdentity)context.Principal.Identity;
+
+                var roles = identity.FindAll("role");
+
+                foreach (var role in roles)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, role.Value));
+                }
+
+                return Task.CompletedTask;
+            }
         };
 
         // Eğer roller hala gelmiyorsa şunu ekle (IdentityServer rollerini UserInfo endpoint'inden çeker):
-        options.GetClaimsFromUserInfoEndpoint = false;
+        options.GetClaimsFromUserInfoEndpoint = true;
+
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
