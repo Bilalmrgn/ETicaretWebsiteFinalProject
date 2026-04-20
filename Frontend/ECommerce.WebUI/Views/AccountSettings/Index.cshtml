@@ -1,0 +1,335 @@
+@model Frontend.DtosLayer.AccountSettingsDtos.GetUserDto
+@{
+    ViewData["Title"] = "Hesap Ayarları";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+@if (Model == null)
+{
+    <div class="container py-5 text-center">
+        <div class="alert alert-warning border-0 shadow-sm rounded-20 p-5">
+            <i class="fas fa-user-clock text-warning mb-4" style="font-size: 60px;"></i>
+            <h3>Oturum Bilgileri Bekleniyor</h3>
+            <p class="text-muted">Kullanıcı bilgileriniz şu an yüklenemedi. Lütfen tekrar giriş yapmayı deneyin.</p>
+            <a href="/Login/Index" class="btn btn-primary rounded-pill px-4 mt-3">Giriş Yap</a>
+        </div>
+    </div>
+}
+else
+{
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #FFD333 0%, #ffc107 100%);
+        --dark-gradient: linear-gradient(135deg, #3D464D 0%, #1a1a1a 100%);
+        --glass-bg: rgba(255, 255, 255, 0.95);
+        --glass-border: rgba(255, 255, 255, 0.18);
+    }
+
+    .settings-wrapper {
+        background: #f4f7f6;
+        padding: 60px 0;
+        min-height: 100vh;
+    }
+
+    .main-card {
+        background: white;
+        border-radius: 25px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        overflow: hidden;
+        border: none;
+    }
+
+    .sidebar-settings {
+        background: var(--dark-gradient);
+        padding: 40px 20px;
+        color: white;
+        height: 100%;
+        min-height: 600px;
+    }
+
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .avatar-circle {
+        width: 110px;
+        height: 110px;
+        background: var(--primary-gradient);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 45px;
+        color: #3D464D;
+        box-shadow: 0 10px 20px rgba(255, 211, 51, 0.3);
+        border: 4px solid rgba(255,255,255,0.1);
+    }
+
+    .nav-settings .nav-link {
+        color: rgba(255,255,255,0.7);
+        border-radius: 12px;
+        margin-bottom: 12px;
+        padding: 15px 20px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        border: 1px solid transparent;
+    }
+
+    .nav-settings .nav-link i {
+        width: 30px;
+        font-size: 18px;
+        transition: transform 0.3s ease;
+    }
+
+    .nav-settings .nav-link:hover {
+        color: white;
+        background: rgba(255,255,255,0.05);
+        transform: translateX(5px);
+    }
+
+    .nav-settings .nav-link.active {
+        background: var(--primary-gradient) !important;
+        color: #3D464D !important;
+        box-shadow: 0 8px 15px rgba(255, 211, 51, 0.2);
+        transform: scale(1.02);
+    }
+
+    .nav-settings .nav-link.active i {
+        transform: scale(1.1);
+    }
+
+    .content-area {
+        padding: 50px;
+    }
+
+    .section-title {
+        font-weight: 800;
+        color: #3D464D;
+        margin-bottom: 30px;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 4px;
+        background: #FFD333;
+        border-radius: 2px;
+    }
+
+    .form-floating-custom {
+        margin-bottom: 20px;
+    }
+
+    .form-control-custom {
+        border-radius: 12px;
+        border: 1px solid #e0e0e0;
+        padding: 15px 20px;
+        background: #fafafa;
+        transition: all 0.3s ease;
+    }
+
+    .form-control-custom:focus {
+        background: white;
+        border-color: #FFD333;
+        box-shadow: 0 0 0 4px rgba(255, 211, 51, 0.15);
+        outline: none;
+    }
+
+    .btn-update {
+        background: var(--dark-gradient);
+        color: #FFD333;
+        border: none;
+        border-radius: 12px;
+        padding: 15px 35px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .btn-update:hover {
+        background: #FFD333;
+        color: #3D464D;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(255, 211, 51, 0.3);
+    }
+
+    .info-badge {
+        background: #fff8e1;
+        border-left: 4px solid #FFD333;
+        padding: 20px;
+        border-radius: 0 12px 12px 0;
+        margin-top: 30px;
+    }
+
+    /* Animations */
+    .fade-in-up {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @@keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="settings-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-11 mx-auto">
+                
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success border-0 shadow-sm rounded-15 mb-4 fade-in-up" role="alert">
+                        <i class="fas fa-check-circle mr-2"></i> @TempData["Success"]
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger border-0 shadow-sm rounded-15 mb-4 fade-in-up" role="alert">
+                        <i class="fas fa-exclamation-triangle mr-2"></i> @TempData["Error"]
+                    </div>
+                }
+
+                <div class="main-card fade-in-up">
+                    <div class="row no-gutters">
+                        <!-- Sidebar -->
+                        <div class="col-lg-4 col-md-5">
+                            <div class="sidebar-settings">
+                                <div class="profile-header">
+                                    <div class="avatar-circle">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <h4 class="mb-1">@Model.Name @Model.Surname</h4>
+                                    <span class="badge badge-primary px-3 py-2 rounded-pill">Standart Hesap</span>
+                                </div>
+
+                                <div class="nav flex-column nav-settings nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab">
+                                        <i class="fas fa-user-circle"></i> Genel Bilgiler
+                                    </a>
+                                    <a class="nav-link" id="pills-email-tab" data-toggle="pill" href="#pills-email" role="tab">
+                                        <i class="fas fa-at"></i> E-posta Ayarları
+                                    </a>
+                                    <a class="nav-link" id="pills-password-tab" data-toggle="pill" href="#pills-password" role="tab">
+                                        <i class="fas fa-shield-alt"></i> Güvenlik & Şifre
+                                    </a>
+                                    <a class="nav-link" id="pills-username-tab" data-toggle="pill" href="#pills-username" role="tab">
+                                        <i class="fas fa-id-badge"></i> Kullanıcı Adı
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="col-lg-8 col-md-7">
+                            <div class="content-area">
+                                <div class="tab-content" id="v-pills-tabContent">
+                                    
+                                    <!-- Genel Bilgiler -->
+                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
+                                        <h3 class="section-title">Hesap Detayları</h3>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="text-muted small font-weight-bold">Ad</label>
+                                                <div class="form-control-custom bg-light">@Model.Name</div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="text-muted small font-weight-bold">Soyad</label>
+                                                <div class="form-control-custom bg-light">@Model.Surname</div>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="text-muted small font-weight-bold">Kullanıcı Adı</label>
+                                                <div class="form-control-custom bg-light">@@@Model.UserName</div>
+                                            </div>
+                                            <div class="col-12 mb-3">
+                                                <label class="text-muted small font-weight-bold">E-posta Adresi</label>
+                                                <div class="form-control-custom bg-light">@Model.Email</div>
+                                            </div>
+                                        </div>
+                                        <div class="info-badge">
+                                            <p class="mb-0 text-dark small">
+                                                <i class="fas fa-info-circle mr-2"></i> Ad ve soyad gibi kimlik bilgilerinizi güncellemek için destek ekibimize ulaşabilirsiniz.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="tab-pane fade" id="pills-email" role="tabpanel">
+                                        <h3 class="section-title">E-posta Değiştir</h3>
+                                        <form asp-action="ChangeEmail" method="post">
+                                            <div class="form-group">
+                                                <label class="text-muted small font-weight-bold">Mevcut E-posta</label>
+                                                <input type="text" class="form-control-custom w-100" value="@Model.Email" disabled>
+                                            </div>
+                                            <div class="form-group mt-4">
+                                                <label class="text-muted small font-weight-bold">Yeni E-posta Adresi</label>
+                                                <input type="email" name="newEmail" class="form-control-custom w-100" placeholder="Yeni mail adresinizi yazınız..." required>
+                                            </div>
+                                            <button type="submit" class="btn btn-update mt-4">
+                                                Doğrulama Bağlantısı Gönder
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <!-- Şifre -->
+                                    <div class="tab-pane fade" id="pills-password" role="tabpanel">
+                                        <h3 class="section-title">Şifre Güncelleme</h3>
+                                        <form asp-action="ChangePassword" method="post">
+                                            <div class="form-group mb-4">
+                                                <label class="text-muted small font-weight-bold">Mevcut Şifre</label>
+                                                <input type="password" name="CurrentPassword" class="form-control-custom w-100" required>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label class="text-muted small font-weight-bold">Yeni Şifre</label>
+                                                <input type="password" name="NewPassword" class="form-control-custom w-100" required>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label class="text-muted small font-weight-bold">Yeni Şifre (Tekrar)</label>
+                                                <input type="password" name="confirmNewPassword" class="form-control-custom w-100" required>
+                                            </div>
+                                            <button type="submit" class="btn btn-update">
+                                                Güvenli Şifre Oluştur
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    <!-- Kullanıcı Adı -->
+                                    <div class="tab-pane fade" id="pills-username" role="tabpanel">
+                                        <h3 class="section-title">Kullanıcı Adı Değiştir</h3>
+                                        <form asp-action="ChangeUsername" method="post">
+                                            <div class="form-group mt-4">
+                                                <label class="text-muted small font-weight-bold">Yeni Kullanıcı Adı</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text bg-light border-right-0" style="border-radius: 12px 0 0 12px;">@@</span>
+                                                    </div>
+                                                    <input type="text" name="newUsername" class="form-control-custom border-left-0" style="border-radius: 0 12px 12px 0; flex: 1;" placeholder="benzersiz_adınız" required>
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-update mt-4">
+                                                Kullanıcı Adını Kaydet
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

@@ -1,4 +1,4 @@
-﻿using IdentityServer.Application.Dtos;
+using IdentityServer.Application.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,6 @@ namespace IdentityServer.Application.Interfaces
         Task UpdatePhoneNumberAsync(string phoneNumber);
         Task UpdateEmailAsync(string email);
         Task ConfirmEmailChangeAsync(string userId, string newEmail, string token);
-
-
+        Task UpdateUsernameAsync(string newUsername);
     }
 }

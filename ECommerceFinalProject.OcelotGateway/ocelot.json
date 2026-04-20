@@ -594,6 +594,7 @@
       ],
       "UpstreamPathTemplate": "/auth/change-email",
       "UpstreamHttpMethod": [ "Post" ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
         "AllowedScopes": [ "Identity.full" ]
@@ -609,7 +610,8 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/confirm-email-change",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [ "Post" ],
+      "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
       "DownstreamPathTemplate": "/api/AccountSettings/me",
@@ -621,7 +623,8 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/me",
-      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamHttpMethod": [ "Get","Post" ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
         "AllowedScopes": [ "Identity.full" ]
@@ -638,6 +641,24 @@
       ],
       "UpstreamPathTemplate": "/auth/change-password",
       "UpstreamHttpMethod": [ "Post" ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [ "Identity.full" ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AccountSettings/change-username",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/change-username",
+      "UpstreamHttpMethod": [ "Post" ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
         "AllowedScopes": [ "Identity.full" ]

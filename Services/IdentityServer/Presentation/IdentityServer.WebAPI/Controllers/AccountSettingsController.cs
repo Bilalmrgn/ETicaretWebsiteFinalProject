@@ -1,4 +1,4 @@
-﻿using IdentityServer.Application.Dtos;
+using IdentityServer.Application.Dtos;
 using IdentityServer.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityServer.WebAPI.Controllers
 {
-    [Authorize]
+    [Authorize(Duende.IdentityServer.IdentityServerConstants.LocalApi.PolicyName)]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountSettingsController : ControllerBase
@@ -46,6 +46,13 @@ namespace IdentityServer.WebAPI.Controllers
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
         {
             await _accountSettingsService.ChangePasswordAsync(dto);
+            return Ok();
+        }
+
+        [HttpPost("change-username")]
+        public async Task<IActionResult> ChangeUsername([FromBody] string newUsername)
+        {
+            await _accountSettingsService.UpdateUsernameAsync(newUsername);
             return Ok();
         }
     }

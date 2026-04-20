@@ -1,0 +1,21 @@
+@{
+    ViewData["Title"] = "Hata";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<div class="container py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg rounded-20 p-5">
+                <div class="mb-4">
+                    <i class="fas fa-exclamation-circle text-danger" style="font-size: 80px;"></i>
+                </div>
+                <h2 class="mb-3">Bir Hata Oluştu</h2>
+                <p class="lead text-muted mb-4">E-posta doğrulama işlemi sırasında bir sorun oluştu. Bağlantı geçersiz veya süresi dolmuş olabilir.</p>
+                <a href="/AccountSettings/Index" class="btn btn-outline-primary btn-lg rounded-pill px-5">
+                    Tekrar Dene
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

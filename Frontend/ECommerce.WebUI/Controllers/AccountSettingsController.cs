@@ -1,10 +1,11 @@
-﻿using Frontend.DtosLayer.AccountSettingsDtos;
+using Frontend.DtosLayer.AccountSettingsDtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
 
 namespace ECommerce.WebUI.Controllers
 {
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class AccountSettingsController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -18,21 +19,41 @@ namespace ECommerce.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient("IdentityClient");
-
-            var response = await client.GetAsync("auth/me");
-
-            if (!response.IsSuccessStatusCode)
-                return View();
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            var user = JsonSerializer.Deserialize<GetUserDto>(json, new JsonSerializerOptions
+            try
             {
-                PropertyNameCaseInsensitive = true
-            });
+                var client = _httpClientFactory.CreateClient("IdentityClient");
 
-            return View(user);
+                // Burası patlıyor olabilir (TokenHandler aşaması)
+                var response = await client.GetAsync("auth/me");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    TempData["Error"] = $"API Hatası (Ocelot/Identity): {response.StatusCode} - {errorContent}";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+
+                if (string.IsNullOrEmpty(json) || json.Trim().StartsWith("<"))
+                {
+                    TempData["Error"] = "API'den beklenen JSON verisi gelmedi (HTML döndü).";
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var user = JsonSerializer.Deserialize<GetUserDto>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                // Eğer hata Frontend içindeyse buraya düşecek
+                TempData["Error"] = $"Frontend Hatası: {ex.Message} -> {ex.InnerException?.Message}";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         // 🔹 Email değiştir
@@ -86,9 +107,30 @@ namespace ECommerce.WebUI.Controllers
             var response = await client.PostAsync("auth/change-password", content);
 
             if (response.IsSuccessStatusCode)
-                TempData["Success"] = "Şifre değiştirildi";
+                TempData["Success"] = "Şifre başarıyla değiştirildi.";
             else
-                TempData["Error"] = "Şifre değiştirilemedi";
+                TempData["Error"] = "Şifre değiştirilemedi.";
+
+            return RedirectToAction("Index");
+        }
+
+        // 🔹 Kullanıcı adı değiştir
+        [HttpPost]
+        public async Task<IActionResult> ChangeUsername(string newUsername)
+        {
+            var client = _httpClientFactory.CreateClient("IdentityClient");
+
+            var content = new StringContent(
+                JsonSerializer.Serialize(newUsername),
+                Encoding.UTF8,
+                "application/json");
+
+            var response = await client.PostAsync("auth/change-username", content);
+
+            if (response.IsSuccessStatusCode)
+                TempData["Success"] = "Kullanıcı adı başarıyla güncellendi.";
+            else
+                TempData["Error"] = "Kullanıcı adı değiştirilemedi.";
 
             return RedirectToAction("Index");
         }

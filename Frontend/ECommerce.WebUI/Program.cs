@@ -33,13 +33,13 @@ builder.Services.AddHttpClient("ContactClient", client =>
 
 builder.Services.AddHttpClient("IdentityClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7185");
+    client.BaseAddress = new Uri("https://localhost:7185/");
 }).AddHttpMessageHandler<TokenHandler>();
 
 
 builder.Services.AddHttpClient("CommentClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7185");
+    client.BaseAddress = new Uri("https://localhost:7185/");
 }).AddHttpMessageHandler<TokenHandler>();
 
 builder.Services.AddHttpClient("FavoriteClient", client =>
@@ -110,6 +110,7 @@ builder.Services.AddAuthentication(option =>
         options.Scope.Add("offline_access");
         options.Scope.Add("favorite.full");
         options.Scope.Add("IdentityServerApi");
+        options.Scope.Add("Identity.full");
         options.Scope.Add("roles");
         options.MapInboundClaims = false;
         options.ClaimActions.DeleteClaim("role");
