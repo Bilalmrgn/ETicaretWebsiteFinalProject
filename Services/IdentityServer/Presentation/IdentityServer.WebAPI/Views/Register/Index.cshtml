@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Kayıt Ol";
+    ViewData["Title"] = "Yeni Hesap Oluştur";
     Layout = null;
 }
 
@@ -11,284 +11,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] | MultiShop Identity</title>
+    <title>@ViewData["Title"] | MultiShop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary-color: #ffd333;
-            --secondary-color: #3d464d;
-            --text-color: #2b2b2b;
-            --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #3d464d 100%);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary: #ffd333;
+            --dark: #1a1c1e;
+            --dark-light: #2d2f31;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-gradient);
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at top right, #2d2f31, #1a1c1e);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #fff;
             margin: 0;
+            padding: 20px;
             overflow-x: hidden;
-            padding: 40px 0;
         }
 
-        .auth-container {
-            width: 100%;
-            max-width: 1000px;
-            padding: 20px;
-            animation: fadeIn 0.8s ease-out;
+        .bg-blur {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            filter: blur(150px);
+            opacity: 0.05;
+            z-index: -1;
+            border-radius: 50%;
         }
 
         .auth-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
-            border-radius: 32px;
-            overflow: hidden;
+            border-radius: 40px;
+            width: 100%;
+            max-width: 1100px;
             display: flex;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .auth-side {
-            background: var(--primary-color);
-            padding: 60px 40px;
-            width: 35%;
+        .side-info {
+            background: var(--primary);
+            width: 40%;
+            padding: 60px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: var(--secondary-color);
             position: relative;
+            color: var(--dark);
         }
 
-        .auth-form-side {
+        .side-info::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            opacity: 0.05;
+        }
+
+        .form-area {
+            width: 60%;
             padding: 60px 80px;
-            width: 65%;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0,0,0,0.2);
             max-height: 90vh;
             overflow-y: auto;
         }
 
-        .brand-logo {
+        .form-area::-webkit-scrollbar { width: 4px; }
+        .form-area::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+
+        .brand-text {
             font-size: 2.5rem;
-            font-weight: 800;
+            font-weight: 900;
+            letter-spacing: -2px;
             margin-bottom: 20px;
-            letter-spacing: -1px;
         }
 
-        .form-label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .input-group-custom {
+        .input-box {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        .input-group-custom i {
+        .input-box i {
             position: absolute;
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.3);
-            transition: color 0.3s;
+            color: rgba(255,255,255,0.3);
+            transition: 0.3s;
         }
 
         .form-control {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            border-radius: 14px !important;
-            padding: 12px 20px 12px 50px !important;
-            color: white !important;
-            font-size: 0.95rem;
-            transition: all 0.3s;
+            background: rgba(255,255,255,0.05) !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            border-radius: 18px !important;
+            padding: 15px 20px 15px 55px !important;
+            color: #fff !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
         .form-control:focus {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-color: var(--primary-color) !important;
-            box-shadow: 0 0 0 4px rgba(255, 211, 51, 0.1) !important;
+            background: rgba(255,255,255,0.08) !important;
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 5px rgba(255, 211, 51, 0.1) !important;
         }
 
-        .btn-primary-custom {
-            background: var(--primary-color);
-            color: var(--secondary-color);
+        .form-control:focus + i {
+            color: var(--primary);
+        }
+
+        .btn-register {
+            background: var(--primary);
+            color: var(--dark);
             border: none;
-            border-radius: 16px;
-            padding: 14px;
-            font-weight: 700;
+            border-radius: 20px;
+            padding: 18px;
+            font-weight: 800;
             width: 100%;
-            transition: all 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-primary-custom:hover {
-            background: #e6bd2e;
-            transform: translateY(-2px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s;
             box-shadow: 0 10px 20px rgba(255, 211, 51, 0.2);
         }
 
-        .link-sub {
-            color: rgba(255, 255, 255, 0.5);
+        .btn-register:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 211, 51, 0.3);
+            background: #f7ca2d;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.95rem;
+        }
+
+        .login-link a {
+            color: var(--primary);
             text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
+            font-weight: 700;
         }
 
-        .link-sub:hover {
-            color: var(--primary-color);
+        .validation-summary {
+            background: rgba(255, 82, 82, 0.1);
+            border: 1px solid rgba(255, 82, 82, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 30px;
         }
 
-        .error-message {
-            color: #ff6b6b;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 5px;
-            margin-left: 10px;
-        }
-
-        /* Custom Scrollbar */
-        .auth-form-side::-webkit-scrollbar { width: 5px; }
-        .auth-form-side::-webkit-scrollbar-track { background: transparent; }
-        .auth-form-side::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-
-        @@keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @@keyframes cardAppear {
+            from { opacity: 0; transform: scale(0.95) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         @@media (max-width: 992px) {
             .auth-card { flex-direction: column; }
-            .auth-side { width: 100%; padding: 40px; }
-            .auth-form-side { width: 100%; padding: 40px; max-height: none; }
+            .side-info, .form-area { width: 100%; padding: 40px; }
+            .side-info { text-align: center; }
         }
     </style>
 </head>
 <body>
+    <div class="bg-blur" style="top: -100px; left: -100px;"></div>
+    <div class="bg-blur" style="bottom: -100px; right: -100px;"></div>
 
-    <div class="auth-container">
-        <div class="auth-card">
-            <!-- Left Side -->
-            <div class="auth-side">
-                <i class="fas fa-user-plus fa-4x mb-4"></i>
-                <h1 class="brand-logo">MultiShop</h1>
-                <p class="lead fw-normal">MultiShop ailesine katılın ve ayrıcalıklı alışverişin tadını çıkarın.</p>
-                <div class="mt-auto d-none d-lg-block">
-                    <p class="mb-2 opacity-75 small">Zaten bir hesabın var mı?</p>
-                    <a href="/Account/Login?returnUrl=@ViewBag.ReturnUrl" class="btn btn-dark rounded-pill px-5 fw-bold border-0" style="background: rgba(0,0,0,0.2)">Giriş Yap</a>
-                </div>
+    <div class="auth-card">
+        <div class="side-info">
+            <div class="mb-4">
+                <i class="fas fa-shopping-cart fa-3x mb-3"></i>
+                <h1 class="brand-text">MultiShop</h1>
+            </div>
+            <h2 class="fw-bold mb-3">Alışverişin Yeni Nesil Hali.</h2>
+            <p class="opacity-75 mb-5">Hemen kayıt olun, binlerce marka ve özel indirimlerle dolu dünyamıza ilk adımınızı atın.</p>
+            
+            <div class="mt-auto d-none d-lg-block">
+                <p class="small mb-2">Hesabınız var mı?</p>
+                <a href="/Account/Login?returnUrl=@ViewBag.ReturnUrl" class="btn btn-dark w-100 rounded-pill py-3 fw-bold border-0" style="background: rgba(0,0,0,0.8)">Giriş Yap</a>
+            </div>
+        </div>
+
+        <div class="form-area">
+            <div class="mb-5">
+                <h2 class="fw-bold m-0">Kayıt Ol</h2>
+                <p class="text-white-50">Lütfen formu eksiksiz doldurunuz.</p>
             </div>
 
-            <!-- Right Side -->
-            <div class="auth-form-side">
-                <div class="mb-4">
-                    <h2 class="fw-bold mb-1">Hesap Oluştur</h2>
-                    <p class="text-white-50 small">Ücretsiz kayıt olun ve MultiShop fırsatlarını yakalayın.</p>
-                </div>
+            <form asp-action="Index" method="post">
+                <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div asp-validation-summary="All" class="text-danger small validation-summary"></div>
+                }
 
-                <form asp-action="Index" method="post">
-                    <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
-                    
-            <div asp-validation-summary="All" class="text-danger small mb-4 p-3 rounded" style="background: rgba(220, 53, 69, 0.1); border: 1px solid rgba(220, 53, 69, 0.2);"></div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Adınız</label>
-                    <div class="input-group-custom">
-                        <i class="fas fa-user-tag"></i>
-                        <input asp-for="Name" class="form-control" placeholder="Ahmet">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <i class="fas fa-signature"></i>
+                            <input asp-for="Name" class="form-control" placeholder="Adınız" required>
+                        </div>
                     </div>
-                    <span asp-validation-for="Name" class="text-danger small ms-2"></span>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Soyadınız</label>
-                    <div class="input-group-custom">
-                        <i class="fas fa-user-tag"></i>
-                        <input asp-for="Surname" class="form-control" placeholder="Yılmaz">
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <i class="fas fa-signature"></i>
+                            <input asp-for="Surname" class="form-control" placeholder="Soyadınız" required>
+                        </div>
                     </div>
-                    <span asp-validation-for="Surname" class="text-danger small ms-2"></span>
                 </div>
-            </div>
 
-            <div class="mb-3">
-                <label class="form-label">Kullanıcı Adı</label>
-                <div class="input-group-custom">
+                <div class="input-box">
                     <i class="fas fa-at"></i>
-                    <input asp-for="UserName" class="form-control" placeholder="ahmetyilmaz">
+                    <input asp-for="UserName" class="form-control" placeholder="Kullanıcı Adı" required>
                 </div>
-                <span asp-validation-for="UserName" class="text-danger small ms-2"></span>
-            </div>
 
-            <div class="mb-3">
-                <label class="form-label">E-posta Adresi</label>
-                <div class="input-group-custom">
+                <div class="input-box">
                     <i class="fas fa-envelope"></i>
-                    <input asp-for="Email" class="form-control" placeholder="ahmet@mail.com">
+                    <input asp-for="Email" class="form-control" placeholder="E-posta Adresi" required>
                 </div>
-                <span asp-validation-for="Email" class="text-danger small ms-2"></span>
-            </div>
 
-            <div class="mb-3">
-                <label class="form-label">Şehir</label>
-                <div class="input-group-custom">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <select asp-for="City" class="form-control" style="appearance: none; -webkit-appearance: none;">
+                <div class="input-box">
+                    <i class="fas fa-city"></i>
+                    <select asp-for="City" class="form-control" style="appearance: none;">
                         <option value="" disabled selected>Şehir Seçiniz</option>
-                        <option value="Istanbul">İstanbul</option>
+                        <option value="İstanbul">İstanbul</option>
                         <option value="Ankara">Ankara</option>
-                        <option value="Izmir">İzmir</option>
+                        <option value="İzmir">İzmir</option>
                         <option value="Bursa">Bursa</option>
                         <option value="Antalya">Antalya</option>
-                        <option value="Samsun">Samsun</option>
-                        <option value="Trabzon">Trabzon</option>
-                        <option value="Eskişehir">Eskişehir</option>
                     </select>
+                    <i class="fas fa-chevron-down" style="left: auto; right: 20px;"></i>
                 </div>
-                <span asp-validation-for="City" class="text-danger small ms-2"></span>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Şifre</label>
-                    <div class="input-group-custom">
-                        <i class="fas fa-lock"></i>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="••••••••">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <i class="fas fa-key"></i>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Şifre" required>
+                        </div>
                     </div>
-                    <span asp-validation-for="Password" class="text-danger small ms-2"></span>
+                    <div class="col-md-6">
+                        <div class="input-box">
+                            <i class="fas fa-shield-alt"></i>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Şifre Tekrar" required>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Şifre Tekrar</label>
-                    <div class="input-group-custom">
-                        <i class="fas fa-shield-alt"></i>
-                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="••••••••">
-                    </div>
-                    <span asp-validation-for="ConfirmPassword" class="text-danger small ms-2"></span>
+
+                <button type="submit" class="btn-register mt-3">
+                    Hesabı Oluştur <i class="fas fa-arrow-right ms-2"></i>
+                </button>
+
+                <div class="login-link d-lg-none">
+                    Zaten bir hesabınız var mı? <a href="/Account/Login?returnUrl=@ViewBag.ReturnUrl">Giriş Yap</a>
                 </div>
-            </div>
-
-                    <button type="submit" class="btn btn-primary-custom shadow mb-3">
-                        Hemen Kayıt Ol <i class="fas fa-paper-plane ms-2 small"></i>
-                    </button>
-
-                    <div class="text-center d-lg-none">
-                        <p class="text-white-50 small">Zaten bir hesabın var mı? <a href="/Account/Login?returnUrl=@ViewBag.ReturnUrl" class="link-sub text-white fw-bold">Giriş Yap</a></p>
-                    </div>
-                </form>
-            </div>
+            </form>
         </div>
     </div>
 

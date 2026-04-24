@@ -22,7 +22,7 @@ namespace Catolog.Settings
             Categories = Database.GetCollection<Category>(s.CategoryCollectionName);
             Products = Database.GetCollection<Product>(s.ProductCollectionName);
             ProductImages = Database.GetCollection<ProductImages>(s.ProductImagesCollectionName);
-            ProductDetails = Database.GetCollection<ProductDetail>(s.ProductDetailConnectionName);
+            ProductDetails = Database.GetCollection<ProductDetail>(s.ProductDetailCollectionName);
             //
             var clients = new MongoClient(opt.Value.ConnectionString);
             var database = clients.GetDatabase(opt.Value.DatabaseName);

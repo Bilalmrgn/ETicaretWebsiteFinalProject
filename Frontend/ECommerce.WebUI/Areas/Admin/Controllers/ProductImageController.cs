@@ -1,4 +1,4 @@
-﻿using Frontend.DtosLayer.ProductImageDto;
+using Frontend.DtosLayer.ProductImageDto;
 using Frontend.DtosLayer.ProductsDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +28,8 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var productResponse = await client.GetAsync($"/catalog/ProductImages/{id}");
+            // 1. Ürün bilgilerini getir (Adını göstermek için)
+            var productResponse = await client.GetAsync($"/catalog/product/{id}");
 
 
             if (productResponse.IsSuccessStatusCode)
@@ -36,7 +37,8 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
                 var jsonData = await productResponse.Content.ReadAsStringAsync();
                 var product = JsonConvert.DeserializeObject<GetProductByIdDto>(jsonData);
 
-                var imageResponse = await client.GetAsync($"/catalog/ProductImages/{id}");
+                // 2. Ürüne ait görselleri getir
+                var imageResponse = await client.GetAsync($"/catalog/ProductImages/GetProductImagesByProductId/{id}");
 
                 if(imageResponse.IsSuccessStatusCode)
                 {

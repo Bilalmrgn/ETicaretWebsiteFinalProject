@@ -1,4 +1,4 @@
-﻿@model Frontend.DtosLayer.CategoryDto.CreateCategoryDto
+@model Frontend.DtosLayer.CategoryDto.CreateCategoryDto
 
 @{
     ViewData["Title"] = "CreateCategory";
@@ -7,7 +7,7 @@
 
 <h3>Kategori Güncelle</h3>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 
     <div class="mb-3">
         <label>Kategori Adı</label>
@@ -15,8 +15,8 @@
     </div>
     
     <div class="mb-3">
-        <label>Görsel Ekleyin</label>
-        <input type="text" asp-for="ImageUrl" class="form-control" />
+        <label>Görsel Seçin</label>
+        <input type="file" name="imageFile" class="form-control" />
     </div>
 
     <button class="btn btn-warning">Kaydet</button>

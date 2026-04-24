@@ -1,4 +1,4 @@
-﻿using Catolog.DTOs.ProductImagesDTOs;
+using Catolog.DTOs.ProductImagesDTOs;
 using Catolog.Services.ProductImagesServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +31,7 @@ namespace Catolog.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetProductImagesById(string id)
         {
-            var values = _productImagesServices.GetByIdProductImagesAsync(id);
+            var values = await _productImagesServices.GetByIdProductImagesAsync(id);
             return Ok(values);
         }
 

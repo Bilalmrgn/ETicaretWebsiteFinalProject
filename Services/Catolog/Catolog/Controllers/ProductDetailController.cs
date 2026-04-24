@@ -1,4 +1,4 @@
-﻿using Catolog.DTOs.ProductDetailDTOs;
+using Catolog.DTOs.ProductDetailDTOs;
 using Catolog.Services.ProductDetailServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +31,8 @@ namespace Catolog.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetProductDetailById(string id)
         {
-            var values = _productDetailServices.GetByIdProductDetailAsync(id);
+            var values = await _productDetailServices.GetByIdProductDetailAsync(id);
+
             return Ok(values);
         }
 
@@ -44,7 +45,7 @@ namespace Catolog.Controllers
             return Ok("Ürün detayı başarıyla eklendi");
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Policy = "CatalogWrite")]
         [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteProductDetail(string id)
@@ -56,7 +57,7 @@ namespace Catolog.Controllers
         [HttpPut("{id}")]
         [Authorize(Policy = "CatalogWrite")]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<IActionResult> UpdateProductDetail(string id,UpdateProductDetailDTOs updateProductDetailDTOs)
+        public async Task<IActionResult> UpdateProductDetail([FromRoute] string id, [FromBody] UpdateProductDetailDTOs updateProductDetailDTOs)
         {
             updateProductDetailDTOs.ProductId = id;
 

@@ -1,4 +1,4 @@
-﻿@using Frontend.DtosLayer.ProductDetailDto
+@using Frontend.DtosLayer.ProductDetailDto
 @model Frontend.DtosLayer.ProductsDto.GetProductByIdDto
 
 @{
@@ -27,12 +27,12 @@
 
                         <div class="form-group mb-4">
                             <label class="font-weight-bold">Ürün Açıklaması (Description)</label>
-                            <textarea name="ProductDetailDescription" rows="5" class="form-control detail-input" readonly>@(detail?.ProductDetailDescription ?? "Açıklama bulunamadı.")</textarea>
+                            <textarea name="ProductDetailDescription" rows="5" class="form-control detail-input" readonly>@(detail?.ProductDetailDescription)</textarea>
                         </div>
 
                         <div class="form-group mb-4">
                             <label class="font-weight-bold">Ek Bilgiler (Information)</label>
-                            <textarea name="ProductDetailInformation" rows="8" class="form-control detail-input" readonly>@(detail?.ProductDetailInformation ?? "Ek bilgi bulunamadı.")</textarea>
+                            <textarea name="ProductDetailInformation" rows="8" class="form-control detail-input" readonly>@(detail?.ProductDetailInformation)</textarea>
                             <small class="text-info">* Teknik özellikler, boyutlar veya materyal bilgileri burada yer alır.</small>
                         </div>
 

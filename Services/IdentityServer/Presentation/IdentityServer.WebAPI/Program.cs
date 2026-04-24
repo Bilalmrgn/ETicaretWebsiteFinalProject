@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<CustomProfileService>();
 /*builder.Services.AddScoped<IProfileService, ProfileService>();*/
 
+
 //persistence service registration
 builder.Services.AddDatabase(builder.Configuration);
 
@@ -53,9 +54,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles(); // Statik dosyalar (CSS/JS) için eklendi
 
 app.UseRouting();
-app.UseIdentityServer(); // IdentityServer middleware
-
-app.UseAuthentication();
+app.UseIdentityServer(); // IdentityServer middleware (Authentication işlemini kendi içinde yapar)
 app.UseAuthorization();
 
 

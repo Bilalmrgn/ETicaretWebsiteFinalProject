@@ -1,10 +1,13 @@
 using Duende.IdentityServer.Services;
 using IdentityServer.Application.Dtos;
 using IdentityServer.Domain;
+using IdentityServer.Infrastructure.EmailService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.VisualBasic;
+using System.Text;
 
 namespace IdentityServer.WebAPI.Controllers
 {
@@ -14,13 +17,16 @@ namespace IdentityServer.WebAPI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IIdentityServerInteractionService _interaction;
+        private readonly IEmailService _emailService;
 
         // Constructor'ları birleştirdik ve IdentityServer etkileşim servisini ekledik
         public RegisterController(
+            IEmailService emailService,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             IIdentityServerInteractionService interaction)
         {
+            _emailService = emailService;
             _userManager = userManager;
             _signInManager = signInManager;
             _interaction = interaction;
@@ -58,33 +64,46 @@ namespace IdentityServer.WebAPI.Controllers
                 Email = dto.Email,
                 Name = dto.Name,
                 Surname = dto.Surname,
-                City = dto.City ?? "Null" // veya default bir değer
+                City = dto.City ?? "Null" 
             };
 
             var result = await _userManager.CreateAsync(user, dto.Password);
 
             if (result.Succeeded)
             {
-                // 1. Önce rolü ata (DB'de 'Customer' rolü olduğundan emin ol)
+                
                 await _userManager.AddToRoleAsync(user, "Customer");
 
-                // 2. Kullanıcıyı otomatik login yap (Opsiyonel, IdentityServer akışı için iyidir)
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                //token üretilir
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
-                // 3. KRİTİK NOKTA: Frontend'e geri gönderiş (Login'deki mantık)
-                if (!string.IsNullOrEmpty(returnUrl) && _interaction.IsValidReturnUrl(returnUrl)) 
-                {
-                    // Bu satır kullanıcıyı frontend uygulamasındaki (React/Angular) 
-                    // callback sayfasına (signin-oidc) geri fırlatır.
-                    return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
-                }
+                //email onayı için link oluştur (url action link oluşturur)
+                var link = Url.Action("ConfirmEmail", "Register", new { userId = user.Id, token = encodedToken }, Request.Scheme);
 
-                // Eğer returnUrl yoksa, 404 almamak için güvenli bir yere yolla
+                await _emailService.SendEmailConfirmationEmail(link!, user.Email);
                 return RedirectToAction("Login", "Account");
+
             }
 
             foreach (var error in result.Errors) ModelState.AddModelError("", error.Description);
             return View(dto);
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string userId,string token)
+        {
+            var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var resılt = await _userManager.ConfirmEmailAsync(user, decodedToken);
+
+            if(resılt.Succeeded)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            return View("Error");
         }
     }
 }

@@ -1,5 +1,6 @@
-﻿using ECommerce.WebUI.Services;
+using ECommerce.WebUI.Services;
 using Frontend.DtosLayer.CategoryDto;
+using Frontend.DtosLayer.ProductsDto;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ITokenService _tokenService;
-        public CategoryController(IHttpClientFactory httpClientFactory, ITokenService tokenService)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public CategoryController(IHttpClientFactory httpClientFactory, ITokenService tokenService, IWebHostEnvironment webHostEnvironment)
         {
             _httpClientFactory = httpClientFactory;
             _tokenService = tokenService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         //GetAllCategory
@@ -50,11 +53,27 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CreateCategoryDto dto)
+        public async Task<IActionResult> CreateCategory(CreateCategoryDto dto, IFormFile imageFile)
         {
-            var client = _httpClientFactory.CreateClient("CatalogClient");
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var resourcePath = _webHostEnvironment.WebRootPath;
+                var extension = Path.GetExtension(imageFile.FileName);
+                var imageName = Guid.NewGuid() + extension;
+                var savePath = Path.Combine(resourcePath, "images", "categories", imageName);
 
-          
+                // Create directory if it doesn't exist
+                var directory = Path.GetDirectoryName(savePath);
+                if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
+                using (var stream = new FileStream(savePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+                dto.ImageUrl = "/images/categories/" + imageName;
+            }
+
+            var client = _httpClientFactory.CreateClient("CatalogClient");
 
             //ekleme ve güncelleme işlemlerinde serialize
             var jsonData = JsonConvert.SerializeObject(dto);
@@ -112,28 +131,60 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
         //Update Category
         [HttpPost]
-        public async Task<IActionResult> UpdateCategory(UpdateCategoryDto dto)
+        public async Task<IActionResult> UpdateCategory(UpdateCategoryDto dto, IFormFile imageFile)
         {
-            var client = _httpClientFactory.CreateClient("CatalogClient");
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var resourcePath = _webHostEnvironment.WebRootPath;
+                var extension = Path.GetExtension(imageFile.FileName);
+                var imageName = Guid.NewGuid() + extension;
+                var savePath = Path.Combine(resourcePath, "images", "categories", imageName);
 
-    
+                var directory = Path.GetDirectoryName(savePath);
+                if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+
+                using (var stream = new FileStream(savePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+                dto.ImageUrl = "/images/categories/" + imageName;
+            }
+
+            var client = _httpClientFactory.CreateClient("CatalogClient");
 
             //yazdığım güncellemeleri json olarak göndermem gerekiyor
             var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData,Encoding.UTF8,"application/json");
+            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync($"/catalog/category/{dto.CategoryId}" , stringContent);
+            var response = await client.PutAsync($"/catalog/category/{dto.CategoryId}", stringContent);
 
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("Index", "Category", new { area = "Admin" });
-
             }
 
             return View();
-
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetProductsByCategoryId(string id)
+        {
+            var client = _httpClientFactory.CreateClient("CatalogClient");
+
+            var response = await client.GetAsync($"/catalog/product/by-category/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = await response.Content.ReadAsStringAsync();
+
+                var values = JsonConvert.DeserializeObject<List<ProductListDto>>(jsonData);
+
+                return View(values);
+            }
+
+            return View(new List<ProductListDto>());
+        }
 
     }
 }

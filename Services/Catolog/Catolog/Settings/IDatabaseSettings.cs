@@ -1,11 +1,11 @@
-﻿namespace Catolog.Settings
+namespace Catolog.Settings
 {
     public interface IDatabaseSettings
     {
         public string CategoryCollectionName { get; set; }
         public string ProductCollectionName { get; set; }
         public string ProductImagesCollectionName { get; set; }
-        public string ProductDetailConnectionName { get; set; }
+        public string ProductDetailCollectionName { get; set; }
         public string FeatureSliderCollectionName { get; set; }
         public string SpecialOfferCollectionName { get; set; }
         public string BrandCollectionName { get; set; }

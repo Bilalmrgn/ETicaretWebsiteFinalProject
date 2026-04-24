@@ -48,6 +48,7 @@ namespace IdentityServer.Persistence.ServiceRegistration
             services.AddScoped<IAccountSettingsService, AccountSettingsService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddTransient<IResourceOwnerPasswordValidator, CustomResourceOwnerPasswordValidator>();
+            services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
             return services;
         }
     }

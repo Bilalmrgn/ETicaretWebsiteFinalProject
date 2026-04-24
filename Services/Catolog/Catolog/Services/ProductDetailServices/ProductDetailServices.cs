@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 
 using Catolog.DTOs.ProductDetailDTOs;
 using Catolog.Entities;
@@ -17,7 +17,7 @@ namespace Catolog.Services.ProductDetailDetailServices
         {
             var client = new MongoClient(_databaseSettings.ConnectionString);
             var database = client.GetDatabase(_databaseSettings.DatabaseName);
-            _productDetailCollection = database.GetCollection<ProductDetail>(_databaseSettings.ProductCollectionName);
+            _productDetailCollection = database.GetCollection<ProductDetail>(_databaseSettings.ProductDetailCollectionName);
             _mapper = mapper;
         }
 
@@ -55,7 +55,27 @@ namespace Catolog.Services.ProductDetailDetailServices
         public async Task UpdateProductDetailAsync(UpdateProductDetailDTOs updateProductDetailDTOs)
         {
             var values = _mapper.Map<ProductDetail>(updateProductDetailDTOs);
-            await _productDetailCollection.FindOneAndReplaceAsync(x => x.ProductDetailId == updateProductDetailDTOs.ProductDetailId, values);
+
+            if (!string.IsNullOrEmpty(updateProductDetailDTOs.ProductDetailId))
+            {
+                await _productDetailCollection.FindOneAndReplaceAsync(x => x.ProductDetailId == updateProductDetailDTOs.ProductDetailId, values);
+            }
+            else
+            {
+                // Eğer ProductDetailId yoksa, ProductId üzerinden mevcut bir kayıt olup olmadığını kontrol edelim
+                var existing = await _productDetailCollection.Find(x => x.ProductId == updateProductDetailDTOs.ProductId).FirstOrDefaultAsync();
+                
+                if (existing != null)
+                {
+                    values.ProductDetailId = existing.ProductDetailId;
+                    await _productDetailCollection.FindOneAndReplaceAsync(x => x.ProductDetailId == existing.ProductDetailId, values);
+                }
+                else
+                {
+                    // Hiç kayıt yoksa yeni ekle
+                    await _productDetailCollection.InsertOneAsync(values);
+                }
+            }
         }
     }
 }

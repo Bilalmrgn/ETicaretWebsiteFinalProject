@@ -174,5 +174,26 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         }
 
 
+        //kategoriye ait ürünleri listeleme 
+        [HttpGet]
+        public async Task<IActionResult> GetProductsByCategoryId(string categoryId)
+        {
+            var client = _httpClientFactory.CreateClient("CatalogClient");
+
+            var response = await client.GetAsync($"/catalog/product/by-category/{categoryId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = await response.Content.ReadAsStringAsync();
+
+                var values = JsonConvert.DeserializeObject<List<ProductListDto>>(jsonData);
+
+                return View(values);
+            }
+
+            return View(new List<ProductListDto>());
+        }
+
+
     }
 }

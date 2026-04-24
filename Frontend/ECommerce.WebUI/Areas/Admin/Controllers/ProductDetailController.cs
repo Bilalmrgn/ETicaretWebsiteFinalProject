@@ -1,4 +1,4 @@
-﻿using Frontend.DtosLayer.ProductDetailDto;
+using Frontend.DtosLayer.ProductDetailDto;
 using Frontend.DtosLayer.ProductImageDto;
 using Frontend.DtosLayer.ProductsDto;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +18,22 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-        public IActionResult Index()
+        // Ürün Detay Listesi (Index)
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var client = _httpClientFactory.CreateClient("CatalogClient");
+
+            var response = await client.GetAsync("/catalog/ProductDetail");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = await response.Content.ReadAsStringAsync();
+
+                var values = JsonConvert.DeserializeObject<List<ProductDetailDto>>(jsonData);
+
+                return View(values);
+            }
+            return View(new List<ProductDetailDto>()); // Model null gitmesin diye boş liste
         }
 
         [HttpGet]
@@ -28,7 +41,8 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-            var productResponse = await client.GetAsync($"/catalog/ProductDetail/{id}");
+            // 1. Ürün bilgilerini getir (Adı vb. için)
+            var productResponse = await client.GetAsync($"/catalog/product/{id}");
 
 
             if (productResponse.IsSuccessStatusCode)
@@ -36,17 +50,15 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
                 var jsonData = await productResponse.Content.ReadAsStringAsync();
                 var product = JsonConvert.DeserializeObject<GetProductByIdDto>(jsonData);
 
-                //bastığım ürüne ait detayları getirmek için
-                var productDetailResponse = await client.GetAsync($"/catalog/ProductDetail{id}");
+                // 2. Ürüne ait detayı getir (Açıklama, Bilgi vb. için)
+                var productDetailResponse = await client.GetAsync($"/catalog/ProductDetail/GetByProductId/{id}");
 
                 if (productDetailResponse.IsSuccessStatusCode)
                 {
                     var jsonDatas = await productDetailResponse.Content.ReadAsStringAsync();
 
-                    // 2. Bu string'i DTO nesnesine dönüştür (Deserialize)
                     var detail = JsonConvert.DeserializeObject<ResultProductDetailDto>(jsonDatas);
 
-                    // 3. Artık nesne üzerinden ID'ye erişebilirsin
                     ViewBag.ProductDetailId = detail?.ProductDetailId;
                     ViewBag.ExistingImage = detail;
                 }
@@ -58,17 +70,19 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
         }
 
         //product detail post metod
+        [HttpPost]
         public async Task<IActionResult> UpdateProductDetail(UpdateProductDetailDto dto)
         {
             var client = _httpClientFactory.CreateClient("CatalogClient");
 
-           
-
-            var jsonData = JsonConvert.SerializeObject(dto);
+            var jsonData = System.Text.Json.JsonSerializer.Serialize(dto, new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+            });
 
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-            var response = await client.PutAsync($"/catalog/ProductDetail/{dto.ProductId}",stringContent);
+            var response = await client.PutAsync($"/catalog/ProductDetail/{dto.ProductId}", stringContent);
 
             if (response.IsSuccessStatusCode)
             {

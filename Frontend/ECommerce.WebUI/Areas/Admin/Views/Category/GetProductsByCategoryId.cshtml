@@ -1,0 +1,88 @@
+@model List<Frontend.DtosLayer.ProductsDto.ProductListDto>
+@{
+    ViewData["Title"] = "Kategori Ürünleri";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="col-lg-12">
+    <div class="card-style mb-30">
+        <div class="d-flex justify-content-between align-items-center mb-10">
+            <h6 class="mb-10">Kategoriye Ait Ürünler</h6>
+            <a asp-area="Admin"
+               asp-controller="Products"
+               asp-action="CreateProduct"
+               class="btn btn-primary">
+                + Yeni Ürün Ekle
+            </a>
+        </div>
+
+        <p class="text-sm mb-20">
+            Bu kategoride bulunan tüm ürünler aşağıda listelenmiştir.
+        </p>
+
+        <div class="table-wrapper table-responsive">
+            <table class="table striped-table">
+                <thead>
+                    <tr>
+                        <th><h6>Görsel</h6></th>
+                        <th><h6>Ürün Adı</h6></th>
+                        <th><h6>Fiyat</h6></th>
+                        <th><h6>Sil</h6></th>
+                        <th><h6>Güncelle</h6></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="@item.ProductImageUrl" style="width:50px; height:50px; border-radius:5px; object-fit:cover;" />
+                                </td>
+                                <td>
+                                    <p>@item.ProductName</p>
+                                </td>
+                                <td>
+                                    <p>@item.ProductPrice.ToString("C2")</p>
+                                </td>
+                                <td>
+                                    <form asp-area="Admin"
+                                          asp-controller="Products"
+                                          asp-action="DeleteProduct"
+                                          asp-route-id="@item.ProductId"
+                                          method="post">
+                                        <button class="text-danger" style="border:none;background:none;" onclick="return confirm('Bu ürünü silmek istediğinize emin misiniz?')">
+                                            <i class="lni lni-trash-can"></i> Sil
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <a asp-area="Admin"
+                                       asp-controller="Products"
+                                       asp-action="UpdateProduct"
+                                       asp-route-id="@item.ProductId"
+                                       class="text-primary">
+                                        <i class="lni lni-pencil"></i> Güncelle
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center">Bu kategoriye ait ürün bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="mt-20">
+            <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-secondary">
+                <i class="lni lni-arrow-left"></i> Kategorilere Dön
+            </a>
+        </div>
+    </div>
+</div>

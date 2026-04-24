@@ -1,4 +1,4 @@
-﻿@model Frontend.DtosLayer.CategoryDto.UpdateCategoryDto
+@model Frontend.DtosLayer.CategoryDto.UpdateCategoryDto
 @{
     ViewData["Title"] = "CreateCategory";
     Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
@@ -8,17 +8,27 @@
 <form asp-area="Admin"
       asp-controller="Category"
       asp-action="UpdateCategory"
-      method="post">
+      method="post"
+      enctype="multipart/form-data">
 
     <input type="hidden" asp-for="CategoryId" />
 
     <div class="mb-3">
         <label>Kategori Adı</label>
-        <input type="text" asp-for="ImageUrl" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label>Kategori Adı</label>
         <input type="text" asp-for="CategoryName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Mevcut Görsel</label>
+        <div class="mb-2">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" style="width:100px; height:auto; border-radius:5px;" />
+            }
+        </div>
+        <label>Yeni Görsel Seçin</label>
+        <input type="file" name="imageFile" class="form-control" />
+        <input type="hidden" asp-for="ImageUrl" />
     </div>
 
     <button type="submit" class="btn btn-success">Kaydet</button>

@@ -1,4 +1,6 @@
 ﻿using Duende.IdentityServer.Services;
+using IdentityServer.Application.Dtos;
+using IdentityServer.Application.Interfaces;
 using IdentityServer.Domain;
 using IdentityServer.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,15 +15,17 @@ namespace IdentityServer.WebAPI.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
         private readonly IIdentityServerInteractionService _interaction;
-
+        private readonly IForgotPasswordService _forgotPasswordService;
         public AccountController(
             SignInManager<AppUser> signInManager,
             UserManager<AppUser> userManager,
-            IIdentityServerInteractionService interaction)
+            IIdentityServerInteractionService interaction,
+            IForgotPasswordService forgotPasswordService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _interaction = interaction;
+            _forgotPasswordService = forgotPasswordService;
         }
 
         [HttpGet]
@@ -58,6 +62,12 @@ namespace IdentityServer.WebAPI.Controllers
                 user = await _userManager.FindByNameAsync(model.Email);
             }
 
+            if(user.EmailConfirmed == false)
+            {
+                TempData["mailOnay"] = "Lütfen önce mailinizden onay veriniz.";
+                return View(model);
+            }
+
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
@@ -90,6 +100,53 @@ namespace IdentityServer.WebAPI.Controllers
             }
 
             return Redirect(logoutRequest.PostLogoutRedirectUri);
+        }
+
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            await _forgotPasswordService.SendResetPasswordEmailAsync(email);
+
+            return View("ForgotPasswordConfirmation");
+        }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            var model = new ResetPasswordDto
+            {
+                Email = email,
+                Token = token
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDto model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = await _forgotPasswordService.ResetPasswordAsync(
+                model.Email,
+                model.Token,
+                model.Password
+            );
+
+            if (result)
+            {
+                return View("ResetPasswordSuccess");
+            }
+
+            return View("Error");
         }
     }
 }

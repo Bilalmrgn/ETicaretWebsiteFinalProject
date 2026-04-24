@@ -307,6 +307,20 @@
         "AllowedScopes": [ "catalog.full" ]
       }
     },
+    //GET PRODUCT DETAIL BY PRODUCT ID OPERATION
+    {
+      "DownstreamPathTemplate": "/api/ProductDetail/GetByProductId/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/ProductDetail/GetByProductId/{everything}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+
 
     //PUT AND DELETE operations
     {
@@ -389,6 +403,19 @@
         "AuthenticationProviderKey": "CatalogAuthKey",
         "AllowedScopes": [ "catalog.full" ]
       }
+    },
+    //GET PRODUCT IMAGES BY PRODUCT ID OPERATION
+    {
+      "DownstreamPathTemplate": "/api/ProductImages/GetProductImagesByProductId/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7166
+        }
+      ],
+      "UpstreamPathTemplate": "/catalog/ProductImages/GetProductImagesByProductId/{everything}",
+      "UpstreamHttpMethod": [ "Get" ]
     },
 
     //-------------------------------------------------------special offer------------------------------------------------------------------------------
