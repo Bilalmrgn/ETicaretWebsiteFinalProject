@@ -128,9 +128,15 @@ namespace ECommerce.WebUI.Controllers
             var response = await client.PostAsync("auth/change-username", content);
 
             if (response.IsSuccessStatusCode)
+            {
                 TempData["Success"] = "Kullanıcı adı başarıyla güncellendi.";
+            }
+
             else
+            {
                 TempData["Error"] = "Kullanıcı adı değiştirilemedi.";
+            }
+
 
             return RedirectToAction("Index");
         }
