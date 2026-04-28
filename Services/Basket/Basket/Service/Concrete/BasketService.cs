@@ -15,28 +15,37 @@ namespace Basket.Service.Concrete
             _redisService = redisService;
         }
 
-        public async Task<bool> ApplyDiscountAsync(string userId, string discountCode)
+        public async Task<string> ApplyDiscountAsync(string userId, string discountCode)
         {
             var basketJson = await _redisService.GetAsync(userId);
 
             if (string.IsNullOrEmpty(basketJson))
-                return false;
+                return "BasketNotFound";
 
             var basket = JsonConvert.DeserializeObject<BasketTotalDto>(basketJson);
+
+            if (basket == null)
+                return "BasketNotFound";
+
+            if (string.Equals(basket.DiscountCode, discountCode, StringComparison.OrdinalIgnoreCase))
+            {
+                return "AlreadyApplied";
+            }
+
 
 
             var coupon = await _discountService.GetByCodeAsync(discountCode);
 
             if (coupon == null)
-                return false;
+                return "Invalid";
 
-            // 🔥 KU PONU REDIS’E YAZ
+            
             basket.DiscountCode = coupon.Code;
             basket.DiscountRate = coupon.Rate;
 
             await _redisService.SetAsync(userId, JsonConvert.SerializeObject(basket));
 
-            return true;
+            return "success";
         }
 
         public async Task DeleteAsync(string userId)

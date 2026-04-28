@@ -71,11 +71,21 @@ namespace ECommerce.WebUI.Controllers
 
             var response = await client.PostAsync($"https://localhost:7178/api/Basket/apply-discount?discountCode={discountCode}", null);
 
-            if (!response.IsSuccessStatusCode)
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (result == "AlreadyApplied")
             {
-                TempData["DiscountError"] = "Kupon kodu geçersiz veya uygulanamadı.";
+                TempData["DiscountError"] = "Bu kupon zaten uygulanmış.";
             }
-            else
+            else if (result == "Invalid")
+            {
+                TempData["DiscountError"] = "Geçersiz kupon.";
+            }
+            else if (result == "BasketNotFound")
+            {
+                TempData["DiscountError"] = "Sepet bulunamadı.";
+            }
+            else if (result == "Success")
             {
                 TempData["DiscountSuccess"] = "Kupon başarıyla uygulandı!";
             }

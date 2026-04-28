@@ -60,10 +60,13 @@ namespace Basket.Controllers
 
             var result = await _basketService.ApplyDiscountAsync(userId, discountCode);
 
-            if (!result)
-                return BadRequest("Kupon geçersiz");
+            if (result == "Invalid")
+                return BadRequest("Invalid");
 
-            return Ok("Kupon uygulandı");
+            if (result == "AlreadyApplied")
+                return BadRequest("AlreadyApplied");
+
+            return Ok("Success");
         }
     }
 }
