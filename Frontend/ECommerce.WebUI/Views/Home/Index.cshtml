@@ -1,14 +1,70 @@
-﻿
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/UILayout/_Layout.cshtml";
 }
 
+<style>
+    .ticker-wrap {
+        width: 100%;
+        overflow: hidden;
+        background: linear-gradient(90deg, #111, #333);
+        padding-left: 100%;
+        box-sizing: border-box;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        margin-bottom: 25px;
+    }
+
+    .ticker {
+        display: inline-block;
+        white-space: nowrap;
+        padding-right: 100%;
+        box-sizing: content-box;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        animation-name: ticker;
+        animation-duration: 25s;
+    }
+
+    .ticker__item {
+        display: inline-block;
+        padding: 12px 2rem;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: 0.5px;
+        font-family: 'Inter', sans-serif;
+    }
+    .ticker__code {
+        color: #f1c40f;
+        font-size: 1.3rem;
+        font-weight: 800;
+        border: 2px dashed #f1c40f;
+        padding: 2px 10px;
+        border-radius: 6px;
+        margin: 0 8px;
+        background: rgba(241, 196, 15, 0.1);
+    }
+
+    @@keyframes ticker {
+        0% { transform: translate3d(0, 0, 0); visibility: visible; }
+        100% { transform: translate3d(-100%, 0, 0); }
+    }
+</style>
+
+<div class="ticker-wrap">
+    <div class="ticker">
+        <div class="ticker__item">✨ İLK ALIŞVERİŞE ÖZEL <span class="ticker__code">welcome100</span> KODU İLE %100 İNDİRİM FIRSATI! HEMEN SEPETİNİ DOLDUR! ✨</div>
+        <div class="ticker__item">🎉 İLK ALIŞVERİŞE ÖZEL <span class="ticker__code">welcome100</span> KODU İLE %100 İNDİRİM FIRSATI! HEMEN SEPETİNİ DOLDUR! 🎉</div>
+    </div>
+</div>
+
+
 <div class="container-fluid">
     <div class="row px-xl-5">
         <div class="col-12">
             <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="#">Anasayfa</a>
+                <a class="breadcrumb-item text-dark" asp-controller="Home" asp-action="Index">Anasayfa</a>
                 <span class="breadcrumb-item active">Ürün Listesi</span>
             </nav>
         </div>

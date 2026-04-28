@@ -1,0 +1,62 @@
+@model Frontend.DtosLayer.DiscountDtos.UpdateCouponDto
+@{
+    ViewData["Title"] = "Kupon Güncelle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="title-wrapper pt-30">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="title">
+                    <h2>Kupon Güncelle</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-elements-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card-style mb-30">
+                    <h6 class="mb-25">Kupon Bilgilerini Düzenle</h6>
+                    <form method="post">
+                        <input type="hidden" asp-for="CouponId" />
+
+                        <div class="input-style-1">
+                            <label>Kupon Kodu</label>
+                            <input type="text" asp-for="Code" placeholder="Örn: YAZ2024" />
+                        </div>
+
+                        <div class="input-style-1">
+                            <label>İndirim Oranı (%)</label>
+                            <input type="number" asp-for="Rate" placeholder="Örn: 10" />
+                        </div>
+
+                        <div class="input-style-1">
+                            <label>Geçerlilik Tarihi</label>
+                            <input type="date" asp-for="ValidDate" value="@Model.ValidDate.ToString("yyyy-MM-dd")" />
+                        </div>
+
+                        <div class="form-check checkbox-style mb-20">
+                            <input class="form-check-input" type="checkbox" asp-for="IsActive" id="isActiveCheck" />
+                            <label class="form-check-label" for="isActiveCheck">
+                                Aktif Mi?
+                            </label>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button class="main-btn warning-btn btn-hover">Kuponu Güncelle</button>
+                            <a asp-action="Index"
+                               asp-controller="AdminDiscount"
+                               asp-area="Admin"
+                               class="main-btn secondary-btn btn-hover">
+                                Geri Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

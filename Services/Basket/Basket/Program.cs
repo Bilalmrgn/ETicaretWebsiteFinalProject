@@ -33,6 +33,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IRedisService, RedisService>();
+builder.Services.AddScoped<IDiscountService, DiscountService>();
+builder.Services.AddHttpClient();
 
 var redisHost = builder.Configuration["RedisHost"];
 

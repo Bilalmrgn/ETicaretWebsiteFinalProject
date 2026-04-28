@@ -5,94 +5,382 @@
     Layout = "~/Views/UILayout/_Layout.cshtml";
 }
 
-<!-- Breadcrumb Start -->
-<div class="container-fluid">
-    <div class="row px-xl-5">
-        <div class="col-12">
-            <nav class="breadcrumb bg-light mb-30">
-                <a class="breadcrumb-item text-dark" href="/">Ana Sayfa</a>
-                <a class="breadcrumb-item text-dark" href="/Product/Index">Ürünler</a>
-                <span class="breadcrumb-item active">Sepetim</span>
-            </nav>
-        </div>
+<style>
+    body {
+        background-color: #f5f7fa;
+    }
+    .cart-container {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding: 40px 0;
+    }
+    .cart-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2b2b2b;
+        margin-bottom: 10px;
+    }
+    .cart-subtitle {
+        color: #6c757d;
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+    }
+    
+    /* Product Item */
+    .cart-item {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.03);
+        border: 1px solid #f0f0f0;
+        transition: box-shadow 0.3s ease;
+    }
+    .cart-item:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+    
+    .item-img {
+        width: 100%;
+        min-width: 120px;
+        height: auto;
+        max-height: 200px;
+        object-fit: contain; /* Resimlerin tam çıkmasını sağlar */
+        border-radius: 12px;
+        background-color: #fcfcfc;
+        padding: 10px;
+        border: 1px solid #f0f0f0;
+    }
+    
+    .item-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #2b2b2b;
+        text-decoration: none;
+        display: block;
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+    .item-name:hover {
+        color: #3498db;
+    }
+    
+    .item-price {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #7f8c8d;
+    }
+    
+    .item-total {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+    
+    /* Quantity Box */
+    .qty-box {
+        display: inline-flex;
+        align-items: center;
+        background: #f8f9fa;
+        border-radius: 50px;
+        padding: 5px 15px;
+        border: 1px solid #e9ecef;
+    }
+    .qty-btn {
+        color: #495057;
+        font-size: 1.1rem;
+        padding: 5px 10px;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .qty-btn:hover {
+        color: #e74c3c;
+    }
+    .qty-input {
+        width: 50px;
+        text-align: center;
+        background: transparent;
+        border: none;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: #2b2b2b;
+        outline: none;
+    }
+    
+    /* Remove Button */
+    .btn-remove {
+        background: transparent;
+        border: none;
+        color: #e74c3c;
+        font-size: 1.5rem;
+        padding: 10px;
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
+    .btn-remove:hover {
+        transform: scale(1.1);
+        color: #c0392b;
+    }
+    
+    /* Summary Card */
+    .summary-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.03);
+        border: 1px solid #f0f0f0;
+        position: sticky;
+        top: 30px;
+    }
+    .summary-header {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2b2b2b;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #f5f7fa;
+    }
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.15rem;
+        color: #6c757d;
+        margin-bottom: 15px;
+    }
+    .summary-row.total {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #2c3e50;
+        border-top: 2px dashed #e9ecef;
+        padding-top: 20px;
+        margin-top: 10px;
+    }
+    
+    /* Discount Form */
+    .discount-title {
+        font-weight: 600;
+        color: #2b2b2b;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+    .discount-wrap {
+        display: flex;
+        gap: 10px;
+    }
+    .discount-wrap input {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 12px 15px;
+        font-size: 1rem;
+        flex: 1;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+    .discount-wrap input:focus {
+        border-color: #3498db;
+    }
+    .discount-wrap button {
+        background: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0 20px;
+        font-weight: 600;
+        transition: background 0.3s;
+    }
+    .discount-wrap button:hover {
+        background: #1a252f;
+    }
+    
+    /* Checkout Button */
+    .btn-checkout {
+        background: linear-gradient(135deg, #00b09b, #96c93d);
+        color: white;
+        border: none;
+        width: 100%;
+        padding: 18px;
+        border-radius: 12px;
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-top: 30px;
+        box-shadow: 0 4px 15px rgba(0, 176, 155, 0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .btn-checkout:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 176, 155, 0.4);
+    }
+    
+    /* Alerts */
+    .alert-premium {
+        border-radius: 12px;
+        padding: 15px 20px;
+        border: none;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .alert-premium i {
+        font-size: 1.5rem;
+    }
+    .alert-premium.success {
+        background-color: #f0fdf4;
+        color: #166534;
+        border-left: 5px solid #22c55e;
+    }
+    .alert-premium.danger {
+        background-color: #fef2f2;
+        color: #991b1b;
+        border-left: 5px solid #ef4444;
+    }
+</style>
+
+<!-- Breadcrumb -->
+<div class="container-fluid bg-white py-3 border-bottom shadow-sm">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0 p-0">
+                <li class="breadcrumb-item"><a href="/" class="text-muted text-decoration-none">Ana Sayfa</a></li>
+                <li class="breadcrumb-item"><a href="/Product/Index" class="text-muted text-decoration-none">Ürünler</a></li>
+                <li class="breadcrumb-item active text-dark font-weight-bold" aria-current="page">Alışveriş Sepeti</li>
+            </ol>
+        </nav>
     </div>
 </div>
-<!-- Breadcrumb End -->
 
-<div class="container-fluid pt-5 pb-3">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4">
-        <span class="bg-secondary pr-3">Sepetim (@(Model?.BasketItems?.Count ?? 0) Ürün)</span>
-    </h2>
-
-    <div class="row px-xl-5">
+<div class="container cart-container">
+    <div class="row">
         @if (Model != null && Model.BasketItems != null && Model.BasketItems.Count > 0)
         {
-            @foreach (var item in Model.BasketItems)
-            {
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="@item.ProductImageUrl" alt="@item.ProductName">
-                            <div class="product-action">
-                                <!-- SEPETTEN KALDIR BUTONU -->
-                                <form id="removeBasketForm-@item.ProductId" method="post" asp-controller="Basket" asp-action="RemoveBasketItem" style="display:none;">
-                                    <input type="hidden" name="productId" value="@item.ProductId" />
-                                </form>
-                                <a class="btn btn-outline-dark btn-square" title="Sepetten Kaldır" href="javascript:void(0);" onclick="document.getElementById('removeBasketForm-@item.ProductId').submit();">
-                                    <i class="fas fa-trash"></i>
-                                </a>
+            <div class="col-lg-8">
+                <h1 class="cart-title">Sepetim</h1>
+                <p class="cart-subtitle">Sepetinizde <strong>@Model.BasketItems.Count</strong> adet ürün bulunuyor.</p>
+                
+                <div class="mt-4">
+                    @foreach (var item in Model.BasketItems)
+                    {
+                        <div class="cart-item">
+                            <div class="row align-items-center">
+                                <!-- Ürün Görseli -->
+                                <div class="col-md-3 col-sm-4 mb-3 mb-sm-0 text-center text-sm-left">
+                                    <img src="@item.ProductImageUrl" alt="@item.ProductName" class="item-img" />
+                                </div>
                                 
-                                <a class="btn btn-outline-dark btn-square" href="/Product/Details/@item.ProductId">
-                                    <i class="fa fa-sync-alt"></i>
-                                </a>
-                                <a class="btn btn-outline-dark btn-square" href="/Product/Details/@item.ProductId">
-                                    <i class="fa fa-search"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="/Product/Details/@item.ProductId">
-                                @item.ProductName
-                            </a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5>@item.Price.ToString("C")</h5>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <div class="input-group quantity mx-auto" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <a href="/Basket/DecreaseBasketItem?productId=@item.ProductId" class="btn btn-sm btn-outline-dark btn-minus">
-                                            <i class="fa fa-minus"></i>
+                                <!-- Ürün Detayları (İsim & Adet Fiyatı) -->
+                                <div class="col-md-4 col-sm-8 mb-3 mb-md-0">
+                                    <a href="/Product/Details/@item.ProductId" class="item-name">@item.ProductName</a>
+                                    <div class="item-price">@item.Price.ToString("C")</div>
+                                </div>
+                                
+                                <!-- Adet Arttırma / Azaltma -->
+                                <div class="col-md-3 col-6 text-md-center">
+                                    <div class="qty-box">
+                                        <a href="/Basket/DecreaseBasketItem?productId=@item.ProductId" class="qty-btn">
+                                            <i class="fas fa-minus"></i>
                                         </a>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 text-center" value="@item.Quantity" readonly>
-                                    <div class="input-group-btn">
-                                        <a href="/Basket/AddToBasket?productId=@item.ProductId" class="btn btn-sm btn-outline-dark btn-plus">
-                                            <i class="fa fa-plus"></i>
+                                        <input type="text" class="qty-input" value="@item.Quantity" readonly>
+                                        <a href="/Basket/AddToBasket?productId=@item.ProductId" class="qty-btn">
+                                            <i class="fas fa-plus"></i>
                                         </a>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1 mt-2">
-                                <small class="text-muted">Toplam: @((item.Price * item.Quantity).ToString("C"))</small>
+                                
+                                <!-- Toplam Fiyat ve Silme -->
+                                <div class="col-md-2 col-6 d-flex flex-column align-items-end justify-content-center">
+                                    <form id="removeBasketForm-@item.ProductId" method="post" asp-controller="Basket" asp-action="RemoveBasketItem" class="mb-2">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="btn-remove" title="Ürünü Çıkar">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                    <div class="item-total">@((item.Price * item.Quantity).ToString("C"))</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
-            }
+            </div>
             
-            <div class="col-12 mt-4">
-                 <div class="d-flex justify-content-end align-items-center bg-light p-3">
-                     <h4 class="m-0 mr-4">Genel Toplam: @Model.TotalPrice.ToString("C")</h4>
-                     <a href="#" class="btn btn-primary px-4 py-2">Siparişi Tamamla</a>
-                 </div>
+            <div class="col-lg-4 mt-5 mt-lg-0">
+                <div class="summary-card">
+                    <h3 class="summary-header">Sipariş Özeti</h3>
+                    
+                    <!-- Kupon Giriş Alanı -->
+                    <div class="mb-4">
+                        <div class="discount-title">İndirim Kodu Uygula</div>
+                        
+                        @if (TempData["DiscountSuccess"] != null)
+                        {
+                            <div class="alert alert-premium success mb-3 alert-dismissible fade show">
+                                <i class="fas fa-check-circle"></i>
+                                <div>
+                                    @TempData["DiscountSuccess"]
+                                </div>
+                                <button type="button" class="close ml-auto" data-dismiss="alert" style="background:none;border:none;font-size:1.5rem;color:inherit;">&times;</button>
+                            </div>
+                        }
+                        @if (TempData["DiscountError"] != null)
+                        {
+                            <div class="alert alert-premium danger mb-3 alert-dismissible fade show">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div>
+                                    @TempData["DiscountError"]
+                                </div>
+                                <button type="button" class="close ml-auto" data-dismiss="alert" style="background:none;border:none;font-size:1.5rem;color:inherit;">&times;</button>
+                            </div>
+                        }
+
+                        <form method="post" asp-controller="Basket" asp-action="ApplyDiscount" class="discount-wrap">
+                            <input type="text" name="discountCode" placeholder="Kupon kodunu girin..." required>
+                            <button type="submit">Uygula</button>
+                        </form>
+                    </div>
+
+                    <!-- Fiyatlar -->
+                    <div class="summary-row">
+                        <span>Ara Toplam</span>
+                        <span class="text-dark font-weight-bold">@Model.TotalPrice.ToString("C")</span>
+                    </div>
+                    
+                    @if (Model.DiscountRate > 0)
+                    {
+                        var discountAmount = Model.TotalPrice * Model.DiscountRate.Value / 100;
+                        var discountedPrice = Model.TotalPrice - discountAmount;
+                        
+                        <div class="summary-row text-success font-weight-bold">
+                            <span>Kupon (%@Model.DiscountRate)</span>
+                            <span>-@discountAmount.ToString("C")</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Genel Toplam</span>
+                            <span>@discountedPrice.ToString("C")</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="summary-row total">
+                            <span>Genel Toplam</span>
+                            <span>@Model.TotalPrice.ToString("C")</span>
+                        </div>
+                    }
+                    
+                    <button class="btn-checkout">
+                        Siparişi Onayla <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
             </div>
         }
         else
         {
-            <div class="col-12 text-center py-5">
-                <i class="fa fa-shopping-cart fa-5x text-secondary mb-3"></i>
-                <h3>Sepetinizde henüz ürün bulunmuyor.</h3>
-                <a href="/Product/Index" class="btn btn-primary mt-3">Alışverişe Başla</a>
+            <div class="col-12">
+                <div class="text-center bg-white p-5 rounded-lg shadow-sm" style="border: 1px solid #f0f0f0;">
+                    <i class="fas fa-shopping-cart" style="font-size: 6rem; color: #e9ecef; margin-bottom: 20px;"></i>
+                    <h2 style="font-weight: 700; color: #2c3e50;">Sepetiniz Boş Görünüyor</h2>
+                    <p style="font-size: 1.2rem; color: #7f8c8d; margin-bottom: 30px;">Hemen binlerce ürün arasından seçim yaparak sepetinizi doldurmaya başlayın.</p>
+                    <a href="/Product/Index" class="btn btn-primary btn-lg" style="padding: 15px 40px; border-radius: 50px; font-weight: 600;">
+                        Alışverişe Başla
+                    </a>
+                </div>
             </div>
         }
     </div>

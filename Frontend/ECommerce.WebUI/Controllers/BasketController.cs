@@ -28,6 +28,7 @@ namespace ECommerce.WebUI.Controllers
             var client = _httpClientFactory.CreateClient("BasketClient");
             var catalogClient = _httpClientFactory.CreateClient("CatalogClient");
 
+            //güncel basket i çekiyoruz
             var response = await client.GetAsync("https://localhost:7178/api/Basket");
 
             if (!response.IsSuccessStatusCode)
@@ -62,6 +63,27 @@ namespace ECommerce.WebUI.Controllers
             return View(basket);
         }
 
+        //indirim kuponu uygulama işlemi //eve gelince discount api ve basket api yi düzenle basket api de discount api ye istek atacaksın
+        [HttpPost]
+        public async Task<IActionResult> ApplyDiscount(string discountCode)
+        {
+            var client = _httpClientFactory.CreateClient("BasketClient");
+
+            var response = await client.PostAsync($"https://localhost:7178/api/Basket/apply-discount?discountCode={discountCode}", null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["DiscountError"] = "Kupon kodu geçersiz veya uygulanamadı.";
+            }
+            else
+            {
+                TempData["DiscountSuccess"] = "Kupon başarıyla uygulandı!";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
         //update basket and create basket
         public async Task<IActionResult> SaveBasket(BasketTotalDto basket)
         {
@@ -87,9 +109,9 @@ namespace ECommerce.WebUI.Controllers
             if (!User.Identity.IsAuthenticated)
             {
                 TempData["LoginRequired"] = true;
-                
+
                 var referer = Request.Headers["Referer"].ToString();
-                
+
                 return !string.IsNullOrEmpty(referer) ? Redirect(referer) : RedirectToAction("Index", "Login");
             }
 
@@ -116,13 +138,13 @@ namespace ECommerce.WebUI.Controllers
             if (existingItem != null)
             {
                 existingItem.Quantity += quantity;
-               
+
                 var updatedJson = JsonConvert.SerializeObject(basket);
-               
+
                 var updatedContent = new StringContent(updatedJson, Encoding.UTF8, "application/json");
-               
+
                 await client.PostAsync("https://localhost:7178/api/Basket", updatedContent);
-                
+
                 return RedirectToAction("Index");
             }
             else
@@ -181,7 +203,7 @@ namespace ECommerce.WebUI.Controllers
                 if (existingItem != null)
                 {
                     basket.BasketItems.Remove(existingItem);
-                    
+
                     var updatedJson = JsonConvert.SerializeObject(basket);
                     var updatedContent = new StringContent(updatedJson, Encoding.UTF8, "application/json");
                     await client.PostAsync("https://localhost:7178/api/Basket", updatedContent);

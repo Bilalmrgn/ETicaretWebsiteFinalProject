@@ -1,7 +1,6 @@
 {
   "Routes": [
     //----------------------------------PRODUCT------------------------------------
-
     //get all product
     {
       "DownstreamPathTemplate": "/api/Product",
@@ -13,9 +12,10 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/product",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID PRODUCT OPERATION
     {
       "DownstreamPathTemplate": "/api/Product/{everything}",
@@ -27,7 +27,9 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/product/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE PRODUCT OPERATION
     {
@@ -40,13 +42,16 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/product",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/Product/{everything}",
@@ -58,16 +63,18 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/product/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
-
     //----------------------------------------------------CATEGORY------------------------------------------------------------------------------
-
     //get all CATEGORY
     {
       "DownstreamPathTemplate": "/api/Categories",
@@ -79,9 +86,10 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/category",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID CATEGORY OPERATION
     {
       "DownstreamPathTemplate": "/api/Categories/{everything}",
@@ -93,7 +101,9 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/category/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE CATEGORY OPERATION
     {
@@ -106,13 +116,16 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/category",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/Categories/{everything}",
@@ -124,14 +137,18 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/category/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
     //------------------------------------------------------------BRAND-----------------------------------------------------------------------
-
     //get all BRAND
     {
       "DownstreamPathTemplate": "/api/Brand",
@@ -143,9 +160,10 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/brand",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID BRAND OPERATION
     {
       "DownstreamPathTemplate": "/api/Brand/{everything}",
@@ -157,7 +175,9 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/brand/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE BRAND OPERATION
     {
@@ -170,13 +190,16 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/brand",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/Brand/{everything}",
@@ -188,16 +211,18 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/brand/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
-
     //---------------------------------------------------FEATURE SLİDER--------------------------------------------------------------------------------
-
     //get all FEATURE SLİDER
     {
       "DownstreamPathTemplate": "/api/FeatureSlider",
@@ -209,9 +234,10 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/FeatureSlider/",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID FEATURE SLİDER OPERATION
     {
       "DownstreamPathTemplate": "/api/FeatureSlider/{everything}",
@@ -223,7 +249,9 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/FeatureSlider/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE FEATURE SLİDER OPERATION
     {
@@ -236,13 +264,16 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/FeatureSlider",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/FeatureSlider/{everything}",
@@ -254,15 +285,18 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/FeatureSlider/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //-------------------------------------------------------PRODUCT DETAİL-----------------------------------------------------------------------------
-
     //get all product DETAİL
     {
       "DownstreamPathTemplate": "/api/ProductDetail",
@@ -274,9 +308,10 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductDetail",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID PRODUCT DETAIL OPERATION
     {
       "DownstreamPathTemplate": "/api/ProductDetail/{everything}",
@@ -288,7 +323,9 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductDetail/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE PRODUCT DETAIL OPERATION
     {
@@ -301,10 +338,14 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductDetail",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
     //GET PRODUCT DETAIL BY PRODUCT ID OPERATION
@@ -318,10 +359,10 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductDetail/GetByProductId/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/ProductDetail/{everything}",
@@ -333,15 +374,18 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductDetail/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //-------------------------------------------------------product image------------------------------------------------------------------------------
-
     //get all product images
     {
       "DownstreamPathTemplate": "/api/ProductImages",
@@ -353,9 +397,10 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductImages",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID PRODUCT IMAGE OPERATION
     {
       "DownstreamPathTemplate": "/api/ProductImages/{everything}",
@@ -367,7 +412,9 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductImages/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE PRODUCT IMAGE OPERATION
     {
@@ -380,13 +427,16 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductImages",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/ProductImages/{everything}",
@@ -398,10 +448,15 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductImages/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
     //GET PRODUCT IMAGES BY PRODUCT ID OPERATION
@@ -415,11 +470,11 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/ProductImages/GetProductImagesByProductId/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //-------------------------------------------------------special offer------------------------------------------------------------------------------
-
     //get all SpecialOffer
     {
       "DownstreamPathTemplate": "/api/SpecialOffer",
@@ -431,9 +486,10 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/SpecialOffer",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID SPECIAL OFFER OPERATION
     {
       "DownstreamPathTemplate": "/api/SpecialOffer/{everything}",
@@ -445,7 +501,9 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/SpecialOffer/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE SPECIAL OFFER OPERATION
     {
@@ -458,13 +516,16 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/SpecialOffer",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/SpecialOffer/{everything}",
@@ -476,13 +537,91 @@
         }
       ],
       "UpstreamPathTemplate": "/catalog/SpecialOffer/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
+    //---------------------------------------------discount------------------------------------------------------------------------------
+    //get all discount
+    {
+      "DownstreamPathTemplate": "/api/Discounts",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7090
+        }
+      ],
+      "UpstreamPathTemplate": "/discount",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
+    },
+    //get discount by id
+    {
+      "DownstreamPathTemplate": "/api/Discounts/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7090
+        }
+      ],
+      "UpstreamPathTemplate": "/discount/{everything}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
+    },
+    // create discount OPERATION
+    {
+      "DownstreamPathTemplate": "/api/Discounts",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7090
+        }
+      ],
+      "UpstreamPathTemplate": "/discount",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [
+          "discount.full"
+        ]
+      }
+    },
+    // put and delete discount operation
+    {
+      "DownstreamPathTemplate": "/api/Discounts/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7090
+        }
+      ],
+      "UpstreamPathTemplate": "/discount/{everything}",
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [
+          "discount.full"
+        ]
+      }
+    },
     //-------------------------------------------------------contact------------------------------------------------------------------------------
     //get all contact messages
     {
@@ -495,9 +634,10 @@
         }
       ],
       "UpstreamPathTemplate": "/contact",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID contact OPERATION
     {
       "DownstreamPathTemplate": "/api/Contact/{everything}",
@@ -509,7 +649,9 @@
         }
       ],
       "UpstreamPathTemplate": "/contact/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE CONTACT OPERATION
     {
@@ -522,9 +664,10 @@
         }
       ],
       "UpstreamPathTemplate": "/contact",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [
+        "Post"
+      ]
     },
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/Contact/{everything}",
@@ -536,15 +679,18 @@
         }
       ],
       "UpstreamPathTemplate": "/contact/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "contact.full" ]
+        "AllowedScopes": [
+          "contact.full"
+        ]
       }
     },
-
     //-------------------------------------------------------COMMENT------------------------------------------------------------------------------
-
     //get all comment messages
     {
       "DownstreamPathTemplate": "/api/Comments",
@@ -556,9 +702,10 @@
         }
       ],
       "UpstreamPathTemplate": "/comments",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
-
     //GET BY ID comment OPERATION
     {
       "DownstreamPathTemplate": "/api/Comments/{everything}",
@@ -570,7 +717,9 @@
         }
       ],
       "UpstreamPathTemplate": "/comments/{everything}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
     },
     //CREATE comment OPERATION
     {
@@ -583,13 +732,16 @@
         }
       ],
       "UpstreamPathTemplate": "/comments",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "comment.full" ]
+        "AllowedScopes": [
+          "comment.full"
+        ]
       }
     },
-
     //PUT AND DELETE operations
     {
       "DownstreamPathTemplate": "/api/Comments/{everything}",
@@ -601,13 +753,17 @@
         }
       ],
       "UpstreamPathTemplate": "/comments/{everything}",
-      "UpstreamHttpMethod": [ "Put", "Delete" ],
+      "UpstreamHttpMethod": [
+        "Put",
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "catalog.full" ]
+        "AllowedScopes": [
+          "catalog.full"
+        ]
       }
     },
-
     //-------------------------------------------------------IDENTITY İŞLEMLERİ------------------------------------------------------------------------------
     //-------------------------------------------------------IDENTITY İŞLEMLERİ------------------------------------------------------------------------------
     {
@@ -620,11 +776,15 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/change-email",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "Identity.full" ]
+        "AllowedScopes": [
+          "Identity.full"
+        ]
       }
     },
     {
@@ -637,7 +797,9 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/confirm-email-change",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "DangerousAcceptAnyServerCertificateValidator": true
     },
     {
@@ -650,11 +812,16 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/me",
-      "UpstreamHttpMethod": [ "Get","Post" ],
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post"
+      ],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "Identity.full" ]
+        "AllowedScopes": [
+          "Identity.full"
+        ]
       }
     },
     {
@@ -667,11 +834,15 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/change-password",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "Identity.full" ]
+        "AllowedScopes": [
+          "Identity.full"
+        ]
       }
     },
     {
@@ -684,16 +855,18 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/change-username",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "DangerousAcceptAnyServerCertificateValidator": true,
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "Identity.full" ]
+        "AllowedScopes": [
+          "Identity.full"
+        ]
       }
     },
-
     //---------------- USER ----------------
-
     {
       "DownstreamPathTemplate": "/api/User/register",
       "DownstreamScheme": "https",
@@ -704,7 +877,9 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/register",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [
+        "Post"
+      ]
     },
     {
       "DownstreamPathTemplate": "/api/User/login",
@@ -716,7 +891,9 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/login",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [
+        "Post"
+      ]
     },
     {
       "DownstreamPathTemplate": "/api/User/reset-password",
@@ -728,7 +905,9 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/reset-password",
-      "UpstreamHttpMethod": [ "Post" ]
+      "UpstreamHttpMethod": [
+        "Post"
+      ]
     },
     {
       "DownstreamPathTemplate": "/api/User/change-password",
@@ -740,10 +919,14 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/user-change-password",
-      "UpstreamHttpMethod": [ "Post" ],
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "Identity.full" ]
+        "AllowedScopes": [
+          "Identity.full"
+        ]
       }
     },
     {
@@ -756,10 +939,15 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/user",
-      "UpstreamHttpMethod": [ "Get", "Put" ],
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "Identity.full" ]
+        "AllowedScopes": [
+          "Identity.full"
+        ]
       }
     },
     {
@@ -772,10 +960,14 @@
         }
       ],
       "UpstreamPathTemplate": "/auth/user/{id}",
-      "UpstreamHttpMethod": [ "Delete" ],
+      "UpstreamHttpMethod": [
+        "Delete"
+      ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "CatalogAuthKey",
-        "AllowedScopes": [ "Identity.full" ]
+        "AllowedScopes": [
+          "Identity.full"
+        ]
       }
     }
   ],

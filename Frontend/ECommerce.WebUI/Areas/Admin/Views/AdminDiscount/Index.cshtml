@@ -1,0 +1,113 @@
+@model List<Frontend.DtosLayer.DiscountDtos.ResultCouponDto>
+@{
+    ViewData["Title"] = "İndirim Kuponları";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="title-wrapper pt-30">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <div class="title">
+                    <h2>İndirim Kuponları</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="card-style mb-30">
+            <div class="d-flex justify-content-between align-items-center mb-10">
+                <h6 class="mb-10">Kupon Listesi</h6>
+                <a asp-area="Admin"
+                   asp-controller="AdminDiscount"
+                   asp-action="CreateDiscount"
+                   class="btn btn-primary">
+                    + Yeni Kupon Ekle
+                </a>
+            </div>
+
+            <p class="text-sm mb-20">
+                Sistemde tanımlı olan indirim kuponlarını buradan yönetebilirsiniz.
+            </p>
+
+            <div class="table-wrapper table-responsive">
+                <table class="table striped-table">
+                    <thead>
+                        <tr>
+                            <th><h6>Kupon Kodu</h6></th>
+                            <th><h6>İndirim Oranı</h6></th>
+                            <th><h6>Durum</h6></th>
+                            <th><h6>Geçerlilik Tarihi</h6></th>
+                            <th><h6>Sil</h6></th>
+                            <th><h6>Güncelle</h6></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td><p>@item.Code</p></td>
+                                    <td><p>%@item.Rate</p></td>
+                                    <td>
+                                        @if (item.IsActive)
+                                        {
+                                            <span class="status-btn success-btn">Aktif</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status-btn danger-btn">Pasif</span>
+                                        }
+                                    </td>
+                                    <td><p>@item.ValidDate.ToString("dd/MM/yyyy")</p></td>
+                                    <td>
+                                        <div class="action">
+                                            <form asp-area="Admin"
+                                                  asp-controller="AdminDiscount"
+                                                  asp-action="DeleteDiscount"
+                                                  asp-route-id="@item.CouponId"
+                                                  method="post"
+                                                  onsubmit="return confirm('Bu kuponu silmek istediğinize emin misiniz?');">
+                                                <button class="text-danger" style="border:none;background:none;">
+                                                    <i class="lni lni-trash-can"></i> Sil
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action">
+                                            <a asp-area="Admin"
+                                               asp-controller="AdminDiscount"
+                                               asp-action="UpdateDiscount"
+                                               asp-route-id="@item.CouponId"
+                                               class="text-primary">
+                                                <i class="lni lni-pencil"></i> Güncelle
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center">Kupon bulunamadı.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

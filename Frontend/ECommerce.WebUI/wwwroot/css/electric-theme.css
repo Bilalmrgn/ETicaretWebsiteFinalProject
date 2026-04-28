@@ -1,0 +1,193 @@
+/* electric-theme.css - Centralized CSS for Electrical E-commerce Theme */
+:root {
+  --blue: #3B82F6;
+  --indigo: #6366F1;
+  --purple: #8B5CF6;
+  --pink: #EC4899;
+  --red: #EF4444;
+  --orange: #F97316;
+  --yellow: #FACC15;
+  --green: #22C55E;
+  --teal: #14B8A6;
+  --cyan: #06B6D4;
+  --white: #FFFFFF;
+
+  --gray: #64748B;
+  --gray-dark: #1E293B;
+
+  --electric-primary: #FACC15;
+  --electric-secondary: #0F172A;
+
+  --success: #22C55E;
+  --info: #0EA5E9;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+
+  --electric-light: #F8FAFC;
+  --electric-dark: #020617;
+  
+  --electric-text: #1E293B;
+  --electric-text-muted: #64748B;
+}
+
+body {
+    background-color: var(--electric-light);
+    color: var(--electric-text);
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+}
+
+/* Navbar & Topbar Overrides */
+.bg-dark {
+    background-color: var(--electric-dark) !important;
+}
+.bg-primary {
+    background-color: var(--electric-primary) !important;
+}
+.text-primary {
+    color: var(--electric-primary) !important;
+}
+.text-dark {
+    color: var(--electric-dark) !important;
+}
+.text-white {
+    color: #ffffff !important;
+}
+
+.btn-primary {
+    background-color: var(--electric-primary);
+    border: none;
+    color: var(--electric-dark) !important;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(250, 204, 21, 0.2);
+}
+.btn-primary:hover {
+    background-color: #EAB308; /* Slightly darker yellow */
+    color: var(--electric-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(250, 204, 21, 0.3);
+}
+
+.btn-dark {
+    background-color: var(--electric-dark);
+    border: none;
+    color: var(--electric-primary) !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+.btn-dark:hover {
+    background-color: #000000;
+    color: var(--electric-primary) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar Customizations */
+.navbar-dark .navbar-nav .nav-link {
+    color: #94A3B8;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+    color: var(--electric-primary);
+}
+
+/* KATEGORİLER BUTONU - Ayrıcalıklı Renk (Sarı arkaplan, Koyu metin) */
+.category-dropdown-btn {
+    background-color: var(--electric-primary) !important;
+    color: var(--electric-dark) !important;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(250, 204, 21, 0.3);
+    transition: all 0.3s ease;
+}
+.category-dropdown-btn:hover {
+    background-color: #EAB308 !important;
+    color: var(--electric-dark) !important;
+}
+.category-dropdown-btn i {
+    color: var(--electric-dark) !important;
+}
+
+.category-dropdown-menu {
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    border: 1px solid #E2E8F0;
+    background-color: #ffffff;
+    overflow: hidden;
+}
+.category-dropdown-menu .nav-item {
+    padding: 12px 25px;
+    border-bottom: 1px solid #F1F5F9;
+    transition: all 0.3s ease;
+    color: var(--electric-text);
+    font-weight: 600;
+}
+.category-dropdown-menu .nav-item:last-child {
+    border-bottom: none;
+}
+.category-dropdown-menu .nav-item:hover {
+    background-color: #F8FAFC;
+    color: var(--electric-dark) !important;
+    padding-left: 32px;
+    border-left: 4px solid var(--electric-primary);
+}
+
+/* Badges */
+.badge-custom {
+    background-color: var(--danger);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 6px;
+    position: relative;
+    top: -12px;
+    left: -8px;
+    box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
+}
+
+/* Card Overrides */
+.product-item {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    overflow: hidden;
+}
+
+.product-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--electric-primary);
+}
+
+.product-img {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.product-action .btn {
+    background-color: var(--electric-dark);
+    color: var(--electric-primary);
+}
+.product-action .btn:hover {
+    background-color: var(--electric-primary);
+    color: var(--electric-dark);
+}
+
+.product-item h6 {
+    color: var(--electric-text);
+    font-weight: 600;
+}
+
+.product-item h5 {
+    color: var(--electric-dark);
+    font-weight: 800;
+}

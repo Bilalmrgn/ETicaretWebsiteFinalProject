@@ -2,8 +2,8 @@
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
         <div class="col-lg-4">
             <a href="/" class="text-decoration-none">
-                <span class="h1 text-uppercase text-primary bg-dark px-2">Multi</span>
-                <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Shop</span>
+                <span class="h1 text-uppercase text-primary bg-dark px-2"><i class="fa fa-bolt"></i> Volt</span>
+                <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Tech</span>
             </a>
         </div>
         <div class="col-lg-4 col-6 text-left">
@@ -23,9 +23,9 @@
             <div class="d-inline-flex align-items-center">
                 @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                 {
-                    <li class="nav-item">
-                        <a class="nav-link text-danger fw-bold" asp-area="Admin" asp-controller="AdminHome" asp-action="Index">
-                            <i class="fas fa-user-shield"></i> Yönetim Paneline Git
+                    <li class="nav-item list-unstyled mr-3">
+                        <a class="nav-link text-danger font-weight-bold" asp-area="Admin" asp-controller="AdminHome" asp-action="Index">
+                            <i class="fas fa-user-shield"></i> Yönetim Paneli
                         </a>
                     </li>
                 }
@@ -34,17 +34,16 @@
                     <style>
                         .user-dropdown-custom {
                             border: none;
-                            border-radius: 15px;
-                            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                            border-radius: 12px;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
                             padding: 10px;
                             min-width: 200px;
                             background: rgba(255, 255, 255, 0.98);
-                            backdrop-filter: blur(10px);
                             transform: translateY(10px);
                             transition: all 0.3s ease;
                         }
                         .dropdown-item-custom {
-                            border-radius: 10px;
+                            border-radius: 8px;
                             padding: 10px 15px;
                             margin-bottom: 2px;
                             transition: all 0.2s ease;
@@ -55,12 +54,12 @@
                         }
                         .dropdown-item-custom:hover {
                             background: #f8f9fa;
-                            color: #FFD333;
+                            color: var(--electric-primary);
                             transform: translateX(5px);
                         }
                         .dropdown-item-custom i {
                             width: 25px;
-                            color: #FFD333;
+                            color: var(--electric-primary);
                         }
                     </style>
                     <div class="btn-group ml-3">
@@ -93,11 +92,11 @@
                 }
                 else
                 {
-                    <a href="~/Login/Index" class="btn btn-sm btn-light border mr-2">
+                    <a href="~/Login/Index" class="btn btn-sm btn-light border mr-2 font-weight-bold">
                         <i class="fa fa-sign-in-alt text-primary mr-1"></i> Giriş Yap
                     </a>
-                    <a href="/Register/Index" class="btn btn-sm btn-primary">
-                        <i class="fa fa-user-plus mr-1"></i> Kayıt Ol
+                    <a href="/Register/Index" class="btn btn-sm btn-primary font-weight-bold">
+                        <i class="fa fa-user-plus text-dark mr-1"></i> Kayıt Ol
                     </a>
                 }
             </div>

@@ -7,5 +7,6 @@ namespace Basket.Service.Interfaces
         Task<BasketTotalDto> GetBasketAsync(string userId);
         Task SaveAsync(BasketTotalDto basket);
         Task DeleteAsync(string userId);
+        Task<bool> ApplyDiscountAsync(string userId, string discountCode);
     }
 }

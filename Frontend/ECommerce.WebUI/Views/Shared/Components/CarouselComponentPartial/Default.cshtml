@@ -1,4 +1,4 @@
-﻿@model List<Frontend.DtosLayer.SliderFeatureDto.ResultFeatureSliderDto>
+@model List<Frontend.DtosLayer.SliderFeatureDto.ResultFeatureSliderDto>
 
 <div class="container-fluid mb-3">
     <div class="row px-xl-5">
@@ -19,7 +19,7 @@
                                 <div class="p-3" style="max-width: 700px;">
                                     <h1 class="display-4 text-white mb-3 animate__animated animate__fadeInDown">@item.value.Title</h1>
                                     <p class="mx-md-5 px-5 animate__animated animate__bounceIn">@item.value.Description</p>
-                                    <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" href="#">Hemen Al</a>
+                                    <a class="btn btn-outline-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" asp-controller="Product" asp-action="Index">Hemen Al</a>
                                 </div>
                             </div>
                         </div>

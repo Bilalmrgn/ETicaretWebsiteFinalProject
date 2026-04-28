@@ -49,5 +49,21 @@ namespace Basket.Controllers
 
             return Ok("Sepet Basariyla Silindi.");
         }
+
+        [HttpPost("apply-discount")]
+        public async Task<IActionResult> ApplyDiscount(string discountCode)
+        {
+            var userId = User.FindFirst("sub")?.Value;
+
+            if(userId == null)
+                return BadRequest("Kullanıcı bulunamadı");
+
+            var result = await _basketService.ApplyDiscountAsync(userId, discountCode);
+
+            if (!result)
+                return BadRequest("Kupon geçersiz");
+
+            return Ok("Kupon uygulandı");
+        }
     }
 }

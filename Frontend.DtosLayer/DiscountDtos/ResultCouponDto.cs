@@ -1,6 +1,12 @@
-﻿namespace Discount.API.Dtos
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Frontend.DtosLayer.DiscountDtos
 {
-    public class GetByIdCouponDto
+    public class ResultCouponDto
     {
         public int CouponId { get; set; }
         public string Code { get; set; }
