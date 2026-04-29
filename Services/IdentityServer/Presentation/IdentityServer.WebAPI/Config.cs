@@ -132,7 +132,7 @@ namespace IdentityServer.WebAPI
                     "Identity.full",
                     "catalog.full",
                     "catalog.read",
-                    "order.getAllOrder",
+                    "order.full",
                     "comment.full",
                     "basket.full",
                     "contact.create",
