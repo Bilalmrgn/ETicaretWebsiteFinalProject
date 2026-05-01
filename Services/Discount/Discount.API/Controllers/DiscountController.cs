@@ -11,6 +11,7 @@ namespace Discount.API.Controllers
     [ApiController]
     public class DiscountController : ControllerBase
     {
+
         private readonly IDiscountService _discountService;
 
         public DiscountController(IDiscountService discountService)

@@ -12,8 +12,8 @@ using Order.WebAPI.Context;
 namespace Order.WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260429144511_mig1")]
-    partial class mig1
+    [Migration("20260501164026_mig_1")]
+    partial class mig_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,35 +23,6 @@ namespace Order.WebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("Order.WebAPI.Models.Address", b =>
-                {
-                    b.Property<int>("AddressId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AddressId"), 1L, 1);
-
-                    b.Property<string>("AddressDetail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("District")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AddressId");
-
-                    b.ToTable("Addresses");
-                });
 
             modelBuilder.Entity("Order.WebAPI.Models.OrderDetail", b =>
                 {
@@ -78,9 +49,6 @@ namespace Order.WebAPI.Migrations
                     b.Property<decimal>("ProductPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("OrderDetailId");
 
                     b.HasIndex("OrderingId");
@@ -96,11 +64,32 @@ namespace Order.WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderingId"), 1L, 1);
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                    b.Property<string>("AddressDetail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -114,8 +103,6 @@ namespace Order.WebAPI.Migrations
 
                     b.HasKey("OrderingId");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("Orderings");
                 });
 
@@ -128,17 +115,6 @@ namespace Order.WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Ordering");
-                });
-
-            modelBuilder.Entity("Order.WebAPI.Models.Ordering", b =>
-                {
-                    b.HasOne("Order.WebAPI.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("Order.WebAPI.Models.Ordering", b =>

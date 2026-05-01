@@ -5,26 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Order.WebAPI.Migrations
 {
-    public partial class mig1 : Migration
+    public partial class mig_6 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    AddressId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AddressDetail = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Orderings",
                 columns: table => new
@@ -35,17 +19,16 @@ namespace Order.WebAPI.Migrations
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false)
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressDetail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orderings", x => x.OrderingId);
-                    table.ForeignKey(
-                        name: "FK_Orderings_Addresses_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Addresses",
-                        principalColumn: "AddressId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,7 +41,6 @@ namespace Order.WebAPI.Migrations
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ProductAmount = table.Column<int>(type: "int", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OrderingId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -76,11 +58,6 @@ namespace Order.WebAPI.Migrations
                 name: "IX_OrderDetails_OrderingId",
                 table: "OrderDetails",
                 column: "OrderingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orderings_AddressId",
-                table: "Orderings",
-                column: "AddressId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -90,9 +67,6 @@ namespace Order.WebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Orderings");
-
-            migrationBuilder.DropTable(
-                name: "Addresses");
         }
     }
 }

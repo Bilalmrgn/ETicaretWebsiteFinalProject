@@ -9,9 +9,6 @@
         // Kaç adet alındı
         public int ProductAmount { get; set; }
 
-        // Hesaplanan toplam fiyat (DB'ye yazmak zorunda değilsin)
-        public decimal TotalPrice { get; set; }
-
         // Hangi siparişe ait
         public int OrderingId { get; set; }
 

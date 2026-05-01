@@ -1,7 +1,11 @@
-﻿using Order.WebAPI.Dtos.OrderDetailDto;
-using Order.WebAPI.Models;
+﻿using Frontend.DtosLayer.OrderDetailDto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Order.WebAPI.Dtos.OrderingDtos
+namespace Frontend.DtosLayer.OrderDtos
 {
     public class ResultOrderDto
     {

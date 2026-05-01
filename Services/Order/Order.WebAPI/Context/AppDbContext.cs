@@ -10,7 +10,6 @@ namespace Order.WebAPI.Context
         {
         }
 
-        public DbSet<Address> Addresses { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Ordering> Orderings { get; set; }
     }

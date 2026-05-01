@@ -4,11 +4,18 @@
     {
         public int OrderingId { get; set; }
         public string UserId { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }//basketten gelecek
         public DateTime CreatedDate { get; set; }
         public OrderStatus Status { get; set; }
-        public int AddressId { get; set; }
-        public Address Address { get; set; }
+
+        //adres ile ilgili bilgiler
+        public string City { get; set; }
+        public string District { get; set; }
+        public string AddressDetail { get; set; }
+
+        public string PhoneNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
 
         public List<OrderDetail> OrderDetails { get; set; } = new();
 

@@ -1,10 +1,15 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Order.WebAPI.Context;
+using Order.WebAPI.Services.Concrete;
+using Order.WebAPI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IOrderingService, OrderingService>();
+builder.Services.AddHttpClient();
 
 //veritabaný baðlantýsý
 var connectionString = builder.Configuration.GetConnectionString("DbConnection");
@@ -37,6 +42,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
