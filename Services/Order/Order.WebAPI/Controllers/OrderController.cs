@@ -40,5 +40,12 @@ namespace Order.WebAPI.Controllers
             var orders = await _orderingService.GetAllOrderAsync();
             return Ok(orders);
         }
+
+        [HttpGet("{orderId}")]
+        public async Task<IActionResult> GetOrderDetailByOrderId(int orderId)
+        {
+            var orderDetails = await _orderingService.GetAllOrderDetailByOrderId(orderId);
+            return Ok(orderDetails);
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Order.WebAPI.Dtos.OrderDetailDto;
 using Order.WebAPI.Dtos.OrderingDtos;
 
 namespace Order.WebAPI.Services.Interfaces
@@ -6,5 +7,6 @@ namespace Order.WebAPI.Services.Interfaces
     {
         Task CreateOrderAsync(CreateOrderDto createOrderDto);
         Task<List<ResultOrderDto>> GetAllOrderAsync();
+        Task<ResultOrderDto> GetAllOrderDetailByOrderId(int orderId);
     }
 }

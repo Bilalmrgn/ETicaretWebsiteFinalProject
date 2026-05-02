@@ -1,0 +1,95 @@
+@model List<Frontend.DtosLayer.OrderDtos.ResultOrderDto>
+
+@{
+    ViewData["Title"] = "Sipariş Listesi";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<style>
+    @@media (min-width: 992px) {
+        .col-lg-6 {
+            flex: 0 0 auto !important;
+            width: 100% !important;
+        }
+    }
+
+    .col-lg-12-custom {
+        width: 100% !important;
+        padding: 0 15px;
+    }
+
+    .action {
+        display: flex;
+        gap: 5px;
+        min-width: 80px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+
+<h1>Siparişler</h1>
+
+<div class="col-lg-6">
+    <div class="card-style mb-30">
+        <div class="d-flex justify-content-between align-items-center mb-10">
+            <h6 class="mb-10">Sipariş Listesi</h6>
+        </div>
+
+        <p class="text-sm mb-20">
+            For Striped Table-light padding and only horizontal dividers.
+        </p>
+
+        <div class="table-wrapper table-responsive">
+            <table class="table striped-table">
+                <thead>
+                    <tr>
+                        <th><h6>Sipariş ID</h6></th>
+                        <th><h6>Müşteri</h6></th>
+                        <th><h6>Telefon</h6></th>
+                        <th><h6>Şehir / İlçe</h6></th>
+                        <th><h6>Tutar</h6></th>
+                        <th><h6>Tarih</h6></th>
+                        <th><h6>Durum</h6></th>
+                        <th><h6>Detay</h6></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><p>@item.OrderingId</p></td>
+                                <td><p>@item.FirstName @item.LastName</p></td>
+                                <td><p>@item.PhoneNumber</p></td>
+                                <td><p>@item.City / @item.District</p></td>
+                                <td><p>@item.TotalPrice.ToString("N2") ₺</p></td>
+                                <td><p>@item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</p></td>
+                                <td><p>@item.Status</p></td>
+                                <td>
+                                    <div class="action">
+                                        <a asp-area="Admin"
+                                           asp-controller="AdminOrder"
+                                           asp-action="OrderDetail"
+                                           asp-route-id="@item.OrderingId"
+                                           class="btn btn-success">
+                                            Order Detail
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8">Sipariş bulunamadı.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

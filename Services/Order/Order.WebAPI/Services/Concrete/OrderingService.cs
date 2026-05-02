@@ -16,6 +16,7 @@ namespace Order.WebAPI.Services.Concrete
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AppDbContext _context;
+
         public OrderingService(AppDbContext context, IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
@@ -113,5 +114,38 @@ namespace Order.WebAPI.Services.Concrete
                 }).ToListAsync();
             return orders;
         }
+
+        public async Task<ResultOrderDto> GetAllOrderDetailByOrderId(int orderId)
+        {
+            var order = await _context.Orderings
+                .Include(x => x.OrderDetails)
+                .OrderByDescending(x => x.CreatedDate)
+                .Select(x => new ResultOrderDto
+                {
+                    OrderingId = x.OrderingId,
+                    TotalPrice = x.TotalPrice,
+                    CreatedDate = x.CreatedDate,
+                    Status = x.Status,
+
+                    City = x.City,
+                    District = x.District,
+                    AddressDetail = x.AddressDetail,
+
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    PhoneNumber = x.PhoneNumber,
+
+                    OrderDetails = x.OrderDetails.Select(d => new ResultOrderDetailDto
+                    {
+                        ProductId = d.ProductId,
+                        ProductName = d.ProductName,
+                        ProductPrice = d.ProductPrice,
+                        ProductAmount = d.ProductAmount
+                    }).ToList()
+                }).FirstOrDefaultAsync();
+            return order;
+        }
+
+
     }
 }

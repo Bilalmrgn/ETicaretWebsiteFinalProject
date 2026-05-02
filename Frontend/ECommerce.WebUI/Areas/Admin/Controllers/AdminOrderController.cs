@@ -1,4 +1,5 @@
 ﻿using Frontend.DtosLayer.OrderDtos;
+using Frontend.DtosLayer.OrderDetailDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -32,6 +33,24 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
             }
 
             return View(new List<ResultOrderDto>());
+        }
+
+        public async Task<IActionResult> OrderDetail(int id)
+        {
+            var client = _httpClientFactory.CreateClient("OrderClient");
+
+            var response = await client.GetAsync($"api/Order/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonData = await response.Content.ReadAsStringAsync();
+                var order = JsonConvert.DeserializeObject<ResultOrderDto>(jsonData);
+
+                return View(order.OrderDetails);
+            }
+
+            ViewBag.OrderId = id;
+            return View(new List<ResultOrderDetailDto>());
         }
     }
 }
