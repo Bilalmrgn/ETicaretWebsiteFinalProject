@@ -63,6 +63,12 @@ builder.Services.AddHttpClient("OrderClient", client =>
 }).AddHttpMessageHandler<TokenHandler>();
 
 
+builder.Services.AddHttpClient("PaymentClient", client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7265");
+}).AddHttpMessageHandler<TokenHandler>();
+
+
 
 
 
@@ -114,6 +120,7 @@ builder.Services.AddAuthentication(option =>
         options.Scope.Add("cargo.full");
         options.Scope.Add("basket.full");
         options.Scope.Add("comment.full");
+        options.Scope.Add("payment.full");
         options.Scope.Add("comment.read");
         options.Scope.Add("discount.full");
         options.Scope.Add("contact.full");

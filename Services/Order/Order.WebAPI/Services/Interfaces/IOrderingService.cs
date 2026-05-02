@@ -8,5 +8,8 @@ namespace Order.WebAPI.Services.Interfaces
         Task CreateOrderAsync(CreateOrderDto createOrderDto);
         Task<List<ResultOrderDto>> GetAllOrderAsync();
         Task<ResultOrderDto> GetAllOrderDetailByOrderId(int orderId);
+        Task<List<ResultOrderDto>> GetAllOrderByUserIdAsync();
+
+
     }
 }

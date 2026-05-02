@@ -1,10 +1,11 @@
-@model Frontend.DtosLayer.AccountSettingsDtos.GetUserDto
+@model Frontend.DtosLayer.AccountSettingsDtos.AccountSettingsViewModelDto
+@using System.Linq
 @{
     ViewData["Title"] = "Hesap Ayarları";
     Layout = "~/Views/UILayout/_Layout.cshtml";
 }
 
-@if (Model == null)
+@if (Model?.User == null)
 {
     <div class="container py-5 text-center">
         <div class="alert alert-warning border-0 shadow-sm rounded-20 p-5">
@@ -172,6 +173,14 @@ else
         margin-top: 30px;
     }
 
+    .order-card {
+        border: 1px solid #e9ecef;
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 16px;
+        background: #fff;
+    }
+
     /* Animations */
     .fade-in-up {
         animation: fadeInUp 0.6s ease-out;
@@ -210,7 +219,7 @@ else
                                     <div class="avatar-circle">
                                         <i class="fas fa-user-tie"></i>
                                     </div>
-                                    <h4 class="mb-1">@Model.Name @Model.Surname</h4>
+                                    <h4 class="mb-1">@Model.User.Name @Model.User.Surname</h4>
                                     <span class="badge badge-primary px-3 py-2 rounded-pill">Standart Hesap</span>
                                 </div>
 
@@ -227,6 +236,12 @@ else
                                     <a class="nav-link" id="pills-username-tab" data-toggle="pill" href="#pills-username" role="tab">
                                         <i class="fas fa-id-badge"></i> Kullanıcı Adı
                                     </a>
+                                    <a class="nav-link" id="pills-orders-tab" data-toggle="pill" href="#pills-orders" role="tab">
+                                        <i class="fas fa-shopping-bag"></i> Siparişlerim
+                                    </a>
+                                    <a class="nav-link" asp-controller="Payment" asp-action="Index">
+                                        <i class="fas fa-credit-card"></i> Kart Bilgilerim
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -242,19 +257,19 @@ else
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label class="text-muted small font-weight-bold">Ad</label>
-                                                <div class="form-control-custom bg-light">@Model.Name</div>
+                                                <div class="form-control-custom bg-light">@Model.User.Name</div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="text-muted small font-weight-bold">Soyad</label>
-                                                <div class="form-control-custom bg-light">@Model.Surname</div>
+                                                <div class="form-control-custom bg-light">@Model.User.Surname</div>
                                             </div>
                                             <div class="col-12 mb-3">
                                                 <label class="text-muted small font-weight-bold">Kullanıcı Adı</label>
-                                                <div class="form-control-custom bg-light">@@@Model.UserName</div>
+                                                <div class="form-control-custom bg-light">@@@Model.User.UserName</div>
                                             </div>
                                             <div class="col-12 mb-3">
                                                 <label class="text-muted small font-weight-bold">E-posta Adresi</label>
-                                                <div class="form-control-custom bg-light">@Model.Email</div>
+                                                <div class="form-control-custom bg-light">@Model.User.Email</div>
                                             </div>
                                         </div>
                                         <div class="info-badge">
@@ -270,7 +285,7 @@ else
                                         <form asp-action="ChangeEmail" method="post">
                                             <div class="form-group">
                                                 <label class="text-muted small font-weight-bold">Mevcut E-posta</label>
-                                                <input type="text" class="form-control-custom w-100" value="@Model.Email" disabled>
+                                                <input type="text" class="form-control-custom w-100" value="@Model.User.Email" disabled>
                                             </div>
                                             <div class="form-group mt-4">
                                                 <label class="text-muted small font-weight-bold">Yeni E-posta Adresi</label>
@@ -321,6 +336,45 @@ else
                                                 Kullanıcı Adını Kaydet
                                             </button>
                                         </form>
+                                    </div>
+
+                                    <!-- Siparişler -->
+                                    <div class="tab-pane fade" id="pills-orders" role="tabpanel">
+                                        <h3 class="section-title">Siparişlerim</h3>
+                                        @if (Model.Orders != null && Model.Orders.Any())
+                                        {
+                                            @foreach (var order in Model.Orders.OrderByDescending(x => x.CreatedDate))
+                                            {
+                                                <div class="order-card">
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                        <strong>Sipariş #@order.OrderingId</strong>
+                                                        <span class="badge badge-secondary px-3 py-2">@order.Status</span>
+                                                    </div>
+                                                    <div class="text-muted small mb-1">
+                                                        Tarih: @order.CreatedDate.ToString("dd.MM.yyyy HH:mm")
+                                                    </div>
+                                                    <div class="text-muted small mb-1">
+                                                        Tutar: @order.TotalPrice.ToString("N2") TL
+                                                    </div>
+                                                    <div class="text-muted small">
+                                                        Teslimat: @order.AddressDetail, @order.District / @order.City
+                                                    </div>
+                                                    <div class="mt-3">
+                                                        <a asp-controller="AccountSettings"
+                                                           asp-action="MyOrders"
+                                                           class="btn btn-sm btn-outline-dark">
+                                                            Sipariş detayını görüntüle
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="alert alert-info border-0 shadow-sm rounded-15">
+                                                Henüz listelenecek bir siparişiniz bulunmuyor.
+                                            </div>
+                                        }
                                     </div>
 
                                 </div>

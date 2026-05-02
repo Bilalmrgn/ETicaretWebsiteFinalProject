@@ -57,7 +57,7 @@ namespace Order.WebAPI.Services.Concrete
             var order = new Ordering
             {
                 UserId = userId,
-                
+
                 TotalPrice = basket.TotalPrice,
                 FirstName = createOrderDto.FirstName,
                 LastName = createOrderDto.LastName,
@@ -115,6 +115,39 @@ namespace Order.WebAPI.Services.Concrete
             return orders;
         }
 
+        //kullanýcýya özel sipariþleri getirme
+        public async Task<List<ResultOrderDto>> GetAllOrderByUserIdAsync()
+        {
+            var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var orders = await _context.Orderings
+        .Where(x => x.UserId == userId)
+        .Include(x => x.OrderDetails)
+        .OrderByDescending(x => x.CreatedDate)
+        .Select(x => new ResultOrderDto
+        {
+            OrderingId = x.OrderingId,
+            TotalPrice = x.TotalPrice,
+            CreatedDate = x.CreatedDate,
+            Status = x.Status,
+            City = x.City,
+            District = x.District,
+            AddressDetail = x.AddressDetail,
+            FirstName = x.FirstName,
+            LastName = x.LastName,
+            PhoneNumber = x.PhoneNumber,
+            OrderDetails = x.OrderDetails.Select(d => new ResultOrderDetailDto
+            {
+                ProductId = d.ProductId,
+                ProductName = d.ProductName,
+                ProductPrice = d.ProductPrice,
+                ProductAmount = d.ProductAmount
+            }).ToList()
+        }).ToListAsync();
+
+            return orders;
+        }
+
         public async Task<ResultOrderDto> GetAllOrderDetailByOrderId(int orderId)
         {
             var order = await _context.Orderings
@@ -149,3 +182,5 @@ namespace Order.WebAPI.Services.Concrete
 
     }
 }
+
+

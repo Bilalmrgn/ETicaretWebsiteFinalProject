@@ -23,10 +23,21 @@ namespace IdentityServer.Persistence.Concrete
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var user = await _userManager.GetUserAsync(context.Subject);
+            if (user == null)
+                return;
 
+            // 🔥 Temel claimler
+            var claims = new List<Claim>
+            {
+                new Claim("sub", user.Id),                // UserId
+                new Claim("name", user.UserName),        // 🔥 SENİN ARADIĞIN
+                new Claim("email", user.Email ?? "")
+            };
+
+            // 🔥 Roller
             var roles = await _userManager.GetRolesAsync(user);
 
-            foreach(var role in roles)
+            foreach (var role in roles)
             {
                 context.IssuedClaims.Add(new Claim(ClaimTypes.Role, role));
             }

@@ -14,6 +14,11 @@ namespace IdentityServer.WebAPI
                 Scopes = {"catalog.full","catalog.read"},
                 UserClaims = { "role" }//yani bu catolog servisimde tam yetki alabilir, sadece okuma yetkisi alabilir
             },
+            new ApiResource("payment_microservice")//benim resourceCatolog isminde bir mikroservisim var ve bu mikroservisimi korumaya alacağım
+            {
+                Scopes = {"payment.full"},
+                UserClaims = { "role", "name", "email" }
+            },
 
             //favorite işlemleri için
             new ApiResource("favorite_microservice")
@@ -80,6 +85,7 @@ namespace IdentityServer.WebAPI
         public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
         {
             new ApiScope("catalog.full","katolog işlemlerine tam yetki"),
+            new ApiScope("payment.full","katolog işlemlerine tam yetki"),
             new ApiScope("Identity.full","identity işlemlerine tam yetki"),
             new ApiScope("favorite.full","favori işlemlerine tam yetki"),
             new ApiScope("catalog.read","Katolog işlemlerinde okuma yetkisi"),
@@ -135,6 +141,7 @@ namespace IdentityServer.WebAPI
                     "order.full",
                     "comment.full",
                     "basket.full",
+                    "payment.full",
                     "contact.create",
                     "roles",
                     IdentityServerConstants.StandardScopes.OfflineAccess,
@@ -169,6 +176,7 @@ namespace IdentityServer.WebAPI
     "catalog.read",
     "order.full",
     "order.getAllOrder",
+    "payment.full",
     "discount.full",
     "cargo.full",
     "basket.full",

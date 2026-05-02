@@ -1,0 +1,76 @@
+@model List<Frontend.DtosLayer.PaymentDtos.CreditCardDtos.ResultCreditCardDto>
+@using System.Linq
+@{
+    ViewData["Title"] = "Kart Bilgileri";
+    Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card-style mb-30">
+            <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                <h6 class="mb-2">Kart Bilgileri</h6>
+                <div class="d-flex gap-2 flex-wrap">
+                    <form asp-area="Admin" asp-controller="AdminPayment" asp-action="GetByUserName" method="get" class="d-flex gap-2">
+                        <input type="text" name="userId" class="form-control" style="min-width: 220px;" placeholder="User ID'ye göre ara..." />
+                        <button type="submit" class="main-btn primary-btn btn-hover">Ara</button>
+                    </form>
+                    <a asp-area="Admin" asp-controller="AdminPayment" asp-action="Index" class="main-btn light-btn btn-hover">
+                        Tümünü Listele
+                    </a>
+                </div>
+            </div>
+
+            <p class="text-sm mb-20">Tüm kullanıcıların kayıtlı kartları ve kart detayları.</p>
+
+            <div class="table-wrapper table-responsive">
+                <table class="table striped-table">
+                    <thead>
+                        <tr>
+                            <th><h6>Kart ID</h6></th>
+                            <th><h6>Kullanıcı ID</h6></th>
+                            <th><h6>Kart Sahibi</h6></th>
+                            <th><h6>Kart Numarası</h6></th>
+                            <th><h6>Son Kullanma</h6></th>
+                            <th><h6>CVV</h6></th>
+                            <th><h6>Eklenme Tarihi</h6></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var card in Model.OrderByDescending(x => x.CreatedDate))
+                            {
+                                var maskedCardNumber = !string.IsNullOrWhiteSpace(card.CardNumber) && card.CardNumber.Length >= 4
+                                    ? $"**** **** **** {card.CardNumber.Substring(card.CardNumber.Length - 4)}"
+                                    : "**** **** **** ****";
+
+                                <tr>
+                                    <td><p>@card.CreditCardId</p></td>
+                                    <td><p>@card.UserId</p></td>
+                                    <td><p>@card.CardHolderName</p></td>
+                                    <td><p>@maskedCardNumber</p></td>
+                                    <td><p>@card.ExpireDate</p></td>
+                                    <td><p>@card.CVV</p></td>
+                                    <td><p>@card.CreatedDate.ToString("dd.MM.yyyy HH:mm")</p></td>
+                                </tr>
+                                }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7">
+                                    <div class="alert-box info-alert mb-0">
+                                        <div class="alert">
+                                            Kart bilgisi bulunamadı.
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

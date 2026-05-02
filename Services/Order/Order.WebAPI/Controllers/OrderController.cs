@@ -11,6 +11,7 @@ namespace Order.WebAPI.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+
         private readonly IOrderingService _orderingService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         public OrderController(IHttpContextAccessor httpContextAccessor,IOrderingService orderingService)
@@ -46,6 +47,13 @@ namespace Order.WebAPI.Controllers
         {
             var orderDetails = await _orderingService.GetAllOrderDetailByOrderId(orderId);
             return Ok(orderDetails);
+        }
+
+        [HttpGet("GetMyOrders")]
+        public async Task<IActionResult> GetMyOrders()
+        {
+            var values = await _orderingService.GetAllOrderByUserIdAsync();
+            return Ok(values);
         }
     }
 }

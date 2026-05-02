@@ -1,0 +1,99 @@
+@model List<Frontend.DtosLayer.PaymentDtos.CreditCardDtos.ResultCreditCardDto>
+@using System.Linq
+@{
+    ViewData["Title"] = "Kart Bilgilerim";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Kart Bilgilerim</h2>
+        <a asp-controller="AccountSettings" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left mr-1"></i> Hesap Ayarlarına Dön
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <div class="row">
+        <div class="col-lg-7 mb-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Kayıtlı Kartlar</h5>
+
+                    @if (Model == null || !Model.Any())
+                    {
+                        <div class="alert alert-info mb-0">
+                            Kayıtlı kart bulunmuyor. Sağdaki formdan yeni kart ekleyin.
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var card in Model.OrderByDescending(x => x.CreatedDate))
+                        {
+                            var maskedCardNumber = !string.IsNullOrWhiteSpace(card.CardNumber) && card.CardNumber.Length >= 4
+                                ? $"**** **** **** {card.CardNumber.Substring(card.CardNumber.Length - 4)}"
+                                : "**** **** **** ****";
+
+                            <div class="border rounded p-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>@card.CardHolderName</strong>
+                                    <span class="badge badge-dark">Kayıtlı Kart</span>
+                                </div>
+                                <div class="text-muted mt-2">@maskedCardNumber</div>
+                                <div class="text-muted small mt-1">Son Kullanma: @card.ExpireDate</div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Yeni Kart Ekle</h5>
+                    <form asp-controller="Payment" asp-action="CreateCreditCard" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group">
+                            <label>Kart Sahibi</label>
+                            <input type="text" name="CardHolderName" class="form-control" placeholder="Ad Soyad" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Kart Numarası</label>
+                            <input type="text" name="CardNumber" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19" required />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-4">
+                                <label>CVV</label>
+                                <input type="text" name="CVV" class="form-control" placeholder="123" maxlength="4" required />
+                            </div>
+                            <div class="form-group col-4">
+                                <label>Ay</label>
+                                <input type="text" name="ExpireMonth" class="form-control" placeholder="MM" maxlength="2" required />
+                            </div>
+                            <div class="form-group col-4">
+                                <label>Yıl</label>
+                                <input type="text" name="ExpireYear" class="form-control" placeholder="YYYY" maxlength="4" required />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block">
+                            Kartı Kaydet
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

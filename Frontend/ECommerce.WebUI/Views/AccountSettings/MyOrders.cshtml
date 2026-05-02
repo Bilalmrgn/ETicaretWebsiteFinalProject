@@ -1,0 +1,116 @@
+@model List<Frontend.DtosLayer.OrderDtos.ResultOrderDto>
+@using System.Linq
+@{
+    ViewData["Title"] = "Siparişlerim";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Siparişlerim</h2>
+        <a asp-controller="AccountSettings" asp-action="Index" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left mr-1"></i> Hesap Ayarlarına Dön
+        </a>
+    </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info shadow-sm">
+            Henüz siparişiniz bulunmuyor.
+        </div>
+    }
+    else
+    {
+        @foreach (var order in Model.OrderByDescending(x => x.CreatedDate))
+        {
+            var statusClass = order.Status switch
+            {
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Pending => "warning",
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Processing => "info",
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Completed => "success",
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Failed => "danger",
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Cancelled => "secondary",
+                _ => "dark"
+            };
+
+            var statusText = order.Status switch
+            {
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Pending => "Beklemede",
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Processing => "Hazırlanıyor",
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Completed => "Tamamlandı",
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Failed => "Başarısız",
+                Frontend.DtosLayer.OrderDtos.OrderStatus.Cancelled => "İptal Edildi",
+                _ => order.Status.ToString()
+            };
+
+            var totalItemCount = order.OrderDetails?.Sum(x => x.ProductAmount) ?? 0;
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="mb-1">Sipariş #@order.OrderingId</h5>
+                            <small class="text-muted">@order.CreatedDate.ToString("dd.MM.yyyy HH:mm")</small>
+                        </div>
+                        <span class="badge badge-@statusClass px-3 py-2">@statusText</span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4 mb-2 mb-md-0">
+                            <div class="text-muted small">Toplam Tutar</div>
+                            <strong>@order.TotalPrice.ToString("N2") TL</strong>
+                        </div>
+                        <div class="col-md-4 mb-2 mb-md-0">
+                            <div class="text-muted small">Toplam Ürün Adedi</div>
+                            <strong>@totalItemCount</strong>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-muted small">Teslimat Adresi</div>
+                            <strong>@order.City / @order.District</strong>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 text-muted small">
+                        @order.AddressDetail
+                    </div>
+
+                    @if (order.OrderDetails == null || !order.OrderDetails.Any())
+                    {
+                        <div class="alert alert-light border mb-0">
+                            Bu sipariş için ürün detayı bulunamadı.
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Ürün</th>
+                                        <th>Fiyat</th>
+                                        <th>Adet</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var detail in order.OrderDetails)
+                                    {
+                                        <tr>
+                                            <td>@detail.ProductName</td>
+                                            <td>@detail.ProductPrice.ToString("N2") TL</td>
+                                            <td>@detail.ProductAmount</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>

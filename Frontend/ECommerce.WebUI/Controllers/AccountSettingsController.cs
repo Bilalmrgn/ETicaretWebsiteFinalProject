@@ -1,4 +1,5 @@
 using Frontend.DtosLayer.AccountSettingsDtos;
+using Frontend.DtosLayer.OrderDtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using System.Text.Json;
@@ -21,10 +22,10 @@ namespace ECommerce.WebUI.Controllers
         {
             try
             {
-                var client = _httpClientFactory.CreateClient("IdentityClient");
+                var identityClient = _httpClientFactory.CreateClient("IdentityClient");
 
                 // Burası patlıyor olabilir (TokenHandler aşaması)
-                var response = await client.GetAsync("auth/me");
+                var response = await identityClient.GetAsync("auth/me");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -46,13 +47,36 @@ namespace ECommerce.WebUI.Controllers
                     PropertyNameCaseInsensitive = true
                 });
 
-                return View(user);
+                var orders = await GetMyOrdersAsync();
+
+                var viewModel = new AccountSettingsViewModelDto
+                {
+                    User = user,
+                    Orders = orders
+                };
+
+                return View(viewModel);
             }
             catch (Exception ex)
             {
                 // Eğer hata Frontend içindeyse buraya düşecek
                 TempData["Error"] = $"Frontend Hatası: {ex.Message} -> {ex.InnerException?.Message}";
                 return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyOrders()
+        {
+            try
+            {
+                var orders = await GetMyOrdersAsync();
+                return View(orders);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Siparişler yüklenirken hata oluştu: {ex.Message}";
+                return RedirectToAction("Index");
             }
         }
 
@@ -140,5 +164,29 @@ namespace ECommerce.WebUI.Controllers
 
             return RedirectToAction("Index");
         }
+
+        private async Task<List<ResultOrderDto>> GetMyOrdersAsync()
+        {
+            var orderClient = _httpClientFactory.CreateClient("OrderClient");
+            var orderResponse = await orderClient.GetAsync("api/Order/GetMyOrders");
+
+            if (!orderResponse.IsSuccessStatusCode)
+            {
+                return new List<ResultOrderDto>();
+            }
+
+            var orderJson = await orderResponse.Content.ReadAsStringAsync();
+
+            if (string.IsNullOrWhiteSpace(orderJson) || orderJson.Trim().StartsWith("<"))
+            {
+                return new List<ResultOrderDto>();
+            }
+
+            return JsonSerializer.Deserialize<List<ResultOrderDto>>(orderJson, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            }) ?? new List<ResultOrderDto>();
+        }
+
     }
 }
