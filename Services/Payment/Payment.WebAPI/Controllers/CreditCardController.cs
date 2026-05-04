@@ -41,9 +41,10 @@ namespace Payment.WebAPI.Controllers
         }
 
         //Kart güncelleme
-        [HttpPut]
-        public async Task<IActionResult> UpdateCreditCard(UpdateCreditCardDto dto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCreditCard(int id,UpdateCreditCardDto dto)
         {
+            dto.CreditCardId = id;
             await _creditCardService.UpdateCreditCardAsync(dto);
             return Ok("Kart güncellendi");
         }

@@ -1,0 +1,215 @@
+@model Frontend.DtosLayer.PaymentDtos.CreditCardDtos.UpdateCreditCardDto
+
+@{
+    ViewData["Title"] = "Kartı Güncelle";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<style>
+    .premium-card-container {
+        perspective: 1000px;
+        margin-bottom: 30px;
+    }
+
+    .credit-card-preview {
+        width: 100%;
+        max-width: 400px;
+        height: 230px;
+        background: linear-gradient(135deg, #1a1a1a 0%, #434343 100%);
+        border-radius: 20px;
+        padding: 30px;
+        color: white;
+        position: relative;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        overflow: hidden;
+        transition: transform 0.6s;
+        margin: 0 auto;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .credit-card-preview::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .card-chip {
+        width: 50px;
+        height: 40px;
+        background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+        border-radius: 8px;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .card-number-display {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.5rem;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .card-holder-display {
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        opacity: 0.8;
+    }
+
+    .card-expiry-display {
+        float: right;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .glass-form {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        border: 1px solid rgba(0,0,0,0.05);
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 12px 15px;
+        border: 1px solid #eee;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.1);
+        border-color: #3498db;
+    }
+
+    .btn-update {
+        background: linear-gradient(135deg, #2980b9 0%, #3498db 100%);
+        border: none;
+        border-radius: 10px;
+        padding: 12px;
+        font-weight: 600;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-update:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+    }
+</style>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <div>
+                    <h2 class="font-weight-bold mb-1">Kartı Güncelle</h2>
+                    <p class="text-muted">Ödeme yönteminizi güvenle güncelleyin.</p>
+                </div>
+                <a asp-action="Index" class="btn btn-outline-secondary btn-sm rounded-pill px-4">
+                    <i class="fas fa-arrow-left mr-2"></i> Listeye Dön
+                </a>
+            </div>
+
+            <div class="row">
+                <div class="col-md-5 premium-card-container">
+                    <div class="credit-card-preview" id="cardPreview">
+                        <div class="card-chip"></div>
+                        <div class="card-number-display" id="prevNumber">@(!string.IsNullOrEmpty(Model?.CardNumber) ? Model.CardNumber : "**** **** **** ****")</div>
+                        <div class="mt-4">
+                            <div class="card-expiry-display" id="prevExpiry">@(!string.IsNullOrEmpty(Model?.ExpireMonth) ? Model.ExpireMonth : "MM")/@(!string.IsNullOrEmpty(Model?.ExpireYear) ? Model.ExpireYear : "YY")</div>
+                            <div class="card-holder-display" id="prevHolder">@(!string.IsNullOrEmpty(Model?.CardHolderName) ? Model.CardHolderName : "AD SOYAD")</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="glass-form">
+                        <form asp-action="UpdateCreditCard" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" asp-for="CreditCardId" />
+                            <input type="hidden" asp-for="UserId" />
+                            <input type="hidden" asp-for="CreatedDate" />
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">Kart Sahibi</label>
+                                <input type="text" asp-for="CardHolderName" class="form-control" placeholder="Ad Soyad" id="inputHolder" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">Kart Numarası</label>
+                                <input type="text" asp-for="CardNumber" class="form-control" placeholder="0000 0000 0000 0000" maxlength="19" id="inputNumber" required />
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label class="font-weight-bold">Ay</label>
+                                    <input type="text" asp-for="ExpireMonth" class="form-control" placeholder="MM" maxlength="2" id="inputMonth" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="font-weight-bold">Yıl</label>
+                                    <input type="text" asp-for="ExpireYear" class="form-control" placeholder="YYYY" maxlength="4" id="inputYear" required />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="font-weight-bold">CVV</label>
+                                    <input type="text" asp-for="CVV" class="form-control" placeholder="123" maxlength="4" required />
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block btn-update mt-4">
+                                Değişiklikleri Kaydet
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputNumber = document.getElementById('inputNumber');
+        const inputHolder = document.getElementById('inputHolder');
+        const inputMonth = document.getElementById('inputMonth');
+        const inputYear = document.getElementById('inputYear');
+
+        const prevNumber = document.getElementById('prevNumber');
+        const prevHolder = document.getElementById('prevHolder');
+        const prevExpiry = document.getElementById('prevExpiry');
+
+        if (inputNumber) {
+            inputNumber.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = '';
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) formattedValue += ' ';
+                    formattedValue += value[i];
+                }
+                e.target.value = formattedValue;
+                prevNumber.textContent = formattedValue || '**** **** **** ****';
+            });
+        }
+
+        if (inputHolder) {
+            inputHolder.addEventListener('input', function(e) {
+                prevHolder.textContent = e.target.value.toUpperCase() || 'AD SOYAD';
+            });
+        }
+
+        const updateExpiry = () => {
+            const month = inputMonth.value || 'MM';
+            const year = inputYear.value ? inputYear.value.slice(-2) : 'YY';
+            prevExpiry.textContent = `${month}/${year}`;
+        };
+
+        if (inputMonth) inputMonth.addEventListener('input', updateExpiry);
+        if (inputYear) inputYear.addEventListener('input', updateExpiry);
+    });
+</script>

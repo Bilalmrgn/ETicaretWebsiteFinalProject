@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Kart Bilgilerim";
     Layout = "~/Views/UILayout/_Layout.cshtml";
-}
+}F
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -42,10 +42,15 @@
                                 ? $"**** **** **** {card.CardNumber.Substring(card.CardNumber.Length - 4)}"
                                 : "**** **** **** ****";
 
-                            <div class="border rounded p-3 mb-3">
+                            <div class="border rounded p-3 mb-3 position-relative">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <strong>@card.CardHolderName</strong>
-                                    <span class="badge badge-dark">Kayıtlı Kart</span>
+                                    <div>
+                                        <a asp-action="UpdateCreditCard" asp-controller="CreditCard" asp-route-id="@card.CreditCardId" class="btn btn-sm btn-outline-primary mr-1">
+                                            <i class="fas fa-edit"></i> Düzenle
+                                        </a>
+                                        <span class="badge badge-dark">Kayıtlı Kart</span>
+                                    </div>
                                 </div>
                                 <div class="text-muted mt-2">@maskedCardNumber</div>
                                 <div class="text-muted small mt-1">Son Kullanma: @card.ExpireDate</div>
@@ -60,7 +65,7 @@
             <div class="card shadow-sm border-0">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Yeni Kart Ekle</h5>
-                    <form asp-controller="Payment" asp-action="CreateCreditCard" method="post">
+                    <form asp-controller="CreditCard" asp-action="CreateCreditCard" method="post">
                         @Html.AntiForgeryToken()
 
                         <div class="form-group">

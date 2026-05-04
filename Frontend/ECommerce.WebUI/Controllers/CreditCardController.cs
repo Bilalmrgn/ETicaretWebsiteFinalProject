@@ -5,12 +5,12 @@ using System.Text.Json;
 
 namespace ECommerce.WebUI.Controllers
 {
-    [Microsoft.AspNetCore.Authorization.Authorize]
-    public class PaymentController : Controller
+
+    public class CreditCardController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public PaymentController(IHttpClientFactory httpClientFactory)
+        public CreditCardController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
@@ -54,7 +54,35 @@ namespace ECommerce.WebUI.Controllers
             }
 
 
-        TempData["Error"] = "Kart eklenemedi.";
+            TempData["Error"] = "Kart eklenemedi.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult UpdateCreditCard()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateCreditCard(UpdateCreditCardDto dto)
+        {
+            var client = _httpClientFactory.CreateClient("PaymentClient");
+
+            var jsonData = JsonSerializer.Serialize(dto);
+
+            StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"api/CreditCard/{dto.CreditCardId}", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["UpdateSuccess"] = "Kart başarıyla güncellendi";
+                return RedirectToAction("Index");
+            }
+            TempData["UpdateError"] = "Kart güncellenemedi";
+
             return RedirectToAction("Index");
         }
     }
