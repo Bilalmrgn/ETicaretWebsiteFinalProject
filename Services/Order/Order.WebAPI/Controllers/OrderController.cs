@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Order.WebAPI.Context;
 using Order.WebAPI.Dtos.OrderingDtos;
+using Order.WebAPI.Models;
 using Order.WebAPI.Services.Interfaces;
 
 namespace Order.WebAPI.Controllers
@@ -14,8 +17,10 @@ namespace Order.WebAPI.Controllers
 
         private readonly IOrderingService _orderingService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public OrderController(IHttpContextAccessor httpContextAccessor,IOrderingService orderingService)
+        private readonly AppDbContext _context;
+        public OrderController(IHttpContextAccessor httpContextAccessor,IOrderingService orderingService,AppDbContext context)
         {
+            _context = context;
             _httpContextAccessor = httpContextAccessor;
             _orderingService = orderingService;
         }
@@ -26,8 +31,11 @@ namespace Order.WebAPI.Controllers
             try
             {
                 var userId = _httpContextAccessor.HttpContext?.User?.FindFirst("sub")?.Value;
-                await _orderingService.CreateOrderAsync(createOrderDto);
-                return Ok("Sipariş başarıyla oluşturuldu.");
+                var order = await _orderingService.CreateOrderAsync(createOrderDto);
+                return Ok(new
+                {
+                    orderId = order.OrderingId
+                });
             }
             catch (Exception ex)
             {
@@ -54,6 +62,25 @@ namespace Order.WebAPI.Controllers
         {
             var values = await _orderingService.GetAllOrderByUserIdAsync();
             return Ok(values);
+        }
+
+        [HttpPost("complete/{orderId}")]
+        public IActionResult CompleteOrder(int orderId)
+        {
+            var order = _context.Orderings.Find(orderId);
+
+            if (order == null)
+                return NotFound("Order not found");
+
+            // zaten ödenmiş mi kontrol
+            if (order.Status == OrderStatus.Completed)
+                return BadRequest("Order already completed");
+
+            order.Complete();
+
+            _context.SaveChanges();
+
+            return Ok("Order completed successfully");
         }
     }
 }

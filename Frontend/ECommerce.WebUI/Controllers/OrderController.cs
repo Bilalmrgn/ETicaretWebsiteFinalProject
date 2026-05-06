@@ -32,7 +32,13 @@ namespace ECommerce.WebUI.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction(nameof(Success));
+                var json = await response.Content.ReadAsStringAsync();
+
+                var result = JsonConvert.DeserializeObject<dynamic>(json);
+
+                int orderId = result.orderId;
+
+                return RedirectToAction("Index", "Payment", new { orderId = orderId });
             }
             return View(createOrderDto);
         }

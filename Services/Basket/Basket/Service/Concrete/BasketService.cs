@@ -1,4 +1,4 @@
-﻿using Basket.Dtos;
+using Basket.Dtos;
 using Basket.Service.Interfaces;
 using Newtonsoft.Json;
 using System.Text.Json;
@@ -9,10 +9,12 @@ namespace Basket.Service.Concrete
     {
         private readonly IRedisService _redisService;
         private readonly IDiscountService _discountService;
-        public BasketService(IRedisService redisService,IDiscountService discountService)
+        private readonly IOrderService _orderService;
+        public BasketService(IRedisService redisService, IDiscountService discountService, IOrderService orderService)
         {
             _discountService = discountService;
             _redisService = redisService;
+            _orderService = orderService;
         }
 
         public async Task<string> ApplyDiscountAsync(string userId, string discountCode)
@@ -32,14 +34,21 @@ namespace Basket.Service.Concrete
                 return "AlreadyApplied";
             }
 
-
-
             var coupon = await _discountService.GetByCodeAsync(discountCode);
 
             if (coupon == null)
                 return "Invalid";
 
-            
+            // Kupon sadece ilk alışverişe özel mi kontrolü
+            if (coupon.IsFirstOrderOnly)
+            {
+                var hasCompletedOrder = await _orderService.AnyCompletedOrderAsync(userId);
+                if (hasCompletedOrder)
+                {
+                    return "AlreadyApplied"; // Kullanıcı daha önce alışveriş yapmış
+                }
+            }
+
             basket.DiscountCode = coupon.Code;
             basket.DiscountRate = coupon.Rate;
 
@@ -57,7 +66,7 @@ namespace Basket.Service.Concrete
                 throw new Exception("Sepet Bulunamadi. (Service/Concrete/BasketService)");
             }
 
-            await _redisService.RemoveAsync(existBasket);
+            await _redisService.RemoveAsync(userId);
         }
 
         public async Task<BasketTotalDto> GetBasketAsync(string userId)
@@ -72,6 +81,33 @@ namespace Basket.Service.Concrete
                 {
                     UserId = userId
                 };
+            }
+
+            // Kupon re-validation
+            if (!string.IsNullOrEmpty(basket.DiscountCode))
+            {
+                var coupon = await _discountService.GetByCodeAsync(basket.DiscountCode);
+                bool shouldRemoveCoupon = false;
+
+                if (coupon == null)
+                {
+                    shouldRemoveCoupon = true; // Kupon artık mevcut değil
+                }
+                else if (coupon.IsFirstOrderOnly)
+                {
+                    var hasCompletedOrder = await _orderService.AnyCompletedOrderAsync(userId);
+                    if (hasCompletedOrder)
+                    {
+                        shouldRemoveCoupon = true; // Kullanıcı artık ilk alışverişinde değil
+                    }
+                }
+
+                if (shouldRemoveCoupon)
+                {
+                    basket.DiscountCode = null;
+                    basket.DiscountRate = null;
+                    await _redisService.SetAsync(userId, JsonConvert.SerializeObject(basket));
+                }
             }
 
             var total = basket.BasketItems.Sum(item => item.Price * item.Quantity);

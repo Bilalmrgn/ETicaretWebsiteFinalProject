@@ -24,7 +24,7 @@ namespace Order.WebAPI.Services.Concrete
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task CreateOrderAsync(CreateOrderDto createOrderDto)
+        public async Task<ResultOrderDto> CreateOrderAsync(CreateOrderDto createOrderDto)
         {
             var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -80,8 +80,26 @@ namespace Order.WebAPI.Services.Concrete
             await _context.Orderings.AddAsync(order);
             await _context.SaveChangesAsync();
 
-            return;
-
+            return new ResultOrderDto
+            {
+                OrderingId = order.OrderingId,
+                TotalPrice = order.TotalPrice,
+                CreatedDate = order.CreatedDate,
+                Status = order.Status,
+                City = order.City,
+                District = order.District,
+                AddressDetail = order.AddressDetail,
+                FirstName = order.FirstName,
+                LastName = order.LastName,
+                PhoneNumber = order.PhoneNumber,
+                OrderDetails = order.OrderDetails.Select(d => new ResultOrderDetailDto
+                {
+                    ProductId = d.ProductId,
+                    ProductName = d.ProductName,
+                    ProductPrice = d.ProductPrice,
+                    ProductAmount = d.ProductAmount
+                }).ToList()
+            };
         }
 
         public async Task<List<ResultOrderDto>> GetAllOrderAsync()

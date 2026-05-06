@@ -1,3 +1,4 @@
+using Basket.Consumer;
 using Basket.Service.Concrete;
 using Basket.Service.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -5,9 +6,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Shared.RabbitMQ.Settings;
 using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//rabbitmq
+builder.Services.Configure<RabbitMqSettings>(
+    builder.Configuration.GetSection("RabbitMqSettings"));
+
+builder.Services.AddHostedService
+    <PaymentCompletedConsumer>();
+
+
 
 var requireAuthorizePolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
@@ -21,7 +32,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//mikroservisin koruma altýna alýnmasý
+//mikroservisin koruma altina alinmasi
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
     options.Authority = builder.Configuration["IdentityServerUrl"];
@@ -34,6 +45,12 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IRedisService, RedisService>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+
+builder.Services.AddHttpClient("OrderClient", opt =>
+{
+    opt.BaseAddress = new Uri("https://localhost:7296");
+});
 builder.Services.AddHttpClient();
 
 var redisHost = builder.Configuration["RedisHost"];
@@ -51,7 +68,7 @@ builder.Services.AddAuthorization(opt =>
     opt.AddPolicy("CatalogWrite", policy =>
         policy.RequireClaim("scope", "catalog.full"));
 
-    //Admin kontrolü
+    //Admin kontrolu
     opt.AddPolicy("AdminOnly", policy =>
         policy.RequireRole("Admin"));
 

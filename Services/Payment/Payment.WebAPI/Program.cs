@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Payment.WebAPI.Context;
+using Payment.WebAPI.Services;
 using Payment.WebAPI.Services.Concrete;
 using Payment.WebAPI.Services.Interface;
+using Shared.RabbitMQ.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +16,17 @@ builder.Services.AddEndpointsApiExplorer();
 
 // dependency injection
 builder.Services.AddScoped<ICreditCardService,CreditCardService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
+
+//rabbitmq baðlantýsý
+builder.Services.Configure<RabbitMqSettings>(
+    builder.Configuration.GetSection("RabbitMqSettings"));
+
+builder.Services.AddScoped<RabbitMqPublisher>();
+
+
 
 builder.Services.AddSwaggerGen();
 //veritabaný baðlantýsý

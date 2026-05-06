@@ -1,0 +1,160 @@
+@using Frontend.DtosLayer.PaymentDtos.CreditCardDtos
+@model List<ResultCreditCardDto>
+
+@{
+    ViewData["Title"] = "Ödeme Yöntemi Seçin";
+    var orderId = ViewBag.OrderId;
+}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-dark text-white py-4 px-4">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary p-3 rounded-3 me-3">
+                            <i class="bi bi-credit-card-2-front fs-3"></i>
+                        </div>
+                        <div>
+                            <h2 class="h4 mb-0">Ödeme Yöntemi</h2>
+                            <p class="mb-0 opacity-75 small">Lütfen ödeme yapmak istediğiniz kartı seçin.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body p-4 p-md-5">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger border-0 shadow-sm mb-4 rounded-3 d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+                            <div asp-validation-summary="ModelOnly"></div>
+                        </div>
+                    }
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <form asp-controller="Payment" asp-action="Index" method="post">
+                            <input type="hidden" name="OrderId" value="@orderId" />
+                            <input type="hidden" name="Email" value="@ViewBag.Email" />
+                            <input type="hidden" name="TotalPrice" value="@ViewBag.TotalPrice" />
+
+                            <h6 class="text-uppercase text-muted fw-bold small mb-3 ls-wide">Kayıtlı Kartlarınız</h6>
+
+                            <div class="card-list mb-5">
+                                @foreach (var card in Model)
+                                {
+                                    <div class="card-option mb-3">
+                                        <input type="radio" name="CreditCardId" id="card_@card.CreditCardId" value="@card.CreditCardId" class="btn-check" required>
+                                        <label class="btn btn-outline-light d-flex align-items-center p-4 rounded-4 border-2 w-100 text-start text-dark shadow-sm position-relative" for="card_@card.CreditCardId">
+                                            <div class="card-icon me-4">
+                                                <i class="bi bi-credit-card-2-back-fill fs-2 text-primary"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="fw-bold fs-5">@card.CardHolderName</span>
+                                                    <span class="text-muted small">@card.ExpireDate</span>
+                                                </div>
+                                                <div class="font-monospace mt-1 fs-5">
+                                                    @{
+                                                        var maskedNumber = card.CardNumber.Length >= 12
+                                                        ? "**** **** **** " + card.CardNumber.Substring(card.CardNumber.Length - 4)
+                                                        : card.CardNumber;
+                                                    }
+                                                    @maskedNumber
+                                                </div>
+                                            </div>
+                                            <div class="check-indicator position-absolute top-0 end-0 m-3 d-none">
+                                                <i class="bi bi-check-circle-fill text-primary fs-4"></i>
+                                            </div>
+                                        </label>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="d-grid gap-3">
+                                <button type="submit" class="btn btn-primary btn-lg py-3 rounded-pill fw-bold shadow-sm hover-lift">
+                                    <i class="bi bi-shield-lock me-2"></i>
+                                    Güvenli Ödeme Yap
+                                </button>
+
+                                <div class="text-center">
+                                    <span class="text-muted">veya</span>
+                                </div>
+
+                                <a asp-action="CreateCreditCard" asp-controller="CreditCard" class="btn btn-outline-dark btn-lg py-3 rounded-pill fw-bold">
+                                    <i class="bi bi-plus-lg me-2"></i>
+                                    Yeni Kart Ekle
+                                </a>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <div class="mb-4 text-muted opacity-25">
+                                <i class="bi bi-credit-card-2-front" style="font-size: 6rem;"></i>
+                            </div>
+                            <h4 class="fw-bold">Kayıtlı Kart Bulunamadı</h4>
+                            <p class="text-muted mb-4 px-lg-5">Sistemimizde kayıtlı bir kredi kartınız bulunmamaktadır. Ödeme işlemine devam etmek için lütfen yeni bir kart ekleyin.</p>
+                            <a asp-action="AddCard" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm hover-lift">
+                                <i class="bi bi-plus-lg me-2"></i>
+                                Yeni Kart Ekle
+                            </a>
+                        </div>
+                    }
+                </div>
+
+                <div class="card-footer bg-light border-0 py-3 text-center">
+                    <img src="https://img.icons8.com/color/48/000000/visa.png" width="35" class="mx-1" />
+                    <img src="https://img.icons8.com/color/48/000000/mastercard.png" width="35" class="mx-1" />
+                    <img src="https://img.icons8.com/color/48/000000/amex.png" width="35" class="mx-1" />
+                    <div class="mt-2 text-muted small">
+                        <i class="bi bi-lock-fill me-1"></i> Tüm işlemleriniz uçtan uca şifrelenmektedir.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ls-wide {
+        letter-spacing: 0.1em;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+    /* Card Option Styling */
+    .card-option .btn-outline-light {
+        background-color: #f8f9fa;
+        border-color: #e9ecef;
+    }
+
+        .card-option .btn-outline-light:hover {
+            border-color: #dee2e6;
+            background-color: #fff;
+        }
+
+    .card-option .btn-check:checked + label {
+        border-color: var(--bs-primary);
+        background-color: #fff;
+        box-shadow: 0 0.5rem 1rem rgba(13, 110, 253, 0.15) !important;
+    }
+
+        .card-option .btn-check:checked + label .check-indicator {
+            display: block !important;
+        }
+</style>

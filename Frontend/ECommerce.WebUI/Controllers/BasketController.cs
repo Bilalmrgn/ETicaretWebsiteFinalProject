@@ -85,6 +85,10 @@ namespace ECommerce.WebUI.Controllers
             {
                 TempData["DiscountError"] = "Sepet bulunamadı.";
             }
+            else if (result == "OnlyForFirstPurchase")
+            {
+                TempData["DiscountError"] = "Bu kupon sadece ilk alışverişe özeldir.";
+            }
             else if (result == "Success")
             {
                 TempData["DiscountSuccess"] = "Kupon başarıyla uygulandı!";
