@@ -3,12 +3,20 @@ using IdentityServer.Domain;
 using IdentityServer.Persistence.Concrete;
 using IdentityServer.Persistence.ServiceRegistration;
 using IdentityServer.WebAPI;
+using Shared.RabbitMQ.Settings;
 using System.IdentityModel.Tokens.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 // Add services to the container.
+//rabbitmq
+
+builder.Services.Configure<RabbitMqSettings>(
+    builder.Configuration.GetSection("RabbitMqSettings"));
+
+builder.Services.AddHostedService
+    <IdentityServer.WebAPI.Consumer.PaymentCompletedConsumer>();
 
 builder.Services.AddControllersWithViews(); // MVC desteği eklendi
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -49,6 +49,33 @@ namespace IdentityServer.Infrastructure.EmailService
             await smtpClient.SendMailAsync(mailMessage);
         }
 
+        public async Task SendEmailPaymentSuccess( string toEmail)
+        {
+            var host = _configuration["EmailSettings:Host"];
+            var port = int.Parse(_configuration["EmailSettings:Port"]);
+            var email = _configuration["EmailSettings:Email"];
+            var password = _configuration["EmailSettings:Password"];
+
+            var smtpClient = new SmtpClient(host, port)
+            {
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(email, password),
+                EnableSsl = true
+            };
+
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(email, "Benim Uygulamam"),
+                Subject = "Ödeme onaylandı MEsajı",
+                Body = $@" <h4>ödemeniz başarılı.</h4>",IsBodyHtml = true
+            };
+
+            mailMessage.To.Add(toEmail);
+
+            await smtpClient.SendMailAsync(mailMessage);
+        }
+
         public async Task SendResetPasswordEmail(string resetEmailLink, string toEmail)
         {
             var host = _configuration["EmailSettings:Host"];
