@@ -54,7 +54,7 @@ builder.Services.AddHttpClient("BasketClient", client =>
 
 builder.Services.AddHttpClient("DiscountClient", client =>
 {
-    client.BaseAddress = new Uri("https://localhost:7185");
+    client.BaseAddress = new Uri("https://localhost:7185/");
 }).AddHttpMessageHandler<TokenHandler>();
 
 builder.Services.AddHttpClient("OrderClient", client =>

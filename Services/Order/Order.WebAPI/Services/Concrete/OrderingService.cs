@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+ï»¿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Order.WebAPI.Context;
 using Order.WebAPI.Dtos.BasketDto;
@@ -33,7 +33,7 @@ namespace Order.WebAPI.Services.Concrete
                 throw new Exception("User not authenticated.");
             }
 
-            //kullanýcýdan gelen token'i al ve baþka servise aynen ilet
+            //kullanÄ±cÄ±dan gelen token'i al ve baÅŸka servise aynen ilet
             var client = _httpClientFactory.CreateClient();
 
             var token = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();
@@ -52,7 +52,7 @@ namespace Order.WebAPI.Services.Concrete
             var basket = JsonConvert.DeserializeObject<BasketDto>(jsonData);
 
             if (basket == null || !basket.BasketItems.Any())
-                throw new Exception("Sepet boþ");
+                throw new Exception("Sepet boÅŸ");
 
             var order = new Ordering
             {
@@ -133,7 +133,7 @@ namespace Order.WebAPI.Services.Concrete
             return orders;
         }
 
-        //kullanýcýya özel sipariþleri getirme
+        //kullanÄ±cÄ±ya Ã¶zel sipariÅŸleri getirme
         public async Task<List<ResultOrderDto>> GetAllOrderByUserIdAsync()
         {
             var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -198,7 +198,11 @@ namespace Order.WebAPI.Services.Concrete
         }
 
 
+    
+        public async Task<bool> HasCompletedOrderAsync(string userId)
+        {
+            return await _context.Orderings.AnyAsync(x => x.UserId.ToLower() == userId.ToLower() && x.Status == OrderStatus.Completed);
+        }
     }
 }
-
 

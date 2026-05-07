@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -81,6 +81,13 @@ namespace Order.WebAPI.Controllers
             _context.SaveChanges();
 
             return Ok("Order completed successfully");
+        }
+
+        [HttpGet("has-completed-order/{userId}")]
+        public async Task<IActionResult> HasCompletedOrder(string userId)
+        {
+            var result = await _orderingService.HasCompletedOrderAsync(userId);
+            return Ok(result);
         }
     }
 }

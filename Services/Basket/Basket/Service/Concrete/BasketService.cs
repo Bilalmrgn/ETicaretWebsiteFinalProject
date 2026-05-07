@@ -9,12 +9,10 @@ namespace Basket.Service.Concrete
     {
         private readonly IRedisService _redisService;
         private readonly IDiscountService _discountService;
-        private readonly IOrderService _orderService;
-        public BasketService(IRedisService redisService, IDiscountService discountService, IOrderService orderService)
+        public BasketService(IRedisService redisService, IDiscountService discountService)
         {
             _discountService = discountService;
             _redisService = redisService;
-            _orderService = orderService;
         }
 
         public async Task<string> ApplyDiscountAsync(string userId, string discountCode)
@@ -34,27 +32,19 @@ namespace Basket.Service.Concrete
                 return "AlreadyApplied";
             }
 
-            var coupon = await _discountService.GetByCodeAsync(discountCode);
+            var result = await _discountService.ApplyDiscountAsync(userId, discountCode);
 
-            if (coupon == null)
-                return "Invalid";
-
-            // Kupon sadece ilk alışverişe özel mi kontrolü
-            if (coupon.IsFirstOrderOnly)
+            if (result == "Success")
             {
-                var hasCompletedOrder = await _orderService.AnyCompletedOrderAsync(userId);
-                if (hasCompletedOrder)
-                {
-                    return "AlreadyApplied"; // Kullanıcı daha önce alışveriş yapmış
-                }
+                var coupon = await _discountService.GetByCodeAsync(discountCode);
+                basket.DiscountCode = coupon.Code;
+                basket.DiscountRate = coupon.Rate;
+
+                await _redisService.SetAsync(userId, JsonConvert.SerializeObject(basket));
+                return "success";
             }
 
-            basket.DiscountCode = coupon.Code;
-            basket.DiscountRate = coupon.Rate;
-
-            await _redisService.SetAsync(userId, JsonConvert.SerializeObject(basket));
-
-            return "success";
+            return result;
         }
 
         public async Task DeleteAsync(string userId)
@@ -86,23 +76,9 @@ namespace Basket.Service.Concrete
             // Kupon re-validation
             if (!string.IsNullOrEmpty(basket.DiscountCode))
             {
-                var coupon = await _discountService.GetByCodeAsync(basket.DiscountCode);
-                bool shouldRemoveCoupon = false;
+                var result = await _discountService.ApplyDiscountAsync(userId, basket.DiscountCode);
 
-                if (coupon == null)
-                {
-                    shouldRemoveCoupon = true; // Kupon artık mevcut değil
-                }
-                else if (coupon.IsFirstOrderOnly)
-                {
-                    var hasCompletedOrder = await _orderService.AnyCompletedOrderAsync(userId);
-                    if (hasCompletedOrder)
-                    {
-                        shouldRemoveCoupon = true; // Kullanıcı artık ilk alışverişinde değil
-                    }
-                }
-
-                if (shouldRemoveCoupon)
+                if (result != "Success")
                 {
                     basket.DiscountCode = null;
                     basket.DiscountRate = null;

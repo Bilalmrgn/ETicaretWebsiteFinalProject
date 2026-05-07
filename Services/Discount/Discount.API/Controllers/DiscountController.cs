@@ -1,4 +1,4 @@
-﻿using Discount.API.Dtos;
+using Discount.API.Dtos;
 using Discount.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -66,6 +66,13 @@ namespace Discount.API.Controllers
             dto.CouponId = id; // önemli!
             await _discountService.UpdateCouponAsync(dto);
             return Ok("Güncellendi");
+        }
+
+        [HttpGet("apply-discount")]
+        public async Task<IActionResult> ApplyDiscount(string userId, string code)
+        {
+            var result = await _discountService.ApplyDiscountAsync(userId, code);
+            return Ok(result);
         }
     }
 }

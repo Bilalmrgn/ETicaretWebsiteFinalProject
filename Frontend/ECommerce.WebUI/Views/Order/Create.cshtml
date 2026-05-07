@@ -4,57 +4,264 @@
     ViewData["Title"] = "Sipariş Oluştur";
 }
 
-<div class="row justify-content-center py-4">
-    <div class="col-12 col-md-8 col-lg-6">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-4">
-                <h2 class="mb-3">Sipariş Bilgileri</h2>
-                <p class="text-muted mb-4">Lutfen teslimat bilgilerinizi doldurun.</p>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
-                <form asp-controller="Order" asp-action="Create" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<style>
+    :root {
+        --electric-yellow: #FACC15;
+        --electric-dark: #0F172A;
+        --electric-glass: rgba(255, 255, 255, 0.95);
+    }
 
-                    <div class="mb-3">
-                        <label asp-for="FirstName" class="form-label">Ad</label>
-                        <input asp-for="FirstName" class="form-control" />
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    }
 
-                    <div class="mb-3">
-                        <label asp-for="LastName" class="form-label">Soyad</label>
-                        <input asp-for="LastName" class="form-control" />
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
+    .checkout-container {
+        max-width: 900px;
+        margin: 40px auto;
+    }
 
-                    <div class="mb-3">
-                        <label asp-for="PhoneNumber" class="form-label">Telefon Numarası</label>
-                        <input asp-for="PhoneNumber" class="form-control" />
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
+    /* Progress Bar */
+    .stepper {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 60px;
+        position: relative;
+    }
+    .stepper::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #cbd5e1;
+        z-index: 1;
+    }
+    .step {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #cbd5e1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        font-weight: bold;
+        color: #64748b;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .step.active {
+        border-color: var(--electric-yellow);
+        background: var(--electric-yellow);
+        color: var(--electric-dark);
+        box-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
+    }
+    .step-label {
+        position: absolute;
+        top: 50px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-                    <div class="mb-3">
-                        <label asp-for="City" class="form-label">Şehir</label>
-                        <input asp-for="City" class="form-control" />
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
+    /* Card Styling */
+    .glass-card {
+        background: var(--electric-glass);
+        backdrop-filter: blur(10px);
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        padding: 50px;
+        animation: fadeInSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
 
-                    <div class="mb-3">
-                        <label asp-for="District" class="form-label">İlçe</label>
-                        <input asp-for="District" class="form-control" />
-                        <span asp-validation-for="District" class="text-danger"></span>
-                    </div>
+    @@keyframes fadeInSlide {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
 
-                    <div class="mb-4">
-                        <label asp-for="AddressDetail" class="form-label">Adres Detayı</label>
-                        <textarea asp-for="AddressDetail" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="AddressDetail" class="text-danger"></span>
-                    </div>
+    .form-title {
+        color: var(--electric-dark);
+        font-weight: 900;
+        font-size: 2.5rem;
+        letter-spacing: -1px;
+        margin-bottom: 10px;
+    }
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg">Siparisi Onayla</button>
-                    </div>
-                </form>
+    .input-group-custom {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    .input-group-custom i {
+        position: absolute;
+        left: 22px;
+        bottom: 18px;
+        color: #94a3b8;
+        transition: all 0.3s ease;
+        font-size: 1.1rem;
+    }
+
+    .input-custom {
+        width: 100%;
+        padding: 16px 16px 16px 55px;
+        border-radius: 16px;
+        border: 2px solid #f1f5f9;
+        background: #f8fafc;
+        font-weight: 500;
+        color: var(--electric-dark);
+        transition: all 0.4s ease;
+        font-size: 1rem;
+    }
+
+    .input-custom:focus {
+        border-color: var(--electric-yellow);
+        background: #fff;
+        outline: none;
+        box-shadow: 0 10px 15px -3px rgba(250, 204, 21, 0.1);
+    }
+
+    .input-custom:focus + i {
+        color: var(--electric-yellow);
+        transform: scale(1.1);
+    }
+
+    .label-custom {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 0.95rem;
+    }
+
+    .btn-confirm {
+        background: var(--electric-dark);
+        color: var(--electric-yellow);
+        border: none;
+        padding: 20px;
+        border-radius: 18px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        margin-top: 20px;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.2);
+    }
+
+    .btn-confirm:hover {
+        background: #000;
+        transform: translateY(-5px);
+        box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.4);
+        color: #fff;
+    }
+
+    .error-msg {
+        font-size: 0.85rem;
+        margin-top: 8px;
+        display: block;
+        font-weight: 700;
+        color: #ef4444;
+    }
+
+    /* Textarea specific */
+    textarea.input-custom {
+        padding-left: 20px;
+        min-height: 140px;
+    }
+</style>
+
+<div class="container pb-5">
+    <div class="checkout-container">
+        <!-- Stepper -->
+        <div class="stepper">
+            <div class="step active">
+                1
+                <span class="step-label">Adres</span>
             </div>
+            <div class="step">
+                2
+                <span class="step-label" style="opacity: 0.5;">Ödeme</span>
+            </div>
+            <div class="step">
+                3
+                <span class="step-label" style="opacity: 0.5;">Onay</span>
+            </div>
+        </div>
+
+        <!-- Main Card -->
+        <div class="glass-card">
+            <div class="text-center mb-5">
+                <h1 class="form-title">Teslimat Bilgileri</h1>
+                <p class="text-muted fs-5">Siparişinizin güvenle ulaşması için formu doldurun.</p>
+            </div>
+
+            <form asp-controller="Order" asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group-custom">
+                            <label asp-for="FirstName" class="label-custom">Ad</label>
+                            <input asp-for="FirstName" class="input-custom" placeholder="Adınız" />
+                            <i class="fa-solid fa-user"></i>
+                            <span asp-validation-for="FirstName" class="error-msg"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group-custom">
+                            <label asp-for="LastName" class="label-custom">Soyad</label>
+                            <input asp-for="LastName" class="input-custom" placeholder="Soyadınız" />
+                            <i class="fa-solid fa-user-tag"></i>
+                            <span asp-validation-for="LastName" class="error-msg"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group-custom">
+                    <label asp-for="PhoneNumber" class="label-custom">Telefon</label>
+                    <input asp-for="PhoneNumber" class="input-custom" placeholder="05xx xxx xx xx" />
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span asp-validation-for="PhoneNumber" class="error-msg"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group-custom">
+                            <label asp-for="City" class="label-custom">Şehir</label>
+                            <input asp-for="City" class="input-custom" placeholder="Şehir" />
+                            <i class="fa-solid fa-map-location-dot"></i>
+                            <span asp-validation-for="City" class="error-msg"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group-custom">
+                            <label asp-for="District" class="label-custom">İlçe</label>
+                            <input asp-for="District" class="input-custom" placeholder="İlçe" />
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                            <span asp-validation-for="District" class="error-msg"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group-custom">
+                    <label asp-for="AddressDetail" class="label-custom">Adres Detayı</label>
+                    <textarea asp-for="AddressDetail" class="input-custom" placeholder="Mahalle, Sokak, Bina No, Kat, Daire..."></textarea>
+                    <span asp-validation-for="AddressDetail" class="error-msg"></span>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn-confirm">
+                        Ödeme Adımına Devam Et <i class="fa-solid fa-chevron-right ms-2"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Payment.WebAPI.Context;
 using Payment.WebAPI.Dtos.CreditCardDtos;
 using Payment.WebAPI.Models;
@@ -52,6 +52,7 @@ namespace Payment.WebAPI.Services.Concrete
             }
 
             return await _context.CreditCards
+                .Where(cc => cc.UserId == userId)
                 .Select(cc => new ResultCreditCardDto
                 {
                     CreditCardId = cc.CreditCardId,

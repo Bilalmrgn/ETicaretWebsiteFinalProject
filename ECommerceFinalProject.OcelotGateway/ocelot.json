@@ -551,7 +551,7 @@
     //---------------------------------------------discount------------------------------------------------------------------------------
     //get all discount
     {
-      "DownstreamPathTemplate": "/api/Discounts",
+      "DownstreamPathTemplate": "/api/Discount",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -560,13 +560,19 @@
         }
       ],
       "UpstreamPathTemplate": "/discount",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "CatalogAuthKey",
+        "AllowedScopes": [
+          "discount.full"
+        ]
+      },
       "UpstreamHttpMethod": [
         "Get"
       ]
     },
     //get discount by id
     {
-      "DownstreamPathTemplate": "/api/Discounts/{everything}",
+      "DownstreamPathTemplate": "/api/Discount/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -581,7 +587,7 @@
     },
     // create discount OPERATION
     {
-      "DownstreamPathTemplate": "/api/Discounts",
+      "DownstreamPathTemplate": "/api/Discount",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -602,7 +608,7 @@
     },
     // put and delete discount operation
     {
-      "DownstreamPathTemplate": "/api/Discounts/{everything}",
+      "DownstreamPathTemplate": "/api/Discount/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {

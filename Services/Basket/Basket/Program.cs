@@ -1,4 +1,4 @@
-using Basket.Consumer;
+﻿using Basket.Consumer;
 using Basket.Service.Concrete;
 using Basket.Service.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,12 +45,9 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<IRedisService, RedisService>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
 
-builder.Services.AddHttpClient("OrderClient", opt =>
-{
-    opt.BaseAddress = new Uri("https://localhost:7296");
-});
+
+
 builder.Services.AddHttpClient();
 
 var redisHost = builder.Configuration["RedisHost"];
@@ -96,3 +93,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

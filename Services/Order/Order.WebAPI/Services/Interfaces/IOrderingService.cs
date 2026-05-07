@@ -9,7 +9,6 @@ namespace Order.WebAPI.Services.Interfaces
         Task<List<ResultOrderDto>> GetAllOrderAsync();
         Task<ResultOrderDto> GetAllOrderDetailByOrderId(int orderId);
         Task<List<ResultOrderDto>> GetAllOrderByUserIdAsync();
-
-
+        Task<bool> HasCompletedOrderAsync(string userId);
     }
 }

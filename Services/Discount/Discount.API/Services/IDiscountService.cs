@@ -1,4 +1,4 @@
-﻿using Discount.API.Dtos;
+using Discount.API.Dtos;
 
 namespace Discount.API.Services
 {
@@ -10,5 +10,6 @@ namespace Discount.API.Services
         Task DeleteCouponAsync(int id);
         Task<GetByIdCouponDto> GetByIdCouponAsync(int id);
         Task<ResultCouponDto?> GetByCodeAsync(string code);
+        Task<string> ApplyDiscountAsync(string userId, string code);
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Discount.API.Dtos
+namespace Discount.API.Dtos
 {
     public class ResultCouponDto
     {
@@ -7,5 +7,6 @@
         public int Rate { get; set; }
         public bool IsActive { get; set; }
         public DateTime ValidDate { get; set; }
+        public bool IsFirstOrderOnly { get; set; }
     }
 }

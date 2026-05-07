@@ -1,4 +1,4 @@
-﻿using Basket.Dtos;
+using Basket.Dtos;
 using Basket.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -55,18 +55,17 @@ namespace Basket.Controllers
         {
             var userId = User.FindFirst("sub")?.Value;
 
-            if(userId == null)
+            if (userId == null)
                 return BadRequest("Kullanıcı bulunamadı");
 
             var result = await _basketService.ApplyDiscountAsync(userId, discountCode);
 
-            if (result == "Invalid")
-                return BadRequest("Invalid");
+            if (result == "success")
+            {
+                return Ok("Success");
+            }
 
-            if (result == "AlreadyApplied")
-                return BadRequest("AlreadyApplied");
-
-            return Ok("Success");
+            return BadRequest(result);
         }
     }
 }
