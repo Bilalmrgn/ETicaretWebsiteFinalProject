@@ -67,16 +67,48 @@
                                 <td><p>@item.City / @item.District</p></td>
                                 <td><p>@item.TotalPrice.ToString("N2") ₺</p></td>
                                 <td><p>@item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</p></td>
-                                <td><p>@item.Status</p></td>
+                                <td>
+                                    @switch (item.Status)
+                                    {
+                                        case Frontend.DtosLayer.OrderDtos.OrderStatus.Pending:
+                                            <span class="badge bg-warning text-dark">Bekliyor</span>
+                                            break;
+                                        case Frontend.DtosLayer.OrderDtos.OrderStatus.Processing:
+                                            <span class="badge bg-info text-white">Hazırlanıyor</span>
+                                            break;
+                                        case Frontend.DtosLayer.OrderDtos.OrderStatus.Completed:
+                                            <span class="badge bg-success text-white">Tamamlandı</span>
+                                            break;
+                                        case Frontend.DtosLayer.OrderDtos.OrderStatus.Shipped:
+                                            <span class="badge bg-primary text-white">Kargoya Verildi</span>
+                                            break;
+                                        case Frontend.DtosLayer.OrderDtos.OrderStatus.Cancelled:
+                                            <span class="badge bg-danger text-white">İptal Edildi</span>
+                                            break;
+                                        default:
+                                            <span class="badge bg-secondary text-white">@item.Status</span>
+                                            break;
+                                    }
+                                </td>
                                 <td>
                                     <div class="action">
                                         <a asp-area="Admin"
                                            asp-controller="AdminOrder"
                                            asp-action="OrderDetail"
                                            asp-route-id="@item.OrderingId"
-                                           class="btn btn-success">
-                                            Order Detail
+                                           class="btn btn-sm btn-success">
+                                            Detay
                                         </a>
+
+                                        <form asp-action="ChangeStatus" method="post" style="display:inline-flex; gap:2px;">
+                                            <input type="hidden" name="id" value="@item.OrderingId" />
+                                            <select name="status" class="form-select form-select-sm" onchange="this.form.submit()" style="width: 120px;">
+                                                <option selected disabled>Durum Değiştir</option>
+                                                <option value="2">Tamamlandı</option>
+                                                <option value="5">Kargoya Ver</option>
+                                                <option value="4">İptal Et</option>
+                                            </select>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

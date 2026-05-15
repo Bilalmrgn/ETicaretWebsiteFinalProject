@@ -32,13 +32,13 @@ namespace IdentityServer.WebAPI.Controllers
             _interaction = interaction;
         }
         [HttpGet]
-        public IActionResult Index(string? originalReturnUrl)
+        public IActionResult Index(string? returnUrl)
         {
-            ViewBag.ReturnUrl = originalReturnUrl;
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] RegisterDto dto, [FromQuery] string? returnUrl)
+        public async Task<IActionResult> Index([FromForm] RegisterDto dto, string? returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid)
@@ -78,11 +78,12 @@ namespace IdentityServer.WebAPI.Controllers
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
-                //email onayı için link oluştur (url action link oluşturur)
+                //email onayı için link oluştur (url action link oluşturur) - returnUrl çıkarıldı (bozulmayı önlemek için)
                 var link = Url.Action("ConfirmEmail", "Register", new { userId = user.Id, token = encodedToken }, Request.Scheme);
 
                 await _emailService.SendEmailConfirmationEmail(link!, user.Email);
-                return RedirectToAction("Login", "Account");
+                await _signInManager.SignOutAsync(); // Eski oturum kalıntılarını temizle
+                return RedirectToAction("Login", "Account", new { returnUrl = returnUrl });
 
             }
 
@@ -90,17 +91,20 @@ namespace IdentityServer.WebAPI.Controllers
             return View(dto);
         }
 
-        public async Task<IActionResult> ConfirmEmail(string userId,string token)
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
 
             var user = await _userManager.FindByIdAsync(userId);
 
-            var resılt = await _userManager.ConfirmEmailAsync(user, decodedToken);
+            if (user == null) return View("Error");
 
-            if(resılt.Succeeded)
+            var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
+
+            if(result.Succeeded)
             {
-                return RedirectToAction("Login", "Account");
+                // Onay başarılıysa doğrudan Frontend (WebUI) sitesinin Login sayfasına yönlendiriyoruz.
+                return Redirect("https://localhost:7145/Login/Index");
             }
 
             return View("Error");

@@ -1,4 +1,4 @@
-﻿using ETicaret.Comment.Dtos;
+using ETicaret.Comment.Dtos;
 using ETicaret.Comment.Entities;
 using ETicaret.Comment.Services.CommentService;
 using Microsoft.AspNetCore.Authorization;
@@ -74,6 +74,14 @@ namespace ETicaret.Comment.Controllers
         {
             var comments = await _commentService.GetAllCommentsByProductIdAsync(productId);
             return Ok(comments);
+        }
+
+        [HttpGet("GetProductRating/{productId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetProductRating(string productId)
+        {
+            var values = await _commentService.GetProductRatingAsync(productId);
+            return Ok(values);
         }
 
     }

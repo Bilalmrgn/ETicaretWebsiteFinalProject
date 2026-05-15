@@ -16,7 +16,7 @@ builder.Services.Configure<RabbitMqSettings>(
     builder.Configuration.GetSection("RabbitMqSettings"));
 
 builder.Services.AddHostedService
-    <IdentityServer.WebAPI.Consumer.PaymentCompletedConsumer>();
+    <IdentityServer.WebAPI.Consumer.InvoiceCreatedConsumer>();
 
 builder.Services.AddControllersWithViews(); // MVC desteği eklendi
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,0 +1,173 @@
+@{
+    ViewData["Title"] = "Yardım Merkezi";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<div class="container-fluid pt-5 pb-5">
+    <div class="container">
+        <!-- Başlık Bölümü -->
+        <div class="text-center mb-5">
+            <h2 class="section-title px-5"><span class="px-2">Yardım Merkezi</span></h2>
+            <p class="mt-3" style="max-width: 800px; margin: 0 auto; color: #333; font-weight: 500;">
+                Elektrik ve elektronik ürünlerle ilgili destek süreçleri için yardım merkezimizi kullanabilirsiniz. 
+                Sipariş, teslimat, teknik destek, garanti ve iade işlemleri hakkında detaylı bilgilere aşağıdan ulaşabilirsiniz.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Sipariş ve Teslimat -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="help-card h-100 p-4 shadow-sm border rounded-4 bg-white">
+                    <div class="icon-circle mb-4">
+                        <i class="fas fa-truck-loading fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Sipariş ve Teslimat</h4>
+                    <p>
+                        Siparişleriniz kullanıcı panelindeki “Siparişlerim” bölümünden takip edilebilir. Hazırlanan siparişler anlaşmalı kargo firmalarına teslim edilir ve takip numarası sistem üzerinden paylaşılır. Teslimat süreleri bulunduğunuz bölgeye göre değişiklik gösterebilir.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Teknik Destek -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="help-card h-100 p-4 shadow-sm border rounded-4 bg-white">
+                    <div class="icon-circle mb-4">
+                        <i class="fas fa-tools fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Teknik Destek</h4>
+                    <p>
+                        Elektrik ve elektronik ürünler için teknik destek hizmeti sunulmaktadır. Ürün kurulumu, bağlantı bilgileri, kullanım detayları ve teknik sorunlar hakkında destek ekibimiz yardımcı olmaktadır.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Garanti Bilgileri -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="help-card h-100 p-4 shadow-sm border rounded-4 bg-white">
+                    <div class="icon-circle mb-4">
+                        <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Garanti Bilgileri</h4>
+                    <p>
+                        Sitemizde satılan ürünler üretici veya distribütör garantisi kapsamındadır. Garanti süresi ürün detay sayfasında belirtilmektedir. Garanti kapsamındaki ürünler için teknik servis yönlendirmesi yapılmaktadır.
+                    </p>
+                </div>
+            </div>
+
+            <!-- İade ve Değişim -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="help-card h-100 p-4 shadow-sm border rounded-4 bg-white">
+                    <div class="icon-circle mb-4">
+                        <i class="fas fa-undo-alt fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">İade ve Değişim</h4>
+                    <p>
+                        Kullanılmamış ve orijinal ambalajı zarar görmemiş ürünlerde iade ve değişim işlemleri gerçekleştirilebilir. Hasarlı veya yanlış gönderilen ürünler için destek talebi oluşturabilirsiniz.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Güvenli Ödeme -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="help-card h-100 p-4 shadow-sm border rounded-4 bg-white">
+                    <div class="icon-circle mb-4">
+                        <i class="fas fa-lock fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Güvenli Ödeme</h4>
+                    <p>
+                        Tüm ödeme işlemleri güvenli ödeme altyapıları üzerinden gerçekleştirilmektedir. Kart bilgileriniz sistem üzerinde saklanmaz ve üçüncü kişilerle paylaşılmaz.
+                    </p>
+                </div>
+            </div>
+
+            <!-- İletişim -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="help-card h-100 p-4 shadow-sm border rounded-4 bg-white">
+                    <div class="icon-circle mb-4">
+                        <i class="fas fa-headset fa-2x text-primary"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">İletişim</h4>
+                    <p>
+                        <strong class="text-dark">E-posta:</strong> <a href="mailto:destek@volttech.com" class="text-primary text-decoration-none">destek@volttech.com</a><br>
+                        <strong class="text-dark">Telefon:</strong> 0850 000 00 00<br>
+                        <strong class="text-dark">Çalışma Saatleri:</strong> 09:00 - 18:00
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Önemli Bilgilendirme Banner -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="info-banner shadow-lg rounded-4">
+                    <div class="info-icon">
+                        <i class="fas fa-exclamation-triangle fa-2x text-warning"></i>
+                    </div>
+                    <div class="info-content">
+                        <h4 class="fw-bold text-white mb-2">Önemli Bilgilendirme</h4>
+                        <p class="text-white m-0 opacity-75">
+                            Elektrik bağlantısı gerektiren ürünlerde kurulum işlemlerinin uzman kişiler tarafından yapılması önerilmektedir. 
+                            Yanlış kullanım veya hatalı montaj sonucu oluşabilecek sorunlardan kullanıcı sorumludur.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .help-card {
+        transition: all 0.3s ease;
+        border: 1px solid #eee !important;
+    }
+
+    .help-card p {
+        color: #333 !important; /* Yazı rengi koyulaştırıldı */
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    .help-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+        border-color: #ffd333 !important;
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 211, 51, 0.15);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .help-card:hover .icon-circle {
+        background: #ffd333;
+    }
+
+    .info-banner {
+        background: #1a1c1e;
+        border-left: 6px solid #ffd333;
+        display: flex;
+        padding: 40px;
+        align-items: center;
+    }
+
+    .info-icon {
+        margin-right: 30px;
+        flex-shrink: 0;
+    }
+
+    .info-content {
+        flex-grow: 1;
+    }
+
+    .section-title span {
+        background: #fff;
+    }
+</style>

@@ -1,4 +1,4 @@
-﻿using Duende.IdentityServer.Services;
+using Duende.IdentityServer.Services;
 using IdentityServer.Application.Dtos;
 using IdentityServer.Application.Interfaces;
 using IdentityServer.Domain;
@@ -56,15 +56,17 @@ namespace IdentityServer.WebAPI.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
+            var user = await _userManager.FindByEmailAsync(model.Email) ?? await _userManager.FindByNameAsync(model.Email);
+
+            if (user != null)
             {
-                user = await _userManager.FindByNameAsync(model.Email);
+                // Kullanıcıyı DB'den tazelemek ve önbelleği geçersiz kılmak için güvenlik damgasını yeniliyoruz
+                await _userManager.UpdateSecurityStampAsync(user);
             }
 
-            if(user.EmailConfirmed == false)
+            if (user == null || user.EmailConfirmed == false)
             {
-                TempData["mailOnay"] = "Lütfen önce mailinizden onay veriniz.";
+                TempData["mailOnay"] = "Lütfen önce mailinizden onay veriniz veya bilgileriniz hatalı.";
                 return View(model);
             }
 

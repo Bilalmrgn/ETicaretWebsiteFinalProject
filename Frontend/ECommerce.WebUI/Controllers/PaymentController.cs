@@ -2,6 +2,8 @@ using Frontend.DtosLayer.BasketDtos;
 using Frontend.DtosLayer.PaymentDtos;
 using Frontend.DtosLayer.PaymentDtos.CreditCardDtos;
 using Frontend.DtosLayer.AccountSettingsDtos;
+using ECommerce.WebUI.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -17,10 +19,12 @@ namespace ECommerce.WebUI.Controllers
     public class PaymentController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IHubContext<OrderHub> _hubContext;
 
-        public PaymentController(IHttpClientFactory httpClientFactory)
+        public PaymentController(IHttpClientFactory httpClientFactory, IHubContext<OrderHub> hubContext)
         {
             _httpClientFactory = httpClientFactory;
+            _hubContext = hubContext;
         }
 
         public async Task<IActionResult> Index(int orderId)
@@ -71,6 +75,7 @@ namespace ECommerce.WebUI.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                await _hubContext.Clients.All.SendAsync("ReceiveNewOrderNotification", "Yeni bir siparişiniz var!");
                 return RedirectToAction("Index", "AccountSettings");
             }
 

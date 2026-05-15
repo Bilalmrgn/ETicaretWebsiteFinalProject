@@ -1,4 +1,4 @@
-﻿using ETicaret.Comment.Dtos;
+using ETicaret.Comment.Dtos;
 using ETicaret.Comment.Entities;
 
 namespace ETicaret.Comment.Services.CommentService
@@ -11,5 +11,6 @@ namespace ETicaret.Comment.Services.CommentService
         Task DeleteCommentAsync(int commentId);
         Task UpdateCommentAsync(UpdateCommentDto updateCommentDto);
         Task<List<ResultCommentListDto>> GetAllCommentsByProductIdAsync(string productId);
+        Task<ProductRatingDto> GetProductRatingAsync(string productId);
     }
 }

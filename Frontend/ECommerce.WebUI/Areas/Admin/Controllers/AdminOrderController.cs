@@ -1,4 +1,4 @@
-﻿using Frontend.DtosLayer.OrderDtos;
+using Frontend.DtosLayer.OrderDtos;
 using Frontend.DtosLayer.OrderDetailDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +51,25 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
 
             ViewBag.OrderId = id;
             return View(new List<ResultOrderDetailDto>());
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> ChangeStatus(int id, int status)
+        {
+            var client = _httpClientFactory.CreateClient("OrderClient");
+            
+            var response = await client.PutAsync($"api/Order/update-status/{id}/{status}", null);
+            
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["Success"] = "Sipariş durumu güncellendi.";
+            }
+            else
+            {
+                TempData["Error"] = "Sipariş durumu güncellenemedi.";
+            }
+            
+            return RedirectToAction("Index");
         }
     }
 }

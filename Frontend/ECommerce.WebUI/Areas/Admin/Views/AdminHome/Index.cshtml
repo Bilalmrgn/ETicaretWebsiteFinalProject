@@ -748,3 +748,66 @@
     </div>
     <!-- end container -->
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var calendarMiniEl = document.getElementById("calendar-mini");
+        
+        // Wait for main.js to initialize or re-initialize with our settings
+        setTimeout(function() {
+            var calendarMini = new FullCalendar.Calendar(calendarMiniEl, {
+                initialView: "dayGridMonth",
+                headerToolbar: {
+                    end: "today prev,next",
+                },
+                dateClick: function(info) {
+                    var existingNote = localStorage.getItem('note-' + info.dateStr) || "";
+                    
+                    Swal.fire({
+                        title: info.dateStr + ' için Notunuz',
+                        input: 'textarea',
+                        inputLabel: 'Notunuzu buraya yazın',
+                        inputValue: existingNote,
+                        showCancelButton: true,
+                        confirmButtonText: 'Kaydet',
+                        cancelButtonText: 'İptal',
+                        inputAttributes: {
+                            'style': 'height: 150px;'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (result.value) {
+                                localStorage.setItem('note-' + info.dateStr, result.value);
+                                Swal.fire('Kaydedildi!', '', 'success');
+                                location.reload(); // Refresh to show indicator or just simple reload
+                            } else {
+                                localStorage.removeItem('note-' + info.dateStr);
+                                Swal.fire('Not silindi.', '', 'info');
+                                location.reload();
+                            }
+                        }
+                    });
+                },
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    var events = [];
+                    for (var i = 0; i < localStorage.length; i++) {
+                        var key = localStorage.key(i);
+                        if (key.startsWith('note-')) {
+                            var date = key.replace('note-', '');
+                            events.push({
+                                title: '📌 Not',
+                                start: date,
+                                allDay: true,
+                                color: '#f1c40f',
+                                textColor: '#000'
+                            });
+                        }
+                    }
+                    successCallback(events);
+                }
+            });
+            calendarMini.render();
+        }, 500);
+    });
+</script>

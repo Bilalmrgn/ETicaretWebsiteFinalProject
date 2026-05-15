@@ -12,6 +12,7 @@ using TokenHandler = ECommerce.WebUI.Handlers.TokenHandler;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 
 builder.Services.AddHttpClient();
 
@@ -211,5 +212,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<ECommerce.WebUI.Hubs.OrderHub>("/orderhub");
 
 app.Run();

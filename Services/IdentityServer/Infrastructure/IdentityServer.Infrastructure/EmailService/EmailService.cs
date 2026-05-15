@@ -49,12 +49,17 @@ namespace IdentityServer.Infrastructure.EmailService
             await smtpClient.SendMailAsync(mailMessage);
         }
 
-        public async Task SendEmailPaymentSuccess( string toEmail)
+        public async Task SendEmailPaymentSuccess(string toEmail, byte[] pdfBytes, string fileName)
         {
             var host = _configuration["EmailSettings:Host"];
-            var port = int.Parse(_configuration["EmailSettings:Port"]);
+
+            var port = int.Parse(
+                _configuration["EmailSettings:Port"]);
+
             var email = _configuration["EmailSettings:Email"];
-            var password = _configuration["EmailSettings:Password"];
+
+            var password =
+                _configuration["EmailSettings:Password"];
 
             var smtpClient = new SmtpClient(host, port)
             {
@@ -67,11 +72,28 @@ namespace IdentityServer.Infrastructure.EmailService
             var mailMessage = new MailMessage
             {
                 From = new MailAddress(email, "Benim Uygulamam"),
-                Subject = "Ödeme onaylandı MEsajı",
-                Body = $@" <h4>ödemeniz başarılı.</h4>",IsBodyHtml = true
+
+                Subject = "Ödeme Başarılı",
+
+                Body = @"
+        <h3>Ödemeniz başarıyla tamamlandı.</h3>
+        <p>Faturanız ekte bulunmaktadır.</p>",
+
+                IsBodyHtml = true
             };
 
             mailMessage.To.Add(toEmail);
+
+            // PDF ATTACHMENT
+            // EKLEDİĞİN YENİ KISIM
+            var stream = new MemoryStream(pdfBytes);
+
+            var attachment = new Attachment(
+                stream,
+                fileName,
+                "application/pdf");
+
+            mailMessage.Attachments.Add(attachment);
 
             await smtpClient.SendMailAsync(mailMessage);
         }

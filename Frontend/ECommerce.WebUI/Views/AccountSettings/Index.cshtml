@@ -348,7 +348,27 @@ else
                                                 <div class="order-card">
                                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                                         <strong>Sipariş #@order.OrderingId</strong>
-                                                        <span class="badge badge-secondary px-3 py-2">@order.Status</span>
+                                                        @switch (order.Status)
+                                                        {
+                                                            case Frontend.DtosLayer.OrderDtos.OrderStatus.Pending:
+                                                                <span class="badge bg-warning text-dark px-3 py-2">Bekliyor</span>
+                                                                break;
+                                                            case Frontend.DtosLayer.OrderDtos.OrderStatus.Processing:
+                                                                <span class="badge bg-info text-white px-3 py-2">Hazırlanıyor</span>
+                                                                break;
+                                                            case Frontend.DtosLayer.OrderDtos.OrderStatus.Completed:
+                                                                <span class="badge bg-success text-white px-3 py-2">Tamamlandı</span>
+                                                                break;
+                                                            case Frontend.DtosLayer.OrderDtos.OrderStatus.Shipped:
+                                                                <span class="badge bg-primary text-white px-3 py-2">Kargoya Verildi</span>
+                                                                break;
+                                                            case Frontend.DtosLayer.OrderDtos.OrderStatus.Cancelled:
+                                                                <span class="badge bg-danger text-white px-3 py-2">İptal Edildi</span>
+                                                                break;
+                                                            default:
+                                                                <span class="badge badge-secondary px-3 py-2">@order.Status</span>
+                                                                break;
+                                                        }
                                                     </div>
                                                     <div class="text-muted small mb-1">
                                                         Tarih: @order.CreatedDate.ToString("dd.MM.yyyy HH:mm")

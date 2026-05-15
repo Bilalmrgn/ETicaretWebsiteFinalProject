@@ -41,11 +41,26 @@ namespace ECommerce.WebUI.ViewComponents.UILayoutViewComponents
                     favoriteProductIds = favorites.Select(x => x.ProductId).ToList();
                 }
 
-                var model = products.Select(p => new ProductWithFavoriteViewModel
+                var model = new List<ProductWithFavoriteViewModel>();
+                var commentClient = _httpClientFactory.CreateClient("CommentClient");
+
+                foreach (var p in products)
                 {
-                    Product = p,
-                    IsFavorite = favoriteProductIds.Contains(p.ProductId)
-                }).ToList();
+                    var ratingResponse = await commentClient.GetAsync($"/comments/GetProductRating/{p.ProductId}");
+                    if (ratingResponse.IsSuccessStatusCode)
+                    {
+                        var ratingJson = await ratingResponse.Content.ReadAsStringAsync();
+                        var ratingData = JsonConvert.DeserializeObject<dynamic>(ratingJson);
+                        p.AverageRating = (double)ratingData.averageRating;
+                        p.CommentCount = (int)ratingData.commentCount;
+                    }
+
+                    model.Add(new ProductWithFavoriteViewModel
+                    {
+                        Product = p,
+                        IsFavorite = favoriteProductIds.Contains(p.ProductId)
+                    });
+                }
 
                 return View(model);
             }

@@ -202,7 +202,7 @@
             
             <div class="mt-auto d-none d-lg-block">
                 <p class="small mb-2">Hesabınız var mı?</p>
-                <a href="/Account/Login?returnUrl=@ViewBag.ReturnUrl" class="btn btn-dark w-100 rounded-pill py-3 fw-bold border-0" style="background: rgba(0,0,0,0.8)">Giriş Yap</a>
+                <a href="@Url.Action("Login", "Account", new { returnUrl = ViewBag.ReturnUrl })" class="btn btn-dark w-100 rounded-pill py-3 fw-bold border-0" style="background: rgba(0,0,0,0.8)">Giriş Yap</a>
             </div>
         </div>
 
@@ -278,7 +278,7 @@
                 </button>
 
                 <div class="login-link d-lg-none">
-                    Zaten bir hesabınız var mı? <a href="/Account/Login?returnUrl=@ViewBag.ReturnUrl">Giriş Yap</a>
+                    Zaten bir hesabınız var mı? <a href="@Url.Action("Login", "Account", new { returnUrl = ViewBag.ReturnUrl })">Giriş Yap</a>
                 </div>
             </form>
         </div>

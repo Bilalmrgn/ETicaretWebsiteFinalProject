@@ -16,5 +16,7 @@ namespace Shared.RabbitMQ.Settings
 
         public string PaymentCompletedExchange { get; set; }
             = "payment.completed.exchange";
+
+        public string InvoiceCreatedExchange { get; set; }
     }
 }

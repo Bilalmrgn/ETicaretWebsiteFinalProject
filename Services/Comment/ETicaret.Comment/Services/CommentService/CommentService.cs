@@ -126,5 +126,23 @@ namespace ETicaret.Comment.Services.CommentService
                   // UserId = y.UserId 
               }).ToListAsync();
         }
+
+        public async Task<ProductRatingDto> GetProductRatingAsync(string productId)
+        {
+            var comments = await _context.UserComments
+                .Where(x => x.ProductId == productId)
+                .ToListAsync();
+
+            if (!comments.Any())
+            {
+                return new ProductRatingDto { AverageRating = 0, CommentCount = 0 };
+            }
+
+            return new ProductRatingDto
+            {
+                AverageRating = Math.Round(comments.Average(x => x.Rating), 1),
+                CommentCount = comments.Count
+            };
+        }
     }
 }

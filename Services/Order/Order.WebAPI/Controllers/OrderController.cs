@@ -89,5 +89,20 @@ namespace Order.WebAPI.Controllers
             var result = await _orderingService.HasCompletedOrderAsync(userId);
             return Ok(result);
         }
+
+        [HttpPut("update-status/{orderId}/{status}")]
+        public IActionResult UpdateStatus(int orderId, OrderStatus status)
+        {
+            var order = _context.Orderings.Find(orderId);
+
+            if (order == null)
+                return NotFound("Order not found");
+
+            order.UpdateStatus(status);
+
+            _context.SaveChanges();
+
+            return Ok("Order status updated successfully");
+        }
     }
 }

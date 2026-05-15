@@ -10,6 +10,6 @@ namespace IdentityServer.Infrastructure.EmailService
     {
         Task SendResetPasswordEmail(string resetEmailLink, string toEmail);
         Task SendEmailConfirmationEmail(string link, string toEmail);
-        Task SendEmailPaymentSuccess(string toEmail);
+        Task SendEmailPaymentSuccess(string toEmail, byte[] pdfBytes, string fileName);
     }
 }

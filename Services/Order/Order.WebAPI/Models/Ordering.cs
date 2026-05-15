@@ -1,4 +1,4 @@
-﻿namespace Order.WebAPI.Models
+namespace Order.WebAPI.Models
 {
     public class Ordering
     {
@@ -39,6 +39,16 @@
         public void SetPaymentProcessing()
         {
             Status = OrderStatus.Processing;
+        }
+        
+        public void Ship()
+        {
+            Status = OrderStatus.Shipped;
+        }
+
+        public void UpdateStatus(OrderStatus status)
+        {
+            Status = status;
         }
 
     }

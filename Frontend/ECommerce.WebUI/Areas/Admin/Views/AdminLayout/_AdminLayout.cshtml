@@ -1,4 +1,4 @@
-﻿@{
+@{
     Layout = null;
 }
 
@@ -42,6 +42,27 @@
     <script src="~/AdminTemplate/assets/js/world-merc.js"></script>
     <script src="~/AdminTemplate/assets/js/polyfill.js"></script>
     <script src="~/AdminTemplate/assets/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        var connection = new signalR.HubConnectionBuilder().withUrl("/orderhub").build();
+
+        connection.on("ReceiveNewOrderNotification", function (message) {
+            Swal.fire({
+                title: 'Yeni Sipariş!',
+                text: message,
+                icon: 'info',
+                confirmButtonText: 'Tamam'
+            });
+        });
+
+        connection.start().then(function () {
+            console.log("SignalR Connected");
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

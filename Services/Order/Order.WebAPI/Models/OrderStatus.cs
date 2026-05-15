@@ -1,4 +1,4 @@
-﻿namespace Order.WebAPI.Models
+namespace Order.WebAPI.Models
 {
     public enum OrderStatus
     {
@@ -7,6 +7,7 @@
         Processing,
         Completed,
         Failed,
-        Cancelled
+        Cancelled,
+        Shipped
     }
 }

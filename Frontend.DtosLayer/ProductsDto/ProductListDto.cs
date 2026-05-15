@@ -16,6 +16,8 @@ namespace Frontend.DtosLayer.ProductsDto
         public string ProductId { get; set; }
         public int Quantity { get; set; }
         public CategoryListDto Category { get; set; }
+        public double AverageRating { get; set; }
+        public int CommentCount { get; set; }
 
     }
 }
