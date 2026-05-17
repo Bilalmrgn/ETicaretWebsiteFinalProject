@@ -61,7 +61,7 @@ namespace Invoice.WebAPI.Consume
                 autoDelete: false
             );
 
-            // BIND
+            
             _channel.QueueBind(
                 queue: QueueName,
                 exchange: _settings.PaymentCompletedExchange,

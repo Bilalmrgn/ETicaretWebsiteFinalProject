@@ -60,13 +60,17 @@
                     {
                         foreach (var item in Model)
                         {
-                            <tr>
-                                <td><p>@item.OrderingId</p></td>
-                                <td><p>@item.FirstName @item.LastName</p></td>
-                                <td><p>@item.PhoneNumber</p></td>
-                                <td><p>@item.City / @item.District</p></td>
-                                <td><p>@item.TotalPrice.ToString("N2") ₺</p></td>
-                                <td><p>@item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</p></td>
+                            var isNew = item.Status == Frontend.DtosLayer.OrderDtos.OrderStatus.Pending;
+                            var rowStyle = isNew ? "background-color: rgba(54, 92, 245, 0.05);" : "";
+                            var textStyle = isNew ? "font-weight: 800; color: #1e293b !important;" : "";
+                            
+                            <tr style="@rowStyle">
+                                <td><p style="@textStyle">@item.OrderingId</p></td>
+                                <td><p style="@textStyle">@item.FirstName @item.LastName</p></td>
+                                <td><p style="@textStyle">@item.PhoneNumber</p></td>
+                                <td><p style="@textStyle">@item.City / @item.District</p></td>
+                                <td><p style="@textStyle">@item.TotalPrice.ToString("N2") ₺</p></td>
+                                <td><p style="@textStyle">@item.CreatedDate.ToString("dd.MM.yyyy HH:mm")</p></td>
                                 <td>
                                     @switch (item.Status)
                                     {

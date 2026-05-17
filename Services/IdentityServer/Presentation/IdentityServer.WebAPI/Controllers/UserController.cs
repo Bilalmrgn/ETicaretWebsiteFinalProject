@@ -1,96 +1,37 @@
-﻿/*using IdentityServer.Application.Dtos;
-using IdentityServer.Application.Interfaces;
-using IdentityServer.Infrastructure.EmailService;
+using IdentityServer.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using static Duende.IdentityServer.IdentityServerConstants;
 
 namespace IdentityServer.WebAPI.Controllers
 {
-    
-    [ApiController]
+    [Authorize(LocalApi.PolicyName)]
     [Route("api/[controller]")]
+    [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly IEmailService _emailService;
-        public UserController(IUserService userService, IEmailService emailService)
-        {
-            _userService = userService;
-            _emailService = emailService;
-        }
-        //Create User
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<IActionResult> CreateUser([FromBody] RegisterDto dto)
-        {
-            var result = await _userService.RegisterAsync(dto);
+        private readonly UserManager<AppUser> _userManager;
 
-            return Ok(result);
+        public UserController(UserManager<AppUser> userManager)
+        {
+            _userManager = userManager;
         }
 
-        //Delete User
-        [Authorize(LocalApi.PolicyName)]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string userId)
-        {
-            var result = await _userService.DeleteAccountAsync(userId);
-
-            return Ok(result);
-        }
-
-        //change password
-        [Authorize(LocalApi.PolicyName)]
-        [HttpPost("change-password")]//url de change password yazar
-        public async Task<IActionResult> ChangePassword(string userId, ChangePasswordDto dto)
-        {
-            var result = await _userService.ChangePasswordAsync(userId, dto);
-
-            return Ok(result);
-        }
-
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
-        {
-            var result = await _userService.ResetPasswordAsync(dto);
-
-            var baseUrl =
-                $"{Request.Scheme}://{Request.Host}";
-
-            var resetLink =
-                $"{baseUrl}/reset-password" +
-                $"?userId={result.UserId}&token={Uri.EscapeDataString(result.Token)}";
-
-            await _emailService.SendResetPasswordEmail(resetLink, dto.Email);
-
-            return Ok();
-        }
-        [Authorize(LocalApi.PolicyName)]
-        [HttpPut]
-        public async Task<IActionResult> UpdateProfile(string userId, UpdateUserProfileDto dto)
-        {
-            var result = await _userService.UpdateUserProfile(userId, dto);
-
-            return Ok(result);
-        }
-
-        //GetAllUser
         [HttpGet]
-        public async Task<IActionResult> GetAllUser()
+        public async Task<IActionResult> GetAllUsers()
         {
-            var result = await _userService.GetAllAsync();
+            var users = await _userManager.Users.Select(u => new
+            {
+                u.Id,
+                u.UserName,
+                u.Email,
+                u.Name,
+                u.Surname
+            }).ToListAsync();
 
-            return Ok(result);
-        }
-
-        //Login user
-        [HttpPost("login")]
-        public async Task<IActionResult> LoginUser(LoginDto loginDto)
-        {
-            var result = await _userService.LoginAsync(loginDto);
-            return Ok(result);
+            return Ok(users);
         }
     }
 }
-*/

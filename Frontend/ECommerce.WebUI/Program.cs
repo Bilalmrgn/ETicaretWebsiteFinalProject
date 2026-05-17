@@ -91,6 +91,7 @@ builder.Services.AddHttpClient("PaymentClient", client =>
 
 //Service Registration (IoC)
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ECommerce.WebUI.Services.StatisticServices.IStatisticService, ECommerce.WebUI.Services.StatisticServices.StatisticService>();
 builder.Services.AddHttpContextAccessor();
 //Authentication konfigurasyonlar�
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();

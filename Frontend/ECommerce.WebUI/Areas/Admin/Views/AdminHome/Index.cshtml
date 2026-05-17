@@ -1,3 +1,4 @@
+@model Frontend.DtosLayer.DashboardDtos.DashboardStatisticDto
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/AdminLayout/_AdminLayout.cshtml";
@@ -45,12 +46,8 @@
                         <i class="lni lni-cart-full"></i>
                     </div>
                     <div class="content">
-                        <h6 class="mb-10">New Orders</h6>
-                        <h3 class="text-bold mb-10">34567</h3>
-                        <p class="text-sm text-success">
-                            <i class="lni lni-arrow-up"></i> +2.00%
-                            <span class="text-gray">(30 days)</span>
-                        </p>
+                        <h6 class="mb-10">Yeni Siparişler</h6>
+                        <h3 class="text-bold mb-10">@Model?.TotalOrderCount</h3>
                     </div>
                 </div>
                 <!-- End Icon Cart -->
@@ -62,12 +59,8 @@
                         <i class="lni lni-dollar"></i>
                     </div>
                     <div class="content">
-                        <h6 class="mb-10">Total Income</h6>
-                        <h3 class="text-bold mb-10">$74,567</h3>
-                        <p class="text-sm text-success">
-                            <i class="lni lni-arrow-up"></i> +5.45%
-                            <span class="text-gray">Increased</span>
-                        </p>
+                        <h6 class="mb-10">Toplam Gelir</h6>
+                        <h3 class="text-bold mb-10">₺@Model?.TotalIncome.ToString("N2")</h3>
                     </div>
                 </div>
                 <!-- End Icon Cart -->
@@ -79,12 +72,8 @@
                         <i class="lni lni-credit-cards"></i>
                     </div>
                     <div class="content">
-                        <h6 class="mb-10">Total Expense</h6>
-                        <h3 class="text-bold mb-10">$24,567</h3>
-                        <p class="text-sm text-danger">
-                            <i class="lni lni-arrow-down"></i> -2.00%
-                            <span class="text-gray">Expense</span>
-                        </p>
+                        <h6 class="mb-10">Toplam Gider</h6>
+                        <h3 class="text-bold mb-10">₺@Model?.TotalExpense.ToString("N2")</h3>
                     </div>
                 </div>
                 <!-- End Icon Cart -->
@@ -96,12 +85,8 @@
                         <i class="lni lni-user"></i>
                     </div>
                     <div class="content">
-                        <h6 class="mb-10">New User</h6>
-                        <h3 class="text-bold mb-10">34567</h3>
-                        <p class="text-sm text-danger">
-                            <i class="lni lni-arrow-down"></i> -25.00%
-                            <span class="text-gray"> Earning</span>
-                        </p>
+                        <h6 class="mb-10">Yeni Kullanıcı</h6>
+                        <h3 class="text-bold mb-10">@Model?.TotalUserCount</h3>
                     </div>
                 </div>
                 <!-- End Icon Cart -->
@@ -109,75 +94,64 @@
             <!-- End Col -->
         </div>
         <!-- End Row -->
-        <div class="row">
-            <div class="col-lg-7">
-                <div class="card-style mb-30">
-                    <div class="title d-flex flex-wrap justify-content-between">
-                        <div class="left">
-                            <h6 class="text-medium mb-10">Yearly Stats</h6>
-                            <h3 class="text-bold">$245,479</h3>
-                        </div>
-                        <div class="right">
-                            <div class="select-style-1">
-                                <div class="select-position select-sm">
-                                    <select class="light-bg">
-                                        <option value="">Yearly</option>
-                                        <option value="">Monthly</option>
-                                        <option value="">Weekly</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- end select -->
-                        </div>
-                    </div>
-                    <!-- End Title -->
-                    <div class="chart">
-                        <canvas id="Chart1" style="width: 100%; height: 400px; margin-left: -35px;"></canvas>
-                    </div>
-                    <!-- End Chart -->
-                </div>
-            </div>
-            <!-- End Col -->
-            <div class="col-lg-5">
-                <div class="card-style mb-30">
-                    <div class="title d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="left">
-                            <h6 class="text-medium mb-30">Sales/Revenue</h6>
-                        </div>
-                        <div class="right">
-                            <div class="select-style-1">
-                                <div class="select-position select-sm">
-                                    <select class="light-bg">
-                                        <option value="">Yearly</option>
-                                        <option value="">Monthly</option>
-                                        <option value="">Weekly</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- end select -->
-                        </div>
-                    </div>
-                    <!-- End Title -->
-                    <div class="chart">
-                        <canvas id="Chart2" style="width: 100%; height: 400px; margin-left: -45px;"></canvas>
-                    </div>
-                    <!-- End Chart -->
-                </div>
-            </div>
-            <!-- End Col -->
-        </div>
         <!-- End Row -->
         <div class="row">
             <div class="col-lg-5">
                 <div class="card-style mb-30">
                     <div class="title d-flex justify-content-between align-items-center">
                         <div class="left">
-                            <h6 class="text-medium mb-30">Sells by State</h6>
+                            <h6 class="text-medium mb-30">Şehirlere Göre Satışlar</h6>
                         </div>
                     </div>
-                    <!-- End Title -->
-                    <div id="map" style="width: 100%; height: 400px; overflow: hidden;"></div>
-                    <p>Last updated: 7 days ago</p>
+                    <div class="sales-cities-list" style="max-height: 400px; overflow-y: auto; padding-right: 5px;">
+                        @if (Model?.SalesByCities != null && Model.SalesByCities.Any())
+                        {
+                            var totalCityOrders = Model.SalesByCities.Sum(x => x.OrderCount);
+                            var rank = 1;
+                            foreach (var item in Model.SalesByCities)
+                            {
+                                var pct = totalCityOrders > 0 ? (item.OrderCount * 100 / totalCityOrders) : 0;
+                                var gradientColor = rank == 1 ? "linear-gradient(90deg, #365cf5, #6382ff)" : 
+                                                    rank == 2 ? "linear-gradient(90deg, #f2994a, #f2c94c)" :
+                                                    rank == 3 ? "linear-gradient(90deg, #27ae60, #2ecc71)" :
+                                                    "linear-gradient(90deg, #4a6cf7, #8a9ffb)";
+                                
+                                <div class="city-item mb-20 p-15" style="background: #fafbfe; border-radius: 12px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 8px; border: 1px solid #f1f3f9;">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-10">
+                                            <span class="rank-badge d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; border-radius: 50%; font-weight: bold; font-size: 13px; color: #fff; background: @(rank == 1 ? "#365cf5" : rank == 2 ? "#f2994a" : rank == 3 ? "#27ae60" : "#8a9ffb")">
+                                                @rank
+                                            </span>
+                                            <span class="text-bold text-dark" style="font-size: 15px;">@item.City</span>
+                                        </div>
+                                        <div class="d-flex gap-5">
+                                            <span class="badge" style="background: rgba(54, 92, 245, 0.1); color: #365cf5; font-weight: 600; border-radius: 8px; padding: 4px 8px; font-size: 12px;">
+                                                📦 @item.OrderCount Sipariş
+                                            </span>
+                                            <span class="badge" style="background: rgba(39, 174, 96, 0.1); color: #27ae60; font-weight: 600; border-radius: 8px; padding: 4px 8px; font-size: 12px;">
+                                                🛍️ @item.ProductCount Ürün
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="progress" style="height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; margin-top: 5px;">
+                                        <div class="progress-bar" role="progressbar" style="width: @pct%; background: @gradientColor; border-radius: 4px; height: 100%; transition: width 1s ease-in-out;" aria-valuenow="@pct" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between" style="font-size: 11px; color: #888;">
+                                        <span>Satış Payı</span>
+                                        <span>%@pct</span>
+                                    </div>
+                                </div>
+                                rank++;
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center p-30">
+                                <i class="lni lni-inbox text-muted" style="font-size: 48px;"></i>
+                                <p class="text-muted mt-10">Henüz şehir bazlı satış verisi bulunmamaktadır.</p>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
             <!-- End Col -->
@@ -185,19 +159,7 @@
                 <div class="card-style mb-30">
                     <div class="title d-flex flex-wrap justify-content-between align-items-center">
                         <div class="left">
-                            <h6 class="text-medium mb-30">Top Selling Products</h6>
-                        </div>
-                        <div class="right">
-                            <div class="select-style-1">
-                                <div class="select-position select-sm">
-                                    <select class="light-bg">
-                                        <option value="">Yearly</option>
-                                        <option value="">Monthly</option>
-                                        <option value="">Weekly</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- end select -->
+                            <h6 class="text-medium mb-30">En Çok Satan Ürünler</h6>
                         </div>
                     </div>
                     <!-- End Title -->
@@ -207,196 +169,51 @@
                                 <tr>
                                     <th></th>
                                     <th>
-                                        <h6 class="text-sm text-medium">Products</h6>
+                                        <h6 class="text-sm text-medium">Ürün</h6>
                                     </th>
                                     <th class="min-width">
-                                        <h6 class="text-sm text-medium">Category</h6>
+                                        <h6 class="text-sm text-medium">Kategori</h6>
                                     </th>
                                     <th class="min-width">
-                                        <h6 class="text-sm text-medium">Price</h6>
+                                        <h6 class="text-sm text-medium">Birim Fiyatı</h6>
                                     </th>
                                     <th class="min-width">
-                                        <h6 class="text-sm text-medium">Sold</h6>
+                                        <h6 class="text-sm text-medium">Satılan</h6>
                                     </th>
                                     <th class="min-width">
-                                        <h6 class="text-sm text-medium">Profit</h6>
+                                        <h6 class="text-sm text-medium">Ciro</h6>
                                     </th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="check-input-primary">
-                                            <input class="form-check-input" type="checkbox" id="checkbox-1" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="product">
-                                            <div class="image">
-                                                <img src="/AdminTemplate/assets/images/products/product-mini-1.jpg" alt="" />
-                                            </div>
-                                            <p class="text-sm">Arm Chair</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">Interior</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">$345</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">43</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">$45</p>
-                                    </td>
-                                    <td>
-                                        <div class="action justify-content-end">
-                                            <button class="more-btn ml-10 dropdown-toggle" id="moreAction1" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                <i class="lni lni-more-alt"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreAction1">
-                                                <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Remove</a>
-                                                </li>
-                                                <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Edit</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="check-input-primary">
-                                            <input class="form-check-input" type="checkbox" id="checkbox-1" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="product">
-                                            <div class="image">
-                                                <img src="/AdminTemplate/assets/images/products/product-mini-2.jpg" alt="" />
-                                            </div>
-                                            <p class="text-sm">SOfa</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">Interior</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">$145</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">13</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">$15</p>
-                                    </td>
-                                    <td>
-                                        <div class="action justify-content-end">
-                                            <button class="more-btn ml-10 dropdown-toggle" id="moreAction1" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                <i class="lni lni-more-alt"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreAction1">
-                                                <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Remove</a>
-                                                </li>
-                                                <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Edit</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="check-input-primary">
-                                            <input class="form-check-input" type="checkbox" id="checkbox-1" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="product">
-                                            <div class="image">
-                                                <img src="/AdminTemplate/assets/images/products/product-mini-3.jpg" alt="" />
-                                            </div>
-                                            <p class="text-sm">Dining Table</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">Interior</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">$95</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">32</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">$215</p>
-                                    </td>
-                                    <td>
-                                        <div class="action justify-content-end">
-                                            <button class="more-btn ml-10 dropdown-toggle" id="moreAction1" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                <i class="lni lni-more-alt"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreAction1">
-                                                <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Remove</a>
-                                                </li>
-                                                <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Edit</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="check-input-primary">
-                                            <input class="form-check-input" type="checkbox" id="checkbox-1" />
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="product">
-                                            <div class="image">
-                                                <img src="/AdminTemplate/assets/images/products/product-mini-4.jpg" alt="" />
-                                            </div>
-                                            <p class="text-sm">Office Chair</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">Interior</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">$105</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">23</p>
-                                    </td>
-                                    <td>
-                                        <p class="text-sm">$345</p>
-                                    </td>
-                                    <td>
-                                        <div class="action justify-content-end">
-                                            <button class="more-btn ml-10 dropdown-toggle" id="moreAction1" data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                <i class="lni lni-more-alt"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreAction1">
-                                                <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Remove</a>
-                                                </li>
-                                                <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Edit</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                @if (Model?.TopSellingProducts != null)
+                                {
+                                    foreach (var item in Model.TopSellingProducts)
+                                    {
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <div class="product">
+                                                    <p class="text-sm">@item.ProductName</p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm">-</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm">₺@item.Price.ToString("N2")</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm">@item.TotalSold</p>
+                                            </td>
+                                            <td>
+                                                <p class="text-sm">₺@((item.Price * item.TotalSold).ToString("N2"))</p>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                }
                             </tbody>
                         </table>
                         <!-- End Table -->
@@ -406,127 +223,6 @@
             <!-- End Col -->
         </div>
         <!-- End Row -->
-        <div class="row">
-            <div class="col-lg-7">
-                <div class="card-style mb-30">
-                    <div class="title d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="left">
-                            <h6 class="text-medium mb-2">Sales Forecast</h6>
-                        </div>
-                        <div class="right">
-                            <div class="select-style-1 mb-2">
-                                <div class="select-position select-sm">
-                                    <select class="light-bg">
-                                        <option value="">Last Month</option>
-                                        <option value="">Last 3 Months</option>
-                                        <option value="">Last Year</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- end select -->
-                        </div>
-                    </div>
-                    <!-- End Title -->
-                    <div class="chart">
-                        <div id="legend3">
-                            <ul class="legend3 d-flex flex-wrap align-items-center mb-30">
-                                <li>
-                                    <div class="d-flex">
-                                        <span class="bg-color primary-bg"> </span>
-                                        <div class="text">
-                                            <p class="text-sm text-success">
-                                                <span class="text-dark">Revenue</span> +25.55%
-                                                <i class="lni lni-arrow-up"></i>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex">
-                                        <span class="bg-color purple-bg"></span>
-                                        <div class="text">
-                                            <p class="text-sm text-success">
-                                                <span class="text-dark">Net Profit</span> +45.55%
-                                                <i class="lni lni-arrow-up"></i>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex">
-                                        <span class="bg-color orange-bg"></span>
-                                        <div class="text">
-                                            <p class="text-sm text-danger">
-                                                <span class="text-dark">Order</span> -4.2%
-                                                <i class="lni lni-arrow-down"></i>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <canvas id="Chart3" style="width: 100%; height: 450px; margin-left: -35px;"></canvas>
-                    </div>
-                </div>
-            </div>
-            <!-- End Col -->
-            <div class="col-lg-5">
-                <div class="card-style mb-30">
-                    <div class="title d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="left">
-                            <h6 class="text-medium mb-2">Traffic</h6>
-                        </div>
-                        <div class="right">
-                            <div class="select-style-1 mb-2">
-                                <div class="select-position select-sm">
-                                    <select class="bg-ligh">
-                                        <option value="">Last 6 Months</option>
-                                        <option value="">Last 3 Months</option>
-                                        <option value="">Last Year</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- end select -->
-                        </div>
-                    </div>
-                    <!-- End Title -->
-                    <div class="chart">
-                        <div id="legend4">
-                            <ul class="legend3 d-flex flex-wrap gap-3 gap-sm-0 align-items-center mb-30">
-                                <li>
-                                    <div class="d-flex">
-                                        <span class="bg-color primary-bg"> </span>
-                                        <div class="text">
-                                            <p class="text-sm text-success">
-                                                <span class="text-dark">Store Visits</span>
-                                                +25.55%
-                                                <i class="lni lni-arrow-up"></i>
-                                            </p>
-                                            <h2>3456</h2>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex">
-                                        <span class="bg-color danger-bg"></span>
-                                        <div class="text">
-                                            <p class="text-sm text-danger">
-                                                <span class="text-dark">Visitors</span> -2.05%
-                                                <i class="lni lni-arrow-down"></i>
-                                            </p>
-                                            <h2>3456</h2>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <canvas id="Chart4" style="width: 100%; height: 420px; margin-left: -35px;"></canvas>
-                    </div>
-                    <!-- End Chart -->
-                </div>
-            </div>
-            <!-- End Col -->
-        </div>
         <!-- End Row -->
         <div class="row">
             <div class="col-lg-5">
@@ -539,18 +235,7 @@
                 <div class="card-style mb-30">
                     <div class="title d-flex flex-wrap align-items-center justify-content-between">
                         <div class="left">
-                            <h6 class="text-medium mb-30">Sales History</h6>
-                        </div>
-                        <div class="right">
-                            <div class="select-style-1">
-                                <div class="select-position select-sm">
-                                    <select class="light-bg">
-                                        <option value="">Today</option>
-                                        <option value="">Yesterday</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- end select -->
+                            <h6 class="text-medium mb-30">Satış Geçmişi</h6>
                         </div>
                     </div>
                     <!-- End Title -->
@@ -559,26 +244,26 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <h6 class="text-sm text-medium">Products</h6>
+                                        <h6 class="text-sm text-medium">Ürünler</h6>
                                     </th>
                                     <th class="min-width">
                                         <h6 class="text-sm text-medium">
-                                            Category <i class="lni lni-arrows-vertical"></i>
+                                            Kategori <i class="lni lni-arrows-vertical"></i>
                                         </h6>
                                     </th>
                                     <th class="min-width">
                                         <h6 class="text-sm text-medium">
-                                            Revenue <i class="lni lni-arrows-vertical"></i>
+                                            Gelir <i class="lni lni-arrows-vertical"></i>
                                         </h6>
                                     </th>
                                     <th class="min-width">
                                         <h6 class="text-sm text-medium">
-                                            Status <i class="lni lni-arrows-vertical"></i>
+                                            Durum <i class="lni lni-arrows-vertical"></i>
                                         </h6>
                                     </th>
                                     <th>
                                         <h6 class="text-sm text-medium text-end">
-                                            Actions <i class="lni lni-arrows-vertical"></i>
+                                            İşlemler <i class="lni lni-arrows-vertical"></i>
                                         </h6>
                                     </th>
                                 </tr>
@@ -600,7 +285,7 @@
                                         <p class="text-sm">$345</p>
                                     </td>
                                     <td>
-                                        <span class="status-btn close-btn">Pending</span>
+                                        <span class="status-btn close-btn">Beklemede</span>
                                     </td>
                                     <td>
                                         <div class="action justify-content-end">
@@ -613,10 +298,10 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreAction1">
                                                 <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Remove</a>
+                                                    <a href="#0" class="text-gray">Sil</a>
                                                 </li>
                                                 <li class="dropdown-item">
-                                                    <a href="#0" class="text-gray">Edit</a>
+                                                    <a href="#0" class="text-gray">Düzenle</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -758,6 +443,7 @@
         setTimeout(function() {
             var calendarMini = new FullCalendar.Calendar(calendarMiniEl, {
                 initialView: "dayGridMonth",
+                locale: 'tr',
                 headerToolbar: {
                     end: "today prev,next",
                 },
@@ -810,4 +496,5 @@
             calendarMini.render();
         }, 500);
     });
+</script>
 </script>

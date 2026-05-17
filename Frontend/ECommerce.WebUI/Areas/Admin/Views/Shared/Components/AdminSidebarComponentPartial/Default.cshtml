@@ -156,8 +156,15 @@
                     <li>
                         <a asp-area="Admin"
                            asp-controller="AdminOrder"
-                           asp-action="Index">
-                            Order List
+                           asp-action="Index"
+                           style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                            <span>Order List</span>
+                            @if (ViewBag.NewOrderCount > 0)
+                            {
+                                <span class="badge" style="background: red; color: white; border-radius: 50%; min-width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; border: 1px solid #fff; padding: 0 4px;">
+                                    @ViewBag.NewOrderCount
+                                </span>
+                            }
                         </a>
                     </li>
                     <li>

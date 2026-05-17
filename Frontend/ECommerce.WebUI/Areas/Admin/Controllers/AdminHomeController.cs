@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using ECommerce.WebUI.Services.StatisticServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.WebUI.Areas.Admin.Controllers
@@ -7,9 +8,17 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
     [Area("Admin")]
     public class AdminHomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IStatisticService _statisticService;
+
+        public AdminHomeController(IStatisticService statisticService)
         {
-            return View();
+            _statisticService = statisticService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var statistics = await _statisticService.GetDashboardStatisticsAsync();
+            return View(statistics);
         }
     }
 }

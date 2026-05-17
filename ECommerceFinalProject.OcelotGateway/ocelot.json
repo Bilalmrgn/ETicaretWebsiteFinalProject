@@ -773,6 +773,34 @@
     //-------------------------------------------------------IDENTITY İŞLEMLERİ------------------------------------------------------------------------------
     //-------------------------------------------------------IDENTITY İŞLEMLERİ------------------------------------------------------------------------------
     {
+      "DownstreamPathTemplate": "/api/User",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/identity/user",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Dashboard/statistics",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7222
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/dashboard/statistics",
+      "UpstreamHttpMethod": [
+        "Get"
+      ]
+    },
+    {
       "DownstreamPathTemplate": "/api/AccountSettings/change-email",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [

@@ -104,5 +104,48 @@ namespace Order.WebAPI.Controllers
 
             return Ok("Order status updated successfully");
         }
+
+        [HttpGet("dashboard-statistics")]
+        public async Task<IActionResult> GetDashboardStatistics()
+        {
+            var totalOrders = await _context.Orderings.CountAsync();
+            
+            // Getting all total price to make sure data is seen.
+            var totalIncome = await _context.Orderings.SumAsync(x => x.TotalPrice);
+
+            var topSellingProducts = await _context.OrderDetails
+                .GroupBy(x => new { x.ProductId, x.ProductName, x.ProductPrice })
+                .Select(g => new
+                {
+                    ProductId = g.Key.ProductId,
+                    ProductName = g.Key.ProductName,
+                    Price = g.Key.ProductPrice,
+                    TotalSold = g.Sum(x => x.ProductAmount)
+                })
+                .OrderByDescending(x => x.TotalSold)
+                .Take(5)
+                .ToListAsync();
+
+            var salesByCities = await _context.Orderings
+                .Where(x => !string.IsNullOrEmpty(x.City))
+                .GroupBy(x => x.City)
+                .Select(g => new
+                {
+                    City = g.Key,
+                    OrderCount = g.Count(),
+                    ProductCount = g.SelectMany(x => x.OrderDetails).Sum(od => od.ProductAmount)
+                })
+                .OrderByDescending(x => x.OrderCount)
+                .Take(10)
+                .ToListAsync();
+
+            return Ok(new
+            {
+                TotalOrderCount = totalOrders,
+                TotalIncome = totalIncome,
+                TopSellingProducts = topSellingProducts,
+                SalesByCities = salesByCities
+            });
+        }
     }
 }
