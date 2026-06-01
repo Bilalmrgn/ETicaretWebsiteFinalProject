@@ -12,5 +12,18 @@ namespace Order.WebAPI.Context
 
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Ordering> Orderings { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OrderDetail>()
+                .Property(x => x.ProductPrice)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Ordering>()
+                .Property(x => x.TotalPrice)
+                .HasPrecision(18, 2);
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

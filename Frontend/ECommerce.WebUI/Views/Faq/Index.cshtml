@@ -1,0 +1,505 @@
+@{
+    ViewData["Title"] = "Sık Sorulan Sorular - VoltTech";
+    Layout = "~/Views/UILayout/_Layout.cshtml";
+}
+
+<div class="container-fluid pt-5 pb-5 bg-light-custom">
+    <div class="container">
+        
+        <!-- Breadcrumb & Header Section -->
+        <div class="text-center mb-5 faq-header-section rounded shadow p-5 bg-dark position-relative overflow-hidden">
+            <div class="absolute-decor"></div>
+            <h1 class="display-4 text-primary font-weight-bold mb-3"><i class="fa fa-question-circle mr-3 animated pulse infinite"></i>Sık Sorulan Sorular</h1>
+            <p class="lead text-white-50 mx-auto" style="max-width: 700px;">
+                VoltTech ile ilgili en çok merak edilen konuları, sipariş süreçlerini, garanti koşullarını ve iade politikalarını aşağıda bulabilirsiniz.
+            </p>
+        </div>
+
+        <!-- Search Bar & Filters -->
+        <div class="row mb-5 justify-content-center">
+            <div class="col-lg-8">
+                <div class="faq-search-wrapper position-relative shadow-sm">
+                    <input type="text" id="faqSearchInput" class="form-control form-control-lg pl-5" placeholder="Sorunuzu buraya yazarak arayın... (Örn: İade, Kargo, Garanti)">
+                    <i class="fa fa-search position-absolute search-icon text-muted"></i>
+                    <button id="faqSearchClear" class="btn position-absolute clear-btn d-none" type="button"><i class="fa fa-times text-muted"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="row mb-4 justify-content-center">
+            <div class="col-lg-10">
+                <div class="d-flex flex-wrap justify-content-center faq-categories">
+                    <button class="btn btn-faq-category active" data-category="all"><i class="fa fa-th-large mr-2"></i>Tümü</button>
+                    <button class="btn btn-faq-category" data-category="shipping"><i class="fa fa-truck mr-2"></i>Sipariş & Teslimat</button>
+                    <button class="btn btn-faq-category" data-category="returns"><i class="fa fa-undo-alt mr-2"></i>İade & Değişim</button>
+                    <button class="btn btn-faq-category" data-category="payments"><i class="fa fa-credit-card mr-2"></i>Ödeme & Güvenlik</button>
+                    <button class="btn btn-faq-category" data-category="support"><i class="fa fa-tools mr-2"></i>Garanti & Destek</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Items Section -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                
+                <div id="faqAccordion" class="accordion faq-accordion-wrapper">
+                    
+                    <!-- CATEGORY: Sipariş & Teslimat -->
+                    <div class="card faq-card mb-3" data-category="shipping">
+                        <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                    <span class="faq-question-text"><i class="fa fa-shopping-cart text-primary mr-3"></i>Siparişim kaç gün içerisinde kargoya verilir?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                VoltTech üzerinden verdiğiniz siparişler, en geç <strong>24 saat</strong> içerisinde özenle paketlenerek kargo firmasına teslim edilir. Hafta sonu veya resmi tatillerde verilen siparişler, takip eden ilk iş gününde işleme alınır.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card faq-card mb-3" data-category="shipping">
+                        <div class="card-header" id="headingTwo">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <span class="faq-question-text"><i class="fa fa-shipping-fast text-primary mr-3"></i>Siparişimin kargo durumunu nasıl takip edebilirim?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                Hesabım > <strong>Siparişlerim</strong> sekmesinden siparişinizin güncel durumunu görebilir, "Kargom Nerede" butonuna tıklayarak anlık takibini gerçekleştirebilirsiniz. Kargo takip bilgisi ayrıca SMS ve e-posta ile tarafınıza gönderilmektedir.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card faq-card mb-3" data-category="shipping">
+                        <div class="card-header" id="headingThree">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    <span class="faq-question-text"><i class="fa fa-box-open text-primary mr-3"></i>Kargo ücreti ne kadar?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                VoltTech'te <strong>500 TL ve üzeri</strong> tüm siparişlerinizde kargo tamamen ücretsizdir! 500 TL altındaki siparişleriniz için standart kargo ücreti ödeme ekranında sepetinize otomatik olarak yansıtılmaktadır.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CATEGORY: İade & Değişim -->
+                    <div class="card faq-card mb-3" data-category="returns">
+                        <div class="card-header" id="headingFour">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                    <span class="faq-question-text"><i class="fa fa-undo text-primary mr-3"></i>Satın aldığım ürünü nasıl iade edebilirim?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                Satın aldığınız ürünü teslim aldığınız tarihten itibaren <strong>14 gün</strong> içerisinde herhangi bir gerekçe göstermeksizin iade edebilirsiniz. İade işlemini başlatmak için <em>Hesabım > Siparişlerim</em> bölümünden iade talebi oluşturup verilen ücretsiz kargo kodu ile ürünü bize geri gönderebilirsiniz.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card faq-card mb-3" data-category="returns">
+                        <div class="card-header" id="headingFive">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                    <span class="faq-question-text"><i class="fa fa-coins text-primary mr-3"></i>İade ettiğim ürünün ücreti ne zaman hesabıma yansır?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                İade ettiğiniz ürün tarafımıza ulaştıktan sonra teknik servis ekibimiz tarafından orijinallik ve hasar kontrolü yapılır. Süreç onaylandıktan sonra <strong>3 ila 5 iş günü</strong> içerisinde paranız kartınıza iade edilir. İadenin ekstrenize yansıma süresi bankanıza bağlı olarak değişkenlik gösterebilir.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card faq-card mb-3" data-category="returns">
+                        <div class="card-header" id="headingSix">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                    <span class="faq-question-text"><i class="fa fa-shield-alt text-primary mr-3"></i>Elektronik ürünlerde kutusu açılan ürünün iadesi mümkün müdür?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                Ambalajı, güvenlik bandı veya jelatini açılmış, kurulmuş veya kullanılmış elektronik ve elektrikli ürünlerin iadesi cayma hakkı kapsamında kabul edilememektedir. Ancak fabrikasyon bir hata veya arıza durumunda, değişim veya iade işlemleri için servis süreci başlatılabilmektedir.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CATEGORY: Ödeme & Güvenlik -->
+                    <div class="card faq-card mb-3" data-category="payments">
+                        <div class="card-header" id="headingSeven">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                                    <span class="faq-question-text"><i class="fa fa-wallet text-primary mr-3"></i>Hangi ödeme yöntemlerini kabul ediyorsunuz?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                Sitemiz üzerinden tüm bankalara ait <strong>kredi kartları</strong> ve <strong>banka kartları</strong> ile güvenle ödeme yapabilirsiniz. Ayrıca anlaşmalı bankaların kredi kartlarına özel taksit imkanları da sunulmaktadır. Kapıda ödeme seçeneğimiz şu an için bulunmamaktadır.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card faq-card mb-3" data-category="payments">
+                        <div class="card-header" id="headingEight">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                    <span class="faq-question-text"><i class="fa fa-lock text-primary mr-3"></i>Alışveriş yaparken kredi kartı bilgilerim güvende mi?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                Kesinlikle güvende! Sitemiz <strong>256-bit SSL</strong> şifreleme sertifikası ile korunmaktadır. Ödeme işlemleriniz, 3D Secure güvencesiyle doğrudan bankanın güvenli altyapısı üzerinden gerçekleştirilir. Kart bilgileriniz kesinlikle bizim veritabanımızda saklanmaz.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CATEGORY: Garanti & Destek -->
+                    <div class="card faq-card mb-3" data-category="support">
+                        <div class="card-header" id="headingNine">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                    <span class="faq-question-text"><i class="fa fa-user-shield text-primary mr-3"></i>Ürünlerinizin garanti süresi ne kadar?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                VoltTech üzerinden satılan tüm elektrikli ve elektronik ürünler, Türkiye resmi distribütörleri veya üretici firmalar tarafından en az <strong>2 yıl (24 ay)</strong> garanti kapsamındadır. Faturanız aynı zamanda garanti belgesi yerine geçmektedir.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card faq-card mb-3" data-category="support">
+                        <div class="card-header" id="headingTen">
+                            <h2 class="mb-0">
+                                <button class="btn btn-block text-left faq-btn d-flex align-items-center justify-content-between collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <span class="faq-question-text"><i class="fa fa-wrench text-primary mr-3"></i>Elektrikli ürünlerin montajını kim yapmalı?</span>
+                                    <i class="fa fa-chevron-down faq-chevron transition-all"></i>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#faqAccordion">
+                            <div class="card-body">
+                                Can ve mal güvenliğiniz ile ürünlerinizin garanti kapsamı dışına çıkmaması adına; kurulum, elektrik bağlantısı veya montaj gerektiren yüksek akımlı ürünleri (prizler, şalterler, pano ekipmanları vb.) <strong>uzman bir elektrik teknisyeni</strong> veya yetkili servis aracılığıyla kurmanızı şiddetle tavsiye ederiz.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- No Results Message -->
+                <div id="noResults" class="text-center p-5 shadow rounded bg-white d-none mt-4">
+                    <i class="fa fa-search-minus fa-3x text-muted mb-3"></i>
+                    <h4 class="font-weight-bold text-dark">Arama Sonucu Bulunamadı</h4>
+                    <p class="text-muted">Yazdığınız kelimeyle eşleşen bir soru bulamadık. Lütfen farklı kelimelerle tekrar deneyin veya aşağıdaki buton ile bizimle iletişime geçin.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Contact Support Call to Action -->
+        <div class="row mt-5 justify-content-center">
+            <div class="col-lg-10">
+                <div class="cta-card p-5 rounded shadow d-flex flex-column flex-md-row align-items-center justify-content-between bg-dark">
+                    <div class="cta-content text-center text-md-left mb-4 mb-md-0">
+                        <h3 class="text-primary font-weight-bold mb-2">Aradığınız cevabı bulamadınız mı?</h3>
+                        <p class="text-white-50 m-0">Destek ekibimiz haftanın 7 günü size yardımcı olmak için burada.</p>
+                    </div>
+                    <div class="cta-action">
+                        <a asp-controller="Contact" asp-action="Index" class="btn btn-primary btn-lg font-weight-bold px-4 py-3"><i class="fa fa-envelope mr-2"></i>Bize Mesaj Gönderin</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    :root {
+        --electric-yellow: #FACC15;
+        --electric-dark-blue: #0F172A;
+        --electric-bg-dark: #020617;
+    }
+
+    .bg-light-custom {
+        background-color: #F8FAFC;
+    }
+
+    /* Header Styling */
+    .faq-header-section {
+        background: linear-gradient(135deg, var(--electric-bg-dark) 0%, var(--electric-dark-blue) 100%) !important;
+        border-bottom: 4px solid var(--electric-yellow);
+        z-index: 1;
+    }
+    
+    .faq-header-section .absolute-decor {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba(250,204,21,0.15) 0%, transparent 70%);
+        top: -50px;
+        right: -50px;
+        pointer-events: none;
+    }
+
+    /* Search Input Styling */
+    .faq-search-wrapper {
+        border-radius: 50px;
+        overflow: hidden;
+        background: #ffffff;
+        border: 2px solid #E2E8F0;
+        transition: all 0.3s ease;
+    }
+    
+    .faq-search-wrapper:focus-within {
+        border-color: var(--electric-yellow);
+        box-shadow: 0 0 15px rgba(250, 204, 21, 0.25) !important;
+    }
+
+    #faqSearchInput {
+        border: none;
+        border-radius: 50px;
+        box-shadow: none;
+        height: 55px;
+        font-size: 1.1rem;
+        background: transparent;
+    }
+
+    .search-icon {
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+    }
+
+    .clear-btn {
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 5px;
+        z-index: 10;
+        cursor: pointer;
+    }
+
+    /* Categories Tabs */
+    .btn-faq-category {
+        background: #ffffff;
+        border: 1px solid #E2E8F0;
+        color: #475569;
+        font-weight: 600;
+        border-radius: 30px;
+        padding: 10px 22px;
+        margin: 5px;
+        font-size: 0.95rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .btn-faq-category:hover {
+        background: #F1F5F9;
+        color: var(--electric-dark-blue);
+        transform: translateY(-2px);
+    }
+
+    .btn-faq-category.active {
+        background: var(--electric-yellow) !important;
+        border-color: var(--electric-yellow);
+        color: var(--electric-bg-dark) !important;
+        box-shadow: 0 4px 10px rgba(250, 204, 21, 0.3);
+        transform: translateY(-2px);
+    }
+
+    /* Accordion Cards */
+    .faq-card {
+        border: 1px solid #E2E8F0;
+        border-radius: 12px !important;
+        background: #ffffff;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .faq-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+        border-color: #CBD5E1;
+    }
+
+    .faq-card .card-header {
+        background: transparent;
+        border-bottom: none;
+        padding: 0;
+    }
+
+    .faq-btn {
+        background: transparent;
+        padding: 20px 25px;
+        font-weight: 700;
+        color: #1E293B;
+        font-size: 1.1rem;
+        box-shadow: none !important;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .faq-btn:hover {
+        color: var(--electric-dark-blue);
+    }
+
+    .faq-btn:not(.collapsed) {
+        background: rgba(250, 204, 21, 0.03);
+        color: var(--electric-bg-dark);
+        border-left: 4px solid var(--electric-yellow);
+        padding-left: 21px; /* Account for the border-left so text remains aligned */
+    }
+
+    .faq-chevron {
+        font-size: 0.95rem;
+        color: #94A3B8;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-btn:not(.collapsed) .faq-chevron {
+        transform: rotate(180deg);
+        color: var(--electric-bg-dark);
+    }
+
+    .faq-question-text {
+        text-align: left;
+        line-height: 1.4;
+    }
+
+    .faq-card .card-body {
+        padding: 0 25px 25px 25px;
+        color: #475569;
+        font-size: 1rem;
+        line-height: 1.6;
+        border-top: none;
+        background: #ffffff;
+    }
+
+    .faq-card .collapse {
+        border-top: 1px solid #F1F5F9;
+    }
+
+    /* CTA Card */
+    .cta-card {
+        background: linear-gradient(135deg, var(--electric-bg-dark) 0%, var(--electric-dark-blue) 100%) !important;
+        border-left: 5px solid var(--electric-yellow);
+    }
+
+    /* Helper Utilities */
+    .transition-all {
+        transition: all 0.3s ease;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchInput = document.getElementById("faqSearchInput");
+        const clearBtn = document.getElementById("faqSearchClear");
+        const categoryButtons = document.querySelectorAll(".btn-faq-category");
+        const faqCards = document.querySelectorAll(".faq-card");
+        const noResults = document.getElementById("noResults");
+        
+        let currentCategory = "all";
+        let searchQuery = "";
+
+        // Function to filter FAQs
+        function filterFaqs() {
+            let visibleCount = 0;
+
+            faqCards.forEach(card => {
+                const cardCategory = card.getAttribute("data-category");
+                const questionText = card.querySelector(".faq-question-text").innerText.toLowerCase();
+                const answerText = card.querySelector(".card-body").innerText.toLowerCase();
+                
+                const matchesCategory = currentCategory === "all" || cardCategory === currentCategory;
+                const matchesSearch = questionText.includes(searchQuery) || answerText.includes(searchQuery);
+
+                if (matchesCategory && matchesSearch) {
+                    card.classList.remove("d-none");
+                    visibleCount++;
+                } else {
+                    card.classList.add("d-none");
+                }
+            });
+
+            // Show or hide No Results card
+            if (visibleCount === 0) {
+                noResults.classList.remove("d-none");
+            } else {
+                noResults.classList.add("d-none");
+            }
+        }
+
+        // Live Search Input Handler
+        searchInput.addEventListener("input", function(e) {
+            searchQuery = e.target.value.toLowerCase().trim();
+            
+            // Toggle Clear Button
+            if (searchQuery.length > 0) {
+                clearBtn.classList.remove("d-none");
+            } else {
+                clearBtn.classList.add("d-none");
+            }
+
+            filterFaqs();
+        });
+
+        // Clear Search Handler
+        clearBtn.addEventListener("click", function() {
+            searchInput.value = "";
+            searchQuery = "";
+            clearBtn.classList.add("d-none");
+            filterFaqs();
+            searchInput.focus();
+        });
+
+        // Category Tab Filtering Handler
+        categoryButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                // Remove active class from all
+                categoryButtons.forEach(btn => btn.classList.remove("active"));
+                
+                // Add active class to clicked button
+                this.classList.add("active");
+
+                currentCategory = this.getAttribute("data-category");
+                
+                // Collapse all opened accordions first for clean transition
+                $('.faq-card .collapse').collapse('hide');
+
+                filterFaqs();
+            });
+        });
+    });
+</script>

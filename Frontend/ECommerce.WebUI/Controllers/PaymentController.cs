@@ -76,6 +76,7 @@ namespace ECommerce.WebUI.Controllers
             if (response.IsSuccessStatusCode)
             {
                 await _hubContext.Clients.All.SendAsync("ReceiveNewOrderNotification", "Yeni bir siparişiniz var!");
+                TempData["Success"] = "Ödemeniz başarıyla onaylandı ve siparişiniz oluşturuldu!";
                 return RedirectToAction("Index", "AccountSettings");
             }
 

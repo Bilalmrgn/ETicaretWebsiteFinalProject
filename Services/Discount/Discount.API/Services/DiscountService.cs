@@ -123,7 +123,7 @@ namespace Discount.API.Services
                 return "Invalid";
             }
 
-            if (coupon.IsFirstOrderOnly)
+            if (string.Equals(code, "welcome100", StringComparison.OrdinalIgnoreCase) || coupon.IsFirstOrderOnly)
             {
                 var client = _httpClientFactory.CreateClient();
                 var token = _httpContextAccessor.HttpContext?.Request.Headers["Authorization"].ToString();

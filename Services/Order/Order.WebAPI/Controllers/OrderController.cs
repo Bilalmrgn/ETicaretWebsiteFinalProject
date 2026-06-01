@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Order.WebAPI.Context;
 using Order.WebAPI.Dtos.OrderingDtos;
 using Order.WebAPI.Models;
@@ -18,8 +19,11 @@ namespace Order.WebAPI.Controllers
         private readonly IOrderingService _orderingService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AppDbContext _context;
-        public OrderController(IHttpContextAccessor httpContextAccessor,IOrderingService orderingService,AppDbContext context)
+        private readonly IMemoryCache _cache;
+
+        public OrderController(IMemoryCache cache, IHttpContextAccessor httpContextAccessor, IOrderingService orderingService, AppDbContext context)
         {
+            _cache = cache;
             _context = context;
             _httpContextAccessor = httpContextAccessor;
             _orderingService = orderingService;
@@ -108,44 +112,56 @@ namespace Order.WebAPI.Controllers
         [HttpGet("dashboard-statistics")]
         public async Task<IActionResult> GetDashboardStatistics()
         {
-            var totalOrders = await _context.Orderings.CountAsync();
-            
-            // Getting all total price to make sure data is seen.
-            var totalIncome = await _context.Orderings.SumAsync(x => x.TotalPrice);
-
-            var topSellingProducts = await _context.OrderDetails
-                .GroupBy(x => new { x.ProductId, x.ProductName, x.ProductPrice })
-                .Select(g => new
-                {
-                    ProductId = g.Key.ProductId,
-                    ProductName = g.Key.ProductName,
-                    Price = g.Key.ProductPrice,
-                    TotalSold = g.Sum(x => x.ProductAmount)
-                })
-                .OrderByDescending(x => x.TotalSold)
-                .Take(5)
-                .ToListAsync();
-
-            var salesByCities = await _context.Orderings
-                .Where(x => !string.IsNullOrEmpty(x.City))
-                .GroupBy(x => x.City)
-                .Select(g => new
-                {
-                    City = g.Key,
-                    OrderCount = g.Count(),
-                    ProductCount = g.SelectMany(x => x.OrderDetails).Sum(od => od.ProductAmount)
-                })
-                .OrderByDescending(x => x.OrderCount)
-                .Take(10)
-                .ToListAsync();
-
-            return Ok(new
+            var data = await _cache.GetOrCreateAsync("order-dashboard-statistics", async entry =>
             {
-                TotalOrderCount = totalOrders,
-                TotalIncome = totalIncome,
-                TopSellingProducts = topSellingProducts,
-                SalesByCities = salesByCities
+                entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30);
+
+                var totalOrders = await _context.Orderings
+                    .AsNoTracking()
+                    .CountAsync();
+
+                var totalIncome = await _context.Orderings
+                    .AsNoTracking()
+                    .SumAsync(x => x.TotalPrice);
+
+                var topSellingProducts = await _context.OrderDetails
+                    .AsNoTracking()
+                    .GroupBy(x => new { x.ProductId, x.ProductName, x.ProductPrice })
+                    .Select(g => new
+                    {
+                        ProductId = g.Key.ProductId,
+                        ProductName = g.Key.ProductName,
+                        Price = g.Key.ProductPrice,
+                        TotalSold = g.Sum(x => x.ProductAmount)
+                    })
+                    .OrderByDescending(x => x.TotalSold)
+                    .Take(5)
+                    .ToListAsync();
+
+                var salesByCities = await _context.Orderings
+                    .AsNoTracking()
+                    .Where(x => !string.IsNullOrEmpty(x.City))
+                    .GroupBy(x => x.City)
+                    .Select(g => new
+                    {
+                        City = g.Key,
+                        OrderCount = g.Count(),
+                        ProductCount = g.SelectMany(x => x.OrderDetails).Sum(od => od.ProductAmount)
+                    })
+                    .OrderByDescending(x => x.OrderCount)
+                    .Take(10)
+                    .ToListAsync();
+
+                return new
+                {
+                    TotalOrderCount = totalOrders,
+                    TotalIncome = totalIncome,
+                    TopSellingProducts = topSellingProducts,
+                    SalesByCities = salesByCities
+                };
             });
+
+            return Ok(data);
         }
     }
 }

@@ -20,11 +20,19 @@ namespace ECommerce.WebUI.Services.StatisticServices
 
             try
             {
-                // Fetch Order statistics
-                var orderResponse = await _orderClient.GetAsync("api/Order/dashboard-statistics");
+                var orderTask = _orderClient.GetAsync("api/Order/dashboard-statistics");
+                var identityTask = _identityClient.GetAsync("auth/dashboard/statistics");
+
+                await Task.WhenAll(orderTask, identityTask);
+
+                var orderResponse = await orderTask;
+                var identityResponse = await identityTask;
+
                 if (orderResponse.IsSuccessStatusCode)
                 {
-                    var orderData = await orderResponse.Content.ReadFromJsonAsync<DashboardStatisticDto>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    var orderData = await orderResponse.Content.ReadFromJsonAsync<DashboardStatisticDto>(
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
                     if (orderData != null)
                     {
                         dto.TotalOrderCount = orderData.TotalOrderCount;
@@ -34,23 +42,21 @@ namespace ECommerce.WebUI.Services.StatisticServices
                     }
                 }
 
-                // Fetch Identity statistics
-                var identityResponse = await _identityClient.GetAsync("auth/dashboard/statistics"); // Ocelot route
                 if (identityResponse.IsSuccessStatusCode)
                 {
-                    var identityData = await identityResponse.Content.ReadFromJsonAsync<DashboardStatisticDto>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    var identityData = await identityResponse.Content.ReadFromJsonAsync<DashboardStatisticDto>(
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
                     if (identityData != null)
                     {
                         dto.TotalUserCount = identityData.TotalUserCount;
                     }
                 }
 
-                // Calculate Expense (Let's make it 35% of Income as a dummy value for now, as no expense table exists)
-                dto.TotalExpense = dto.TotalIncome * 0.35m; 
+                dto.TotalExpense = dto.TotalIncome * 0.35m;
             }
             catch (Exception ex)
             {
-                // Optionally log error
                 Console.WriteLine($"Error fetching statistics: {ex.Message}");
             }
 
