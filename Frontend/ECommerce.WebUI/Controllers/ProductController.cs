@@ -59,6 +59,19 @@ namespace ECommerce.WebUI.Controllers
                     favoriteProductIds = favorites.Select(f => f.ProductId).ToList();
                 }
 
+                var commentClient = _httpClientFactory.CreateClient("CommentClient");
+                foreach (var p in products)
+                {
+                    var ratingResponse = await commentClient.GetAsync($"/comments/GetProductRating/{p.ProductId}");
+                    if (ratingResponse.IsSuccessStatusCode)
+                    {
+                        var ratingJson = await ratingResponse.Content.ReadAsStringAsync();
+                        var ratingData = JsonConvert.DeserializeObject<dynamic>(ratingJson);
+                        p.AverageRating = (double)ratingData.averageRating;
+                        p.CommentCount = (int)ratingData.commentCount;
+                    }
+                }
+
                 var model = products.Select(p => new ProductWithFavoriteViewModel
                 {
                     Product = p,

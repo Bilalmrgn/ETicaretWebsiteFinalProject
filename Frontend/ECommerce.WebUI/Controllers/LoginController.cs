@@ -23,7 +23,7 @@ namespace ECommerce.WebUI.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("LogOut");
             }
             return Challenge(new AuthenticationProperties
             {

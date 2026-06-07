@@ -5,7 +5,7 @@
         <div class="col-md-6">
             @if (Model != null && Model.Count > 0)
             {
-                <h4 class="mb-4">@Model.Count review for this product</h4>
+                <h4 class="mb-4">Bu ürün için @Model.Count değerlendirme yapılmış</h4>
                 @foreach (var item in Model)
                 {
                     <div class="media mb-4">
@@ -24,20 +24,20 @@
             }
             else
             {
-                <h4 class="mb-4">No reviews yet. Be the first to review!</h4>
+                <h4 class="mb-4">Henüz değerlendirme yapılmamış. İlk değerlendiren siz olun!</h4>
             }
         </div>
 
         <div class="col-md-6">
-            <h4 class="mb-4">Leave a review</h4>
-            <small>Your email address will not be published. Required fields are marked *</small>
+            <h4 class="mb-4">Değerlendirme Yazın</h4>
+            <small>E-posta adresiniz yayınlanmayacaktır. Gerekli alanlar * ile işaretlenmiştir.</small>
 
             <form asp-action="CreateComment" asp-controller="Comment" method="post">
                 <input type="hidden" name="ProductId" value="@ViewContext.RouteData.Values["id"]" />
                 <input type="hidden" name="Rating" id="selectedRating" value="0" />
 
                 <div class="d-flex my-3">
-                    <p class="mb-0 mr-2">Your Rating * :</p>
+                    <p class="mb-0 mr-2">Puanınız * :</p>
                     <div class="text-primary" id="star-rating" style="cursor: pointer;">
                         <i class="far fa-star star-item" data-value="1"></i>
                         <i class="far fa-star star-item" data-value="2"></i>
@@ -48,19 +48,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="message">Your Review *</label>
+                    <label for="message">Yorumunuz *</label>
                     <textarea name="CommentMessage" id="message" cols="30" rows="5" class="form-control" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="name">Your Name *</label>
+                    <label for="name">Adınız Soyadınız *</label>
                     <input type="text" name="NameSurname" class="form-control" id="name" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Your Email *</label>
+                    <label for="email">E-posta Adresiniz *</label>
                     <input type="email" name="Email" class="form-control" id="email" required>
                 </div>
                 <div class="form-group mb-0">
-                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                    <input type="submit" value="Yorumu Gönder" class="btn btn-primary px-3">
                 </div>
             </form>
         </div>
