@@ -1,4 +1,4 @@
-﻿@model List<Frontend.DtosLayer.UserListDto.UserListDto>
+@model List<Frontend.DtosLayer.UserListDto.UserListDto>
 
 @{
     ViewData["Title"] = "Index";
@@ -79,9 +79,15 @@
                                     <!-- Action -->
                                     <td>
                                         <div class="action">
-                                            <button class="text-danger" data-id="@item.UserName">
-                                                <i class="lni lni-trash-can"></i>
-                                            </button>
+                                            <form asp-area="Admin"
+                                                  asp-controller="UserList"
+                                                  asp-action="DeleteUser"
+                                                  asp-route-id="@item.Id"
+                                                  method="post">
+                                                <button class="text-danger" style="border:none;background:none;">
+                                                    <i class="lni lni-trash-can"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -102,3 +108,17 @@
     </div>
     <!-- end col -->
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteForms = document.querySelectorAll("form[action*='DeleteUser']");
+        deleteForms.forEach(function (form) {
+            form.addEventListener("submit", function (e) {
+                const confirmDelete = confirm("Bu kullanıcıyı silmek istediğinize emin misiniz?");
+                if (!confirmDelete) {
+                    e.preventDefault(); // kullanıcı iptal ederse form gönderilmez
+                }
+            });
+        });
+    });
+</script>

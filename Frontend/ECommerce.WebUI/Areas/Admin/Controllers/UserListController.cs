@@ -1,4 +1,4 @@
-﻿using Frontend.DtosLayer.UserListDto;
+using Frontend.DtosLayer.UserListDto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -31,6 +31,19 @@ namespace ECommerce.WebUI.Areas.Admin.Controllers
                 return View(values);
             }
             return View(new List<UserListDto>());
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var client = _httpClientFactory.CreateClient("IdentityClient");
+            var response = await client.DeleteAsync($"auth/user/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "UserList", new { area = "Admin" });
+            }
+
+            return RedirectToAction("Index", "UserList", new { area = "Admin" }); // Could add error handling here
         }
     }
 }

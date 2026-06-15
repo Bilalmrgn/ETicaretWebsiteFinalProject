@@ -28,10 +28,29 @@ namespace IdentityServer.WebAPI.Controllers
                 u.UserName,
                 u.Email,
                 u.Name,
-                u.Surname
+                u.Surname,
+                u.PhoneNumber,
+                u.City
             }).ToListAsync();
 
             return Ok(users);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest(result.Errors);
         }
     }
 }

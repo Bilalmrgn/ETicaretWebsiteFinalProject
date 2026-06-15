@@ -97,7 +97,14 @@ namespace IdentityServer.WebAPI.Controllers
 
             var user = await _userManager.FindByIdAsync(userId);
 
-            if (user == null) return View("Error");
+            if (user == null) 
+            {
+                var errorVm = new IdentityServer.WebAPI.Controllers.ErrorViewModel
+                {
+                    Error = new Duende.IdentityServer.Models.ErrorMessage { Error = "Kullanıcı bulunamadı veya link geçersiz." }
+                };
+                return View("Error", errorVm);
+            }
 
             var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
 
@@ -107,7 +114,11 @@ namespace IdentityServer.WebAPI.Controllers
                 return Redirect("https://localhost:7145/Login/Index");
             }
 
-            return View("Error");
+            var errorVm2 = new IdentityServer.WebAPI.Controllers.ErrorViewModel
+            {
+                Error = new Duende.IdentityServer.Models.ErrorMessage { Error = "Email onayı başarısız oldu. Link süresi dolmuş olabilir." }
+            };
+            return View("Error", errorVm2);
         }
     }
 }
