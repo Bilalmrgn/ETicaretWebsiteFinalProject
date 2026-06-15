@@ -52,17 +52,14 @@ namespace IdentityServer.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             if (!ModelState.IsValid) return View(model);
 
             var user = await _userManager.FindByEmailAsync(model.Email) ?? await _userManager.FindByNameAsync(model.Email);
 
-            if (user != null)
-            {
-                // Kullanıcıyı DB'den tazelemek ve önbelleği geçersiz kılmak için güvenlik damgasını yeniliyoruz
-                await _userManager.UpdateSecurityStampAsync(user);
-            }
+
 
             if (user == null || user.EmailConfirmed == false)
             {
@@ -80,7 +77,7 @@ namespace IdentityServer.WebAPI.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    return Redirect("~/");
+                    return Redirect("https://localhost:7145/");
                 }
             }
 
